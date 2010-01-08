@@ -2202,7 +2202,7 @@ int bubbleSelected(int x, int y)
    for (i=0; i<maxBubbles; i++)
    {
        if ( (x>=bubbles[i].x) && (x<=bubbles[i].x+bubbles[i].width) && 
-	        (y>=bubbles[i].y) && (y<=bubbles[i].y+bubbles[i].height) )
+	        (y>=bubbles[i].y-10) && ((y-10)<=bubbles[i].y+bubbles[i].height) )
 	   {	      
 			if (bubbles[i].enabled)
 			{
@@ -2738,7 +2738,7 @@ void buttonA(int x, int y)
         switch (buttonSelected(x,y,true))
 	    {
           case 0: // Next button	
-				  stateMachine=stateHelp1;
+				  stateMachine=stateHelp2;
 			      break;	     
 	    }
      }
@@ -3781,7 +3781,7 @@ void drawScreen(void)
 		case stateHelp2:
 	   {	  
 			// Draw background
-			GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
 			 
 			// Draw buttons
 	      drawButtons(); 
@@ -3790,6 +3790,7 @@ void drawScreen(void)
          GRRLIB_initTexture();
  
 			// Show title
+			ypos+=20;
 			drawText(0, ypos, fontTitle, "WiiMote Control");
 		  
 			int xoffset=50;
@@ -3812,11 +3813,11 @@ void drawScreen(void)
 
 			ypos+=30;	  
 			drawText(60+xoffset, ypos, fontParagraph, "+");
-			drawText(180+xoffset, ypos, fontParagraph, "Make screenshot" ); 		
+			drawText(180+xoffset, ypos, fontParagraph, "Make a screenshot" ); 		
 
 			ypos+=30;	  
 			drawText(60+xoffset, ypos, fontParagraph, "Home");
-			drawText(180+xoffset, ypos, fontParagraph, "Quit the game" );
+			drawText(180+xoffset, ypos, fontParagraph, "Quit Game" );
 		  
 			// Draw buttons
 	      drawButtons(); 
@@ -3911,7 +3912,7 @@ void drawScreen(void)
 		   sprintf(tmp,"  Music track [%d]", selectedMusic);
 	      drawText(0, ypos, fontParagraph, tmp);	
 		  
-		   ypos=370+yOffset;
+		   ypos=395+yOffset;
 		   drawText(60, ypos, fontNormal,  "Loop track");	
 		   drawText(505, ypos, fontNormal, "Play MP3");	
 		  		
