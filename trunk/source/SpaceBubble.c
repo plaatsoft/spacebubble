@@ -24,15 +24,14 @@
 **  - Multi language support (Move language to xml data files)
 **  - Nintendo External LAN device support 
 **
-** To Do:
-**  - Bugfix: Memory allocation problems fixed in network thread.
-**
-**  07/01/2009 Version 0.93
-**  - Maintenance release
-**  - Improve main menu screen
-**  - Improve screen layout of 50Hz and 60Hz TV Mode.
-**  - use GRRLIB 4.2.0 library as graphical engine.
-**  - Use libogc 1.8.1 library as Wii interface engine.
+**  08/01/2009 Version 0.93
+**  - Improve main menu screen.
+**  - Added 60Hz (640x480) TV Mode support.
+**  - Increase local highscore list to maximum 100 entries.
+**  - Store current game score in highscore area also when game is quited.
+**  - Added extra help screen with WiiMote control information.
+**  - use GRRLIB v4.2.0 library as graphical engine.
+**  - Use libogc v1.8.1 library as Wii interface engine.
 **  - Build game with devkitPPC r19 compiler.
 **
 **  19/11/2009 Version 0.92
@@ -40,16 +39,17 @@
 **  - Added functionality to trace game events to trace file.
 **  - High score is send to web service if score is better then 5000 points.
 **  - Improve network thread
-**  - Use libfat 1.0.6 as disk access engine
-**  - Use libmxml 2.6 library as xml engine
-**  - Use libogc 1.8.0 library as Wii interface engine
+**  - Use libfat v1.0.6 as disk access engine
+**  - Use libmxml v2.6 library as xml engine
+**  - Use libogc v1.8.0 library as Wii interface engine
 **  - Build game with devkitPPC r19 compiler.
 **
 **  17/09/2009 Version 0.91
 **  - This version is compiled with the newest available Wii libraries.
 **  - Use the asndlib (part of libogc) now as standard sound engine.
 **  - Use libfat 1.0.4 as disk access engine.
-**  - Build game with libogc 1.7.1a and devkitPPC 1.5.0 (r17) compiler.
+**  - Use libogc 1.7.1a as Wii interface engine
+**  - Game build with devkitPPC r17 compiler.
 **
 **  09/03/2009 Version 0.90
 **  - Added new GRRLIB v4.0 library as graphical render engine.
@@ -57,11 +57,13 @@
 **  - Added fps information on all screens.
 **  - Added screenshot functionality with plus button.
 **  - Pictures are store on the SdCard in the following directory sd:/apps/SpaceBubble
+**  - Game build with devkitPPC r17 compiler.
 **
 **  14/02/2000 Version 0.81
-**  - Hot fix: Solve major bug in global highscore screen. If the local score did
+**  - HotFix: Solve major bug in global highscore screen. If the local score did
 **    not contain more the 13 entries the global highscore screen crashed. Oeps.
-**  - Build game with libogc 1.7.1 and devkitPPC r16 compiler.
+**  - Use libogc 1.7.1 as Wii inteface engine.
+**  - Game build with devkitPPC r16 compiler.
 **
 **  11/02/2009 Version 0.80
 **  - Improve Frame-per-second performance during game play.
@@ -70,6 +72,7 @@
 **  - Add 10 seconds extra playtime to each level.
 **  - Disable MP3 background music support. Too slow!
 **  - Bug fix: Global highscore screen is not crashing anymore!
+**  - Game build with devkitPPC r16 compiler.
 **
 **  08/02/2009 Version 0.70
 **  - Increase gameboard size from 12x12 to 14x14 bubbles. 
@@ -80,6 +83,7 @@
 **  - Only this first WiiMote can control the music and stop a running game.
 **  - Bug fix: Do not show bubble select hint when game is over. 
 **  - Bug fix: Hint is now always working correct.
+**  - Game build with devkitPPC r16 compiler.
 **
 **  05/02/2009 Version 0.60
 **  - Add two, three and four multi player mode.
@@ -92,6 +96,7 @@
 **  - Improve score calculation on cleared level screen.
 **  - Add level seven with more bonus points to earn.
 **  - Bug fix: Clock color is now showed always right.
+**  - Game build with devkitPPC r15 compiler.
 **
 **  28/01/2009 Version 0.50
 **  - Hot fix: Prevent crash if IR pointer is going out of the screen.
@@ -101,6 +106,7 @@
 **  - Clock color is changing to red for the last 15 seconds.
 **  - Improve help screen.
 **  - Reposition some buttons.
+**  - Game build with devkitPPC r15 compiler.
 **
 **  26/01/2009 Version 0.40
 **  - Show score of selected bubbles on screen.
@@ -108,15 +114,17 @@
 **  - Reposition some buttons.
 **  - Add level cleared information screen.
 **  - Increase http receive buffer size to 8196 bytes.
+**  - Game build with devkitPPC r15 compiler.
 **
 **  25/01/2009 Version 0.31
-**  - Hot fix: Prevent random crashes if wifi connection does not response.
-**  - Hot fix: Prevent wrong calculation of possible moves.
+**  - HotFix: Prevent random crashes if wifi connection does not response.
+**  - HotFix: Prevent wrong calculation of possible moves.
 **  - Added Winner text if player clears all six levels.
 **  - Added 2.000 bonus points if you clear all levels.
 **  - Added clock color is changing to red for the last 10 seconds.
 **  - Added clock sound effects.
 **  - Adapted button size on most screens.
+**  - Game build with devkitPPC r15 compiler.
 ** 
 **  24/01/2009 Version 0.30
 **  - Added scrollbar to highscore and release notes screens.
@@ -130,20 +138,14 @@
 **  - Added several sound effects.
 **  - Each level has it on score matrix and time parameter.
 **  - First offical release for the Wii HomeBrew scene.
-**
-**  22/01/2009 Version 0.13
 **  - Added player initials setting screen.
 **  - Added load/save game setting to sdcard.
 **  - Use only one unique cookie number during the game.
 **  - Improve score calculation.
 **  - If level is cleared (remaining time * factor) is added to score.
-**
-**  21/01/2009 Version 0.12
 **  - Added Local / Global highscore functionality.
 **  - Added game info panel to game screen.
 **  - Added countdown clock.
-**   
-**  20/01/2009 Version 0.11
 **  - Added ShiftRight bubble functionality.
 **  - Added six game levels.
 **  - Gamescore is send anonymouse to webservices on internet.
@@ -178,7 +180,6 @@
 
 #include "General.h" 
 #include "http.h"
-#include "GRRLIB.h"
 #include "trace.h"
 #include "effect1_pcm.h"
 #include "effect2_pcm.h"
@@ -214,251 +215,6 @@ void initExplodes(void);
 void bubbleHint(void);
 
 // -----------------------------------------------------------
-// TYPEDEFS 
-// -----------------------------------------------------------
- 
-typedef struct 
-{
-  // png + jpg Image index  
-  GRRLIB_texImg *background1;
-  GRRLIB_texImg *background2;
-  
-  GRRLIB_texImg *panel1;
-  GRRLIB_texImg *button1;
-  GRRLIB_texImg *button1select;  
-  GRRLIB_texImg *button2;
-  GRRLIB_texImg *button2select;  
-  GRRLIB_texImg *bar;
-  GRRLIB_texImg *barCursor;
-  GRRLIB_texImg *sound;
-  
-  GRRLIB_texImg *pointer1;
-  GRRLIB_texImg *pointer2;
-  GRRLIB_texImg *pointer3;
-  GRRLIB_texImg *pointer4;
-  
-  GRRLIB_texImg *scrollbar;
-  GRRLIB_texImg *scrollTop;
-  GRRLIB_texImg *scrollMiddle;
-  GRRLIB_texImg *scrollBottom;  
-  
-  GRRLIB_texImg *noBubble;
-  GRRLIB_texImg *blueBubble;
-  GRRLIB_texImg *blueSelectBubble;
-  GRRLIB_texImg *yellowBubble;
-  GRRLIB_texImg *yellowSelectBubble;
-  GRRLIB_texImg *greenBubble;
-  GRRLIB_texImg *greenSelectBubble;
-  GRRLIB_texImg *redBubble;
-  GRRLIB_texImg *redSelectBubble;
-  GRRLIB_texImg *pinkBubble;
-  GRRLIB_texImg *pinkSelectBubble;
-  GRRLIB_texImg *lightblueBubble;
-  GRRLIB_texImg *lightblueSelectBubble;
-  GRRLIB_texImg *blackBubble;
-  GRRLIB_texImg *blackSelectBubble;
-  GRRLIB_texImg *whiteBubble;
-  GRRLIB_texImg *whiteSelectBubble;
-  GRRLIB_texImg *gameboard;
-
-  GRRLIB_texImg *logo;  
-  GRRLIB_texImg *logo1;
-  GRRLIB_texImg *logo2;
-  GRRLIB_texImg *logo3;
-  GRRLIB_texImg *logo4;
-  GRRLIB_texImg *logo5;
-  GRRLIB_texImg *logo6;
-} 
-image;
-
-image images;
-
-typedef struct
-{
-   int   x;
-   int   y;
-   int   color;
-   int   width;
-   int   height;
-   bool  selected;
-   bool  enabled;
-   bool  check;
-   float size;
-   bool  sizeDirection;
-   bool  hint;
-} 
-bubble;
-
-bubble bubbles[MAX_BUBBLES+1];
-
-typedef struct
-{
-   int   x;
-   int   y;
-   int   color;
-   int   width;
-   int   height;
-   int   alfa;
-   float size;
-   bool  enabled;
-   bool  moveX;
-   bool  moveY;
-} 
-explode;
-
-explode explodes[MAX_BUBBLES+1];
-
-typedef struct
-{
-   int  x;
-   int  y;
-   int  width;
-   int  height;
-   GRRLIB_texImg *image;
-} 
-board;
-
-board gameboard[MAX_BUBBLES];
-
-// Setting[0] First Character Initial
-// Setting[1] Second Character Initial
-// Setting[2] Third Character Initial
-// Setting[3] Music volume
-// Setting[4] Sound Effect volume
-// Setting[5] Loop music track
-// Setting[6] MP3 support
-
-typedef struct
-{
-   char   key[MAX_LEN];
-   char   value[MAX_LEN];
-}
-setting;
-
-setting settings[MAX_SETTINGS+1];
-
-typedef struct
-{
-   time_t localTime;
-   int    level;
-   int    score; 
-   char   name[MAX_LEN];
-}
-highscore;
-
-highscore localHighScore[MAX_LOCAL_HIGHSCORE+1];
-
-
-typedef struct
-{
-   time_t dt;
-   char   score[MAX_LEN];
-   char   name[MAX_LEN];
-   char   location[MAX_LEN];
-}
-topscore;
-
-topscore todayHighScore[MAX_TODAY_HIGHSCORE+1];
-topscore globalHighScore[MAX_GLOBAL_HIGHSCORE+1];
-
-
-typedef struct
-{
-   GRRLIB_texImg *image;
-   GRRLIB_texImg *imageSelect;
-   char  name[MAX_LEN]; 
-   int   x;
-   int   y;
-} 
-button;
-
-button buttons[MAX_BUTTONS+1];
-
-
-struct 
-{
-  // General game variables
-  time_t  localTime;
-  time_t  playTime;
-  time_t  prevPlayTime;
-  time_t  idleTime;
-  int     score;
-  int     level;
-  int     possiblities;
-  char    name[MAX_LEN];
-  int     maxTime;
-  int     bubbleCount;
-  
-  // Variables for score calculation
-  int     timeBonus;
-  int     timeBonusFactor;
-  int     timeBonusScore;
-  int     bubbleOver;
-  int     bubbleOverFactor;
-  int     bubbleOverScore;
-  int     totalClear;
-  int     totalClearFactor;
-  int     totalClearScore;
-  int     extraBonus;
-  int     selectScore;
-}
-game;
-
-
-typedef struct 
-{
-  ir_t    ir;
-  int     x;
-  int     xOffset;
-  int     y;
-  int     yOffset;
-  int     angle;
-  int     rumble;
-  GRRLIB_texImg *image;
-}
-pointer;
-
-pointer pointers[MAX_POINTER];
-
-// -----------------------------------------------------------
-// ENUMS
-// -----------------------------------------------------------
- 
-enum
-{
-   stateIntro1=0,   
-   stateIntro2=1, 
-   stateIntro3=2, 
-   stateMenu=3,
-   stateGame=4,
-   stateLevelCleared=5,
-   stateGameOver=6,
-   stateQuit=7,
-   stateLocalHighScore=8,
-   stateTodayHighScore=9,
-   stateGlobalHighScore=10,
-   stateHelp=11,
-   stateCredits=12,
-   stateSound=13,
-   stateReleaseNotes=14,
-   stateSettings=15,  
-   stateNone=16
-};
-
-enum
-{
-   fontTitle=0,
-   fontSubTitle=1,
-   fontSubTitle2=2,
-   fontParagraph=3,
-   fontNormal=4,
-   fontSpecial=5,
-   fontNew=6,
-   fontButton=7,
-   fontWelcome=8
-};
-
-// -----------------------------------------------------------
 // VARIABLES
 // -----------------------------------------------------------
 
@@ -468,37 +224,37 @@ Mtx     GXmodelView2D;
 static  MODPlay snd1;
 char    appl_user3[MAX_LEN];
 
-int     yOffset           = 0;
-int     angle             = 0;
-float   size              = 0;
-float   wave1             = 0;
-float   wave2             = 0;
+int     yOffset          		= 0;
+int     angle             		= 0;
+float   size              		= 0;
+float   wave1             		= 0;
+float   wave2             		= 0;
 
-bool    selected1         = false;
-bool    selected2         = false;
-bool    selectedA         = false;
-int     scrollIndex       = 0;
-bool    scrollEnabled     = false;
+bool    selected1         		= false;
+bool    selected2         		= false;
+bool    selectedA         		= false;
+int     scrollIndex       		= 0;
+bool    scrollEnabled     		= false;
 
-int     stateMachine        = stateIntro1;
-int     prevStateMachine    = stateNone;
+int     stateMachine        	= stateIntro1;
+int     prevStateMachine    	= stateNone;
 
-int     maxLocalHighScore  = 0;
-int     maxTodayHighScore  = 0;
-int     maxGlobalHighScore = 0;
+int     maxLocalHighScore  	= 0;
+int     maxTodayHighScore  	= 0;
+int     maxGlobalHighScore	 	= 0;
 
-int     maxButtons        = 0;
-int     maxBubbles        = 0;
-int     maxGameboard      = 0;
-int     maxExplodes		  = 0;
-int     selectedMusic     = 1;
-int     musicVolume       = 5;
-int     effectVolume      = 9;
-int     loopMusicTrack    = 1;
-int     enableMP3		  = 0;
-int     hintCount		  = 0;
-bool    bPowerOff         = false;	
-bool    gameResult		  = false;
+int     maxButtons       		= 0;
+int     maxBubbles        		= 0;
+int     maxGameboard      		= 0;
+int     maxExplodes		  		= 0;
+int     selectedMusic     		= 1;
+int     musicVolume       		= 5;
+int     effectVolume      		= 9;
+int     loopMusicTrack    		= 1;
+int     enableMP3		  			= 0;
+int     hintCount		  			= 0;
+bool    bPowerOff         		= false;	
+bool    gameResult		  		= false;
 
 // MP3 support
 //char    mp3files[1000][80]; 
@@ -1069,7 +825,20 @@ void initButtons(void)
 	}
 	break;
 	  
-	case stateHelp:
+	case stateHelp1:
+	{
+	    maxButtons=1;
+
+		// Back button 
+		buttons[0].image=images.button2;
+		buttons[0].imageSelect=images.button2select;
+		strcpy(buttons[0].name,"Next");
+		buttons[0].x=280;
+		buttons[0].y=425+yOffset;
+	}
+	break;
+	  
+	case stateHelp2:
 	{
 	    maxButtons=1;
 
@@ -1081,7 +850,7 @@ void initButtons(void)
 		buttons[0].y=425+yOffset;
 	}
 	break;
-	  
+	
 	case stateCredits:
 	{
 	    maxButtons=1;
@@ -1286,25 +1055,25 @@ void initLevel()
    switch (game.level)
    {
       case 1:  game.maxTime=30;	           
-			   break;
+					break;
 
       case 2:  game.maxTime=55;	           
-			   break;		
+					break;		
 
       case 3:  game.maxTime=70;	           
-			   break;	   
+					break;	   
 			   
-	  case 4:  game.maxTime=85;	           
-			   break;
+	  case 4:   game.maxTime=85;	           
+					break;
 			   
-	  case 5:  game.maxTime=95;	           
-			   break;
+	  case 5:   game.maxTime=95;	           
+					break;
 			   
-	  case 6:  game.maxTime=105;	           
-			   break;
+	  case 6:   game.maxTime=105;	           
+					break;
 			   
 	  case 7:  game.maxTime=120;	           
-			   break;
+					break;
    }   
    // Reset time
    game.localTime=time(NULL);   
@@ -1694,7 +1463,14 @@ void initStateMachine(void)
 		}
 		break;
 		
-		case stateHelp:
+		case stateHelp1:
+		{
+		   if (stateMachine!=prevStateMachine) initButtons();
+		   prevStateMachine=stateMachine;
+		}
+		break;
+		
+		case stateHelp2:
 		{
 		   if (stateMachine!=prevStateMachine) initButtons();
 		   prevStateMachine=stateMachine;
@@ -2425,8 +2201,8 @@ int bubbleSelected(int x, int y)
     
    for (i=0; i<maxBubbles; i++)
    {
-       if ( (x>=bubbles[i].x+1) && (x<=bubbles[i].x+bubbles[i].width-1) && 
-	        (y>=bubbles[i].y+1) && (y<=bubbles[i].y+bubbles[i].height-1) )
+       if ( (x>=bubbles[i].x) && (x<=bubbles[i].x+bubbles[i].width) && 
+	        (y>=bubbles[i].y) && (y<=bubbles[i].y+bubbles[i].height) )
 	   {	      
 			if (bubbles[i].enabled)
 			{
@@ -2460,6 +2236,27 @@ int bubbleSelected(int x, int y)
    return -1;
 }
 
+// Store score in on disk and internet
+void storeScore(void)
+{
+	// Save score
+	saveLocalHighScoreFile(HIGHSCORE_FILENAME);
+	loadLocalHighScoreFile(HIGHSCORE_FILENAME);	
+	
+	if (game.score>5000)
+	{ 
+		sprintf(appl_user3,"appl=%s&level=%d&score=%d&name=%s&dt=%d&version=%s&map=%d",
+			PROGRAM_NAME,
+			game.level,
+			game.score,
+			game.name,
+			(int)game.localTime,
+			PROGRAM_VERSION,
+			1);
+		tcp_set_state(TCP_REQUEST3a, appl_user3);	
+	}			
+}
+
 // -----------------------------------------------------------
 // BUTTON LOGIC
 // -----------------------------------------------------------
@@ -2470,8 +2267,8 @@ int buttonSelected(int x, int y, bool sound)
    
    for (i=0; i<maxButtons; i++)
    {
-       if ( (x>=buttons[i].x) && (x<=buttons[i].x+buttons[i].image->w) && 
-	        (y>=buttons[i].y) && (y<=buttons[i].y+buttons[i].image->h) )
+       if ( (x>=buttons[i].x-2) && (x<=buttons[i].x+buttons[i].image->w+2) && 
+	        (y>=buttons[i].y-2) && (y<=buttons[i].y+buttons[i].image->h+2) )
 	   {
           if (sound) SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 22050, 0, (char *) effect3_pcm, effect3_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
 	      return i;
@@ -2703,7 +2500,7 @@ void buttonA(int x, int y)
 			      break;
 				  
 		  case 2: // Help button 
-				  stateMachine=stateHelp;
+				  stateMachine=stateHelp1;
 			      break;
 	  
 	      case 3: // Credits button 		 
@@ -2746,11 +2543,14 @@ void buttonA(int x, int y)
 	    {
           case 0: // Yes button	      
                   stateMachine=stateMenu;
-			      break;
+						
+						// Store score
+						storeScore();
+						break;
 	  
-	      case 1: // No button 
-				  stateMachine=stateGame;
-			      break;
+	      case 1: 	// No button 
+						stateMachine=stateGame;
+						break;
 	    }
 	 }
 	 break;
@@ -2783,16 +2583,11 @@ void buttonA(int x, int y)
 	   {
           case 0: // Back button	     
                   		
-				  // Save score
-				  saveLocalHighScoreFile(HIGHSCORE_FILENAME);
-				  loadLocalHighScoreFile(HIGHSCORE_FILENAME);	
-				  if (game.score>5000)
-				  { 
-					 sprintf(appl_user3,"appl=%s&level=%d&score=%d&name=%s&dt=%d",PROGRAM_NAME,game.level,game.score,game.name,(int)game.localTime);
-					 tcp_set_state(TCP_REQUEST3a, appl_user3);	
-				  }				
-				  stateMachine=stateMenu;   	   
-				  break;
+						// Store score
+						storeScore();
+						
+						stateMachine=stateMenu;   	   
+						break;
 	   }
 	 }
 	 break;
@@ -2938,11 +2733,22 @@ void buttonA(int x, int y)
      }
 	 break;
 	 	 
-	 case stateHelp:
+	 case stateHelp1:
      {
         switch (buttonSelected(x,y,true))
 	    {
           case 0: // Next button	
+				  stateMachine=stateHelp1;
+			      break;	     
+	    }
+     }
+	 break;
+	 
+	 case stateHelp2:
+     {
+        switch (buttonSelected(x,y,true))
+	    {
+          case 0: // Back button	
 				  stateMachine=stateMenu;
 			      break;	     
 	    }
@@ -3933,7 +3739,7 @@ void drawScreen(void)
 	   }
 	   break;
 	   	   
-	   case stateHelp:
+	   case stateHelp1:
 	   {		  		  
 	      // Draw background
 			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
@@ -3971,6 +3777,54 @@ void drawScreen(void)
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
+		
+		case stateHelp2:
+	   {	  
+			// Draw background
+			GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
+			 
+			// Draw buttons
+	      drawButtons(); 
+		  
+			// Init text layer	  
+         GRRLIB_initTexture();
+ 
+			// Show title
+			drawText(0, ypos, fontTitle, "WiiMote Control");
+		  
+			int xoffset=50;
+	
+         ypos+=100;
+			drawText(60+xoffset, ypos,  fontParagraph, "Button");
+			drawText(180+xoffset, ypos,  fontParagraph, "Action");
+	
+			ypos+=50;	  
+			drawText(60+xoffset, ypos, fontParagraph, "A");
+			drawText(180+xoffset, ypos, fontParagraph, "Select button / bubble on screen" ); 
+
+			ypos+=30;	  
+			drawText(60+xoffset, ypos, fontParagraph, "1");
+			drawText(180+xoffset, ypos, fontParagraph, "Play next music track" ); 
+
+			ypos+=30;	  
+			drawText(60+xoffset, ypos, fontParagraph, "2");
+			drawText(180+xoffset, ypos, fontParagraph, "Play previous music track" ); 	
+
+			ypos+=30;	  
+			drawText(60+xoffset, ypos, fontParagraph, "+");
+			drawText(180+xoffset, ypos, fontParagraph, "Make screenshot" ); 		
+
+			ypos+=30;	  
+			drawText(60+xoffset, ypos, fontParagraph, "Home");
+			drawText(180+xoffset, ypos, fontParagraph, "Quit the game" );
+		  
+			// Draw buttons
+	      drawButtons(); 
+		  
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
+		}
+		break;
 	   
 	   case stateCredits:
 	   {
@@ -4057,8 +3911,9 @@ void drawScreen(void)
 		   sprintf(tmp,"  Music track [%d]", selectedMusic);
 	      drawText(0, ypos, fontParagraph, tmp);	
 		  
-		   drawText(60, 395, fontNormal,  "Loop track");	
-		   drawText(505, 395, fontNormal, "Play MP3");	
+		   ypos=370+yOffset;
+		   drawText(60, ypos, fontNormal,  "Loop track");	
+		   drawText(505, ypos, fontNormal, "Play MP3");	
 		  		
 		   // Draw buttons
 	      drawButtons(); 
@@ -4312,16 +4167,37 @@ int main()
 			pointers[i].angle=pointers[i].ir.angle;
 				
          // Scan for button events
-			if (wpadheld & BUTTON_A) buttonScroll(pointers[i].xOffset,pointers[i].yOffset);	 		
-         if (wpaddown & BUTTON_A) buttonA(pointers[i].xOffset,pointers[i].yOffset); 		
-			if (wpadup & BUTTON_A) selectedA=false;
+			if (wpadheld & BUTTON_A) 
+			{
+				buttonScroll(pointers[i].xOffset,pointers[i].yOffset);	 		
+			}
+			
+         if (wpaddown & BUTTON_A) 
+			{
+				buttonA(pointers[i].xOffset,pointers[i].yOffset); 		
+			}
+			
+			if (wpadup & BUTTON_A) 
+			{
+				selectedA=false;
+			}
 		  
 			// Only this first WiiMote can control the music and stop a running game.
 			if (i==0)
 			{		  
 				if (wpaddown & BUTTON_HOME) 
 				{ 
-					if (stateMachine==stateGame) stateMachine=stateQuit;			   
+					if (stateMachine==stateGame) 
+					{
+						stateMachine=stateQuit;
+					}
+					else
+					{
+						if (stateMachine!=stateMenu)
+						{
+							stateMachine=stateMenu;
+						}
+					}
 				}
 		  
 				if (wpaddown & BUTTON_1 ) button1x();								
@@ -4366,4 +4242,3 @@ int main()
 // -----------------------------------------------------------
 // THE END
 // -----------------------------------------------------------
-
