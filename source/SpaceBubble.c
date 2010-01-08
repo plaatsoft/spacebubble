@@ -1,22 +1,8 @@
 /* 
 **  SpaceBubble for Wii - Created by wplaat (www.plaatsoft.nl)
-**
-**  SpaceBubble is a classic board puzzle game based bubble breaker. Select multiple 
-**  bubbles with the same color and destroy them, the more you hit in one the higher 
-**  score you will get.
-**
-**  Key Features:
-**  - 2D Bubble Gameboard with special graphical effects
-**  - Support one to four players
-**  - Seven game levels
-**  - Game score is shared with all players
-**  - Easy menu system
-**  - WiiMote IR control
-**  - 16 music tracks
-**  - Several sound effects
 **  
-**  Copyright (C) 2009
-**  ==================
+**  Copyright (C) 2008-2010
+**  =======================
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -35,10 +21,19 @@
 **  ==============
 **
 ** Wishlist:
-**  - Nintendo Game Cube controller support
-**  - Nintendo Wii Classic controller support
 **  - Multi language support (Move language to xml data files)
 **  - Nintendo External LAN device support 
+**
+** To Do:
+**  - Bugfix: Memory allocation problems fixed in network thread.
+**
+**  07/01/2009 Version 0.93
+**  - Maintenance release
+**  - Improve main menu screen
+**  - Improve screen layout of 50Hz and 60Hz TV Mode.
+**  - use GRRLIB 4.2.0 library as graphical engine.
+**  - Use libogc 1.8.1 library as Wii interface engine.
+**  - Build game with devkitPPC r19 compiler.
 **
 **  19/11/2009 Version 0.92
 **  - Added today top highscore screen.
@@ -180,7 +175,8 @@
 #include <sys/dir.h>
 #include <mp3player.h>
 #include <ogc/lwp_watchdog.h>	
- 
+
+#include "General.h" 
 #include "http.h"
 #include "GRRLIB.h"
 #include "trace.h"
@@ -196,92 +192,6 @@
 #include "track7_mod.h"
 #include "track8_mod.h"
 #include "track9_mod.h"
-
-// -----------------------------------------------------------
-// DEFINES
-// -----------------------------------------------------------
-
-#define PROGRAM_NAME	    	"SpaceBubble"
-#define PROGRAM_VERSION     	"0.92"
-#define RELEASE_DATE        	"19-11-2009" 
-
-// Check latest available version 
-#define URL1                	"http://www.plaatsoft.nl/service/releasenotes4.html"
-#define ID1			        	"UA-6887062-1"
-
-// Fetch Release notes
-#define URL2                	"http://www.plaatsoft.nl/service/releasenotes4.html"
-#define ID2				   	 	"UA-6887062-1"
-
-// Set Get Today HighScore
-#define URL3                	"http://www.plaatsoft.nl/service/score_set_today.php"
-#define ID3				    	"UA-6887062-1"
-
-// Set Get Global HighScore
-#define URL4                	"http://www.plaatsoft.nl/service/score_set_global.php"
-#define ID4				    	"UA-6887062-1"
-
-#define URL_TOKEN           	" Version "
-#define HIGHSCORE_FILENAME  	"sd:/apps/SpaceBubble/highscore.xml"
-#define SETTING_FILENAME    	"sd:/apps/SpaceBubble/setting.xml"
-#define TRACE_FILENAME      	"sd:/apps/SpaceBubble/spacebubble.trc"
-#define GAME_DIRECTORY      	"sd:/apps/SpaceBubble/"
-#define MP3_DIRECTORY       	"sd:/music/"
-
-#define WSP_POINTER_X       	200
-#define WSP_POINTER_Y       	250
-
-#define COLOR_WHITESMOKE    	0xFFFFFF
-#define COLOR_LIGHTRED      	0x3333FF
-#define COLOR_DARKBLACK     	0x000000
-#define IMAGE_COLOR         	0xFFFFFFFF
-
-#define MAX_BUTTONS         	10
-#define MAX_RUMBLE				4
-#define MAX_BOARDSIZE 			14
-#define MAX_BUBBLES   			(MAX_BOARDSIZE*MAX_BOARDSIZE)
-#define MAX_HORZ_PIXELS			640
-#define MAX_VERT_PIXELS			480
-
-#define MAX_LOCAL_HIGHSCORE 	50
-#define MAX_TODAY_HIGHSCORE	 	50
-#define MAX_GLOBAL_HIGHSCORE	50
-
-#define MAX_SETTINGS			10
-#define MAX_LEVEL    	    	7
-#define MAX_LEN			    	256
-#define MAX_ANGLE				360
-#define MIN_ALFA				127
-#define MAX_ALFA				255
-#define MAX_SIZE		    	1.0
-#define MIN_BUBBLE_SIZE			1.0
-#define MAX_BUBBLE_SIZE			1.2
-#define MAX_SOUND_VOLUME		10
-#define MAX_MUSIC_TRACK     	9
-#define MAX_LINES		    	200
-#define MAX_BUFFER_SIZE			8192
-#define MAX_IDLE_TIME	    	10
-#define MAX_POINTER         	4
-#define EXPLODE_STEP	    	4
-#define OUT_OF_TIME		    	15
-#define IR_X_OFFSET         	40
-#define IR_Y_OFFSET         	40
-#define SCROLLBAR_x         	600
-#define SCROLLBAR_Y_MIN     	150
-#define SCROLLBAR_Y_MAX     	310
-
-#define MUSIC_MULTIPLER			5
-#define EFFECT_MULTIPLER		20
-
-#define BUTTON_A            (WPAD_BUTTON_A     | WPAD_CLASSIC_BUTTON_A)
-#define BUTTON_HOME         (WPAD_BUTTON_HOME  | WPAD_CLASSIC_BUTTON_HOME)
-#define BUTTON_1            (WPAD_BUTTON_1     | WPAD_CLASSIC_BUTTON_X)
-#define BUTTON_2            (WPAD_BUTTON_2     | WPAD_CLASSIC_BUTTON_Y)
-#define BUTTON_UP           (WPAD_BUTTON_UP    | WPAD_CLASSIC_BUTTON_UP)
-#define BUTTON_DOWN         (WPAD_BUTTON_DOWN  | WPAD_CLASSIC_BUTTON_DOWN)
-#define BUTTON_LEFT         (WPAD_BUTTON_LEFT  | WPAD_CLASSIC_BUTTON_LEFT)
-#define BUTTON_RIGHT        (WPAD_BUTTON_RIGHT | WPAD_CLASSIC_BUTTON_RIGHT)
-#define BUTTON_PLUS         (WPAD_BUTTON_PLUS  | WPAD_CLASSIC_BUTTON_PLUS)
 
 // -----------------------------------------------------------
 // PROTOTYPES
@@ -310,54 +220,54 @@ void bubbleHint(void);
 typedef struct 
 {
   // png + jpg Image index  
-  GRRLIB_texImg background1;
-  GRRLIB_texImg background2;
+  GRRLIB_texImg *background1;
+  GRRLIB_texImg *background2;
   
-  GRRLIB_texImg panel1;
-  GRRLIB_texImg button1;
-  GRRLIB_texImg button1select;  
-  GRRLIB_texImg button2;
-  GRRLIB_texImg button2select;  
-  GRRLIB_texImg bar;
-  GRRLIB_texImg barCursor;
-  GRRLIB_texImg sound;
+  GRRLIB_texImg *panel1;
+  GRRLIB_texImg *button1;
+  GRRLIB_texImg *button1select;  
+  GRRLIB_texImg *button2;
+  GRRLIB_texImg *button2select;  
+  GRRLIB_texImg *bar;
+  GRRLIB_texImg *barCursor;
+  GRRLIB_texImg *sound;
   
-  GRRLIB_texImg pointer1;
-  GRRLIB_texImg pointer2;
-  GRRLIB_texImg pointer3;
-  GRRLIB_texImg pointer4;
+  GRRLIB_texImg *pointer1;
+  GRRLIB_texImg *pointer2;
+  GRRLIB_texImg *pointer3;
+  GRRLIB_texImg *pointer4;
   
-  GRRLIB_texImg scrollbar;
-  GRRLIB_texImg scrollTop;
-  GRRLIB_texImg scrollMiddle;
-  GRRLIB_texImg scrollBottom;  
+  GRRLIB_texImg *scrollbar;
+  GRRLIB_texImg *scrollTop;
+  GRRLIB_texImg *scrollMiddle;
+  GRRLIB_texImg *scrollBottom;  
   
-  GRRLIB_texImg noBubble;
-  GRRLIB_texImg blueBubble;
-  GRRLIB_texImg blueSelectBubble;
-  GRRLIB_texImg yellowBubble;
-  GRRLIB_texImg yellowSelectBubble;
-  GRRLIB_texImg greenBubble;
-  GRRLIB_texImg greenSelectBubble;
-  GRRLIB_texImg redBubble;
-  GRRLIB_texImg redSelectBubble;
-  GRRLIB_texImg pinkBubble;
-  GRRLIB_texImg pinkSelectBubble;
-  GRRLIB_texImg lightblueBubble;
-  GRRLIB_texImg lightblueSelectBubble;
-  GRRLIB_texImg blackBubble;
-  GRRLIB_texImg blackSelectBubble;
-  GRRLIB_texImg whiteBubble;
-  GRRLIB_texImg whiteSelectBubble;
-  GRRLIB_texImg gameboard;
+  GRRLIB_texImg *noBubble;
+  GRRLIB_texImg *blueBubble;
+  GRRLIB_texImg *blueSelectBubble;
+  GRRLIB_texImg *yellowBubble;
+  GRRLIB_texImg *yellowSelectBubble;
+  GRRLIB_texImg *greenBubble;
+  GRRLIB_texImg *greenSelectBubble;
+  GRRLIB_texImg *redBubble;
+  GRRLIB_texImg *redSelectBubble;
+  GRRLIB_texImg *pinkBubble;
+  GRRLIB_texImg *pinkSelectBubble;
+  GRRLIB_texImg *lightblueBubble;
+  GRRLIB_texImg *lightblueSelectBubble;
+  GRRLIB_texImg *blackBubble;
+  GRRLIB_texImg *blackSelectBubble;
+  GRRLIB_texImg *whiteBubble;
+  GRRLIB_texImg *whiteSelectBubble;
+  GRRLIB_texImg *gameboard;
 
-  GRRLIB_texImg logo;  
-  GRRLIB_texImg logo1;
-  GRRLIB_texImg logo2;
-  GRRLIB_texImg logo3;
-  GRRLIB_texImg logo4;
-  GRRLIB_texImg logo5;
-  GRRLIB_texImg logo6;
+  GRRLIB_texImg *logo;  
+  GRRLIB_texImg *logo1;
+  GRRLIB_texImg *logo2;
+  GRRLIB_texImg *logo3;
+  GRRLIB_texImg *logo4;
+  GRRLIB_texImg *logo5;
+  GRRLIB_texImg *logo6;
 } 
 image;
 
@@ -404,7 +314,7 @@ typedef struct
    int  y;
    int  width;
    int  height;
-   GRRLIB_texImg image;
+   GRRLIB_texImg *image;
 } 
 board;
 
@@ -454,8 +364,8 @@ topscore globalHighScore[MAX_GLOBAL_HIGHSCORE+1];
 
 typedef struct
 {
-   GRRLIB_texImg image;
-   GRRLIB_texImg imageSelect;
+   GRRLIB_texImg *image;
+   GRRLIB_texImg *imageSelect;
    char  name[MAX_LEN]; 
    int   x;
    int   y;
@@ -504,7 +414,7 @@ typedef struct
   int     yOffset;
   int     angle;
   int     rumble;
-  GRRLIB_texImg image;
+  GRRLIB_texImg *image;
 }
 pointer;
 
@@ -559,7 +469,6 @@ static  MODPlay snd1;
 char    appl_user3[MAX_LEN];
 
 int     yOffset           = 0;
-int     yjpegOffset       = 0;
 int     angle             = 0;
 float   size              = 0;
 float   wave1             = 0;
@@ -988,63 +897,63 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button1select;
 		strcpy(buttons[0].name,"Play");
 		buttons[0].x=370;
-		buttons[0].y=10+yOffset;
+		buttons[0].y=35+yOffset;
    
 		// High Score button 
 		buttons[1].image=images.button1;
 		buttons[1].imageSelect=images.button1select;
 		strcpy(buttons[1].name,"High Score");   
 		buttons[1].x=370;
-		buttons[1].y=50+yOffset;
+		buttons[1].y=75+yOffset;
 
 		// Help button 
 		buttons[2].image=images.button1;
 		buttons[2].imageSelect=images.button1select;
 		strcpy(buttons[2].name,"Help" );
 		buttons[2].x=370;
-		buttons[2].y=90+yOffset;
+		buttons[2].y=115+yOffset;
 	   
 		// Credits button 
 		buttons[3].image=images.button1;
 		buttons[3].imageSelect=images.button1select;
 		strcpy(buttons[3].name,"Credits" );
 		buttons[3].x=370;
-		buttons[3].y=130+yOffset;
-   
-        // Sound button 
-		buttons[4].image=images.button1;
-		buttons[4].imageSelect=images.button1select;
-		strcpy(buttons[4].name,"Sound Settings" );
-		buttons[4].x=370;
-		buttons[4].y=170+yOffset;
-		
+		buttons[3].y=155+yOffset;
+   	
 		// Release Notes button 
 		buttons[5].image=images.button1;
 		buttons[5].imageSelect=images.button1select;
 		strcpy(buttons[5].name,"Release Notes" );
 		buttons[5].x=370;
-		buttons[5].y=210+yOffset;
-				
+		buttons[5].y=195+yOffset;
+		
+		// Sound button 
+		buttons[4].image=images.button1;
+		buttons[4].imageSelect=images.button1select;
+		strcpy(buttons[4].name,"Sound Settings" );
+		buttons[4].x=370;
+		buttons[4].y=235+yOffset;
+		
 		// Initials Settings button 
 		buttons[6].image=images.button1;
 		buttons[6].imageSelect=images.button1select;
-		strcpy(buttons[6].name,"User Initials" );
+		strcpy(buttons[6].name,"Game Settings" );
 		buttons[6].x=370;
-		buttons[6].y=250+yOffset;
+		buttons[6].y=275+yOffset;
 		
 		// Exit HBC button 
 		buttons[7].image=images.button1;
 		buttons[7].imageSelect=images.button1select;
 		strcpy(buttons[7].name,"Exit HBC" );
 		buttons[7].x=370;
-		buttons[7].y=350+yOffset;
+		buttons[7].y=375+yOffset;
       
 		// Reset Wii button 
 		buttons[8].image=images.button1;
 		buttons[8].imageSelect=images.button1select;
 		strcpy(buttons[8].name,"Reset Wii" );
 		buttons[8].x=370;
-		buttons[8].y=390+yOffset;
+		buttons[8].y=415+yOffset;
     }
     break;
   
@@ -1063,7 +972,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Next" );
 		buttons[0].x=370;
-		buttons[0].y=350+yOffset;
+		buttons[0].y=375+yOffset;
 	}
 	break;
 	
@@ -1076,14 +985,14 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Yes");
 		buttons[0].x=310;
-		buttons[0].y=250+yOffset;
+		buttons[0].y=275+yOffset;
 	
 		// No button 
 		buttons[1].image=images.button2;
 		buttons[1].imageSelect=images.button2select;
 		strcpy(buttons[1].name,"No");
 		buttons[1].x=400;
-		buttons[1].y=250+yOffset;
+		buttons[1].y=275+yOffset;
 	}
 	break;
 	
@@ -1096,7 +1005,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Back");
 		buttons[0].x=355;
-		buttons[0].y=250+yOffset;
+		buttons[0].y=275+yOffset;
 	}
 	break;
 	
@@ -1109,7 +1018,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Next");
 		buttons[0].x=280;
-		buttons[0].y=400+yOffset;
+		buttons[0].y=425+yOffset;
 		
 		// Scrollbar button 
 		buttons[1].image=images.scrollbar;
@@ -1129,7 +1038,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Next");
 		buttons[0].x=280;
-		buttons[0].y=400+yOffset;
+		buttons[0].y=425+yOffset;
 		
 		// Scrollbar button 
 		buttons[1].image=images.scrollbar;
@@ -1149,7 +1058,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Next");
 		buttons[0].x=280;
-		buttons[0].y=400+yOffset;
+		buttons[0].y=425+yOffset;
 		
 		// Scrollbar button 
 		buttons[1].image=images.scrollbar;
@@ -1169,7 +1078,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Back");
 		buttons[0].x=280;
-		buttons[0].y=400+yOffset;
+		buttons[0].y=425+yOffset;
 	}
 	break;
 	  
@@ -1182,7 +1091,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Back");
 		buttons[0].x=300;
-		buttons[0].y=400+yOffset;
+		buttons[0].y=425+yOffset;
 	}
 	break;
 	  
@@ -1196,49 +1105,49 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"-");
 		buttons[0].x=20;
-		buttons[0].y=130+yOffset;
+		buttons[0].y=155+yOffset;
    
 		// Music Volume + button 
 		buttons[1].image=images.button2;
 		buttons[1].imageSelect=images.button2select;
 		strcpy(buttons[1].name,"+");   
 		buttons[1].x=540;
-		buttons[1].y=130+yOffset;
+		buttons[1].y=155+yOffset;
 		
 		// Effect Volume - button 
 		buttons[2].image=images.button2;
 		buttons[2].imageSelect=images.button2select;
 		strcpy(buttons[2].name,"-");
 		buttons[2].x=20;
-		buttons[2].y=230+yOffset;
+		buttons[2].y=255+yOffset;
    
 		// Effect Volume + button 
 		buttons[3].image=images.button2;
 		buttons[3].imageSelect=images.button2select;
 		strcpy(buttons[3].name,"+");   
 		buttons[3].x=540;
-		buttons[3].y=230+yOffset;
+		buttons[3].y=255+yOffset;
 		
 		// Music track - button 
 		buttons[4].image=images.button2;
 		buttons[4].imageSelect=images.button2select;
 		strcpy(buttons[4].name,"-");
 		buttons[4].x=140;
-		buttons[4].y=310+yOffset;
+		buttons[4].y=335+yOffset;
    
 		// Music track + button 
 		buttons[5].image=images.button2;
 		buttons[5].imageSelect=images.button2select;
 		strcpy(buttons[5].name,"+");   
 		buttons[5].x=420;
-		buttons[5].y=310+yOffset;
+		buttons[5].y=335+yOffset;
 		
 		// Back button 
 		buttons[6].image=images.button2;
 		buttons[6].imageSelect=images.button2select;
 		strcpy(buttons[6].name,"Back");
 		buttons[6].x=280;
-		buttons[6].y=400+yOffset;
+		buttons[6].y=425+yOffset;
 		
 		// Loop music track button 
 		buttons[7].image=images.button2;
@@ -1252,7 +1161,7 @@ void initButtons(void)
 		   strcpy(buttons[7].name,"Yes");
 		}
 		buttons[7].x=60;
-		buttons[7].y=400+yOffset;
+		buttons[7].y=425+yOffset;
 		
 		// MP3 music support button 
 		buttons[8].image=images.button2;
@@ -1266,7 +1175,7 @@ void initButtons(void)
   		   strcpy(buttons[8].name,"Yes");
 		}
 		buttons[8].x=500;
-		buttons[8].y=400+yOffset;
+		buttons[8].y=425+yOffset;
 	}
 	break;
    
@@ -1279,7 +1188,7 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Back");
 		buttons[0].x=280;
-		buttons[0].y=400+yOffset;
+		buttons[0].y=425+yOffset;
 		
 		// Scrollbar button 
 		buttons[1].image=images.scrollbar;
@@ -1299,49 +1208,49 @@ void initButtons(void)
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"+");
 		buttons[0].x=100;
-		buttons[0].y=130+yOffset;
+		buttons[0].y=155+yOffset;
    
 		// First letter - button 
 		buttons[1].image=images.button2;
 		buttons[1].imageSelect=images.button2select;
 		strcpy(buttons[1].name,"-");   
 		buttons[1].x=100;
-		buttons[1].y=295+yOffset;
+		buttons[1].y=320+yOffset;
 				
 		// Second letter + button 
 		buttons[2].image=images.button2;
 		buttons[2].imageSelect=images.button2select;
 		strcpy(buttons[2].name,"+");
 		buttons[2].x=280;
-		buttons[2].y=130+yOffset;
+		buttons[2].y=155+yOffset;
 
 		// Second letter - button 
 		buttons[3].image=images.button2;
 		buttons[3].imageSelect=images.button2select;
 		strcpy(buttons[3].name,"-");   
 		buttons[3].x=280;
-		buttons[3].y=295+yOffset;
+		buttons[3].y=320+yOffset;
 				
 		// Third letter + button 
 		buttons[4].image=images.button2;
 		buttons[4].imageSelect=images.button2select;
 		strcpy(buttons[4].name,"+");
 		buttons[4].x=460;
-		buttons[4].y=130+yOffset;
+		buttons[4].y=155+yOffset;
    
 		// Third letter - button 
 		buttons[5].image=images.button2;
 		buttons[5].imageSelect=images.button2select;
 		strcpy(buttons[5].name,"-");   
 		buttons[5].x=460;
-		buttons[5].y=295+yOffset;
+		buttons[5].y=320+yOffset;
 		
 		// Back button 
 		buttons[6].image=images.button2;
 		buttons[6].imageSelect=images.button2select;
 		strcpy(buttons[6].name,"Back");
 		buttons[6].x=280;
-		buttons[6].y=400+yOffset;
+		buttons[6].y=425+yOffset;
 	}
 	break;
   }
@@ -1421,8 +1330,10 @@ void initImages(void)
    images.button2select=GRRLIB_LoadTexture( pic13data);    
    images.bar=GRRLIB_LoadTexture( pic14data); 
    images.barCursor=GRRLIB_LoadTexture( pic15data);
-   images.sound=GRRLIB_LoadTexture( pic16data);    
-     
+   
+	images.sound=GRRLIB_LoadTexture( pic16data);    
+   GRRLIB_SetMidHandle( images.sound, true );
+  
    images.pointer1=GRRLIB_LoadTexture( pic17data); 
    pointers[0].image=images.pointer1;
    images.pointer2=GRRLIB_LoadTexture( pic39data); 
@@ -1457,6 +1368,8 @@ void initImages(void)
    images.gameboard=GRRLIB_LoadTexture( pic42data);   
 
    images.logo1=GRRLIB_LoadTexture( pic43data ); 
+	GRRLIB_SetMidHandle( images.logo1, true );
+	
    images.logo2=GRRLIB_LoadTexture( pic44data );
    images.logo3=GRRLIB_LoadTexture( pic45data );
    images.logo4=GRRLIB_LoadTexture( pic46data );
@@ -1464,7 +1377,7 @@ void initImages(void)
    images.logo6=GRRLIB_LoadTexture( pic49data );
    
    images.logo=GRRLIB_LoadTexture( pic44data );
-   GRRLIB_InitTileSet(&images.logo, images.logo.w, 1, 0);
+   GRRLIB_InitTileSet(images.logo, images.logo->w, 1, 0);
    
    traceEvent(s_fn,0,"leave [void]");
 }
@@ -2515,33 +2428,33 @@ int bubbleSelected(int x, int y)
        if ( (x>=bubbles[i].x+1) && (x<=bubbles[i].x+bubbles[i].width-1) && 
 	        (y>=bubbles[i].y+1) && (y<=bubbles[i].y+bubbles[i].height-1) )
 	   {	      
-		  if (bubbles[i].enabled)
-		  {
-		     // Reset idle hint timer
-             game.idleTime=time(NULL);
-			 for (j=0;j<maxBubbles;j++) bubbles[j].size=MIN_BUBBLE_SIZE;
+			if (bubbles[i].enabled)
+			{
+				// Reset idle hint timer
+            game.idleTime=time(NULL);
+				for (j=0;j<maxBubbles;j++) bubbles[j].size=MIN_BUBBLE_SIZE;
       
-		     if (bubbles[i].selected) 
-		     { 
-			 	// Double select is remove action
-   		        bubbleRemove(); 				
-				bubblePossibleOption();
-				bubbleHint();
-				game.selectScore=0;
-			 }
-             else
-			 {	
-			    // new selection clear old selections
-				for (j=0;j<maxBubbles;j++) bubbles[j].selected=false;
+				if (bubbles[i].selected) 
+				{ 
+					// Double select is remove action
+   		      bubbleRemove(); 				
+					bubblePossibleOption();
+					bubbleHint();
+					game.selectScore=0;
+				}
+            else
+				{	
+					// new selection clear old selections
+					for (j=0;j<maxBubbles;j++) bubbles[j].selected=false;
    
-			    // Single select is select action
-			    bubbleMultiSelect(i);
-				count=bubbleSelectedCount();				
-				game.selectScore=count*(count-1);
-		     }          			  
-             SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 22050, 0, (char *) effect3_pcm, effect3_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
+					// Single select is select action
+					bubbleMultiSelect(i);
+					count=bubbleSelectedCount();				
+					game.selectScore=count*(count-1);
+				}          			  
+            SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 22050, 0, (char *) effect3_pcm, effect3_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
  	         return i;			 
-		  }
+			}
 	   }	   
    }
    return -1;
@@ -2557,8 +2470,8 @@ int buttonSelected(int x, int y, bool sound)
    
    for (i=0; i<maxButtons; i++)
    {
-       if ( (x>=buttons[i].x) && (x<=buttons[i].x+buttons[i].image.w) && 
-	        (y>=buttons[i].y) && (y<=buttons[i].y+buttons[i].image.h) )
+       if ( (x>=buttons[i].x) && (x<=buttons[i].x+buttons[i].image->w) && 
+	        (y>=buttons[i].y) && (y<=buttons[i].y+buttons[i].image->h) )
 	   {
           if (sound) SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 22050, 0, (char *) effect3_pcm, effect3_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
 	      return i;
@@ -3129,8 +3042,8 @@ void drawButtons()
 	  
 	  for (j=0 ;j<MAX_POINTER; j++)
 	  {
-        if ((pointers[j].xOffset>=buttons[i].x) && (pointers[j].xOffset<=buttons[i].x+buttons[i].image.w) && 
-	        (pointers[j].yOffset>=buttons[i].y) && (pointers[j].yOffset<=buttons[i].y+buttons[i].image.h) )			
+        if ((pointers[j].xOffset>=buttons[i].x) && (pointers[j].xOffset<=buttons[i].x+buttons[i].image->w) && 
+	        (pointers[j].yOffset>=buttons[i].y) && (pointers[j].yOffset<=buttons[i].y+buttons[i].image->h) )			
 	    {
 			selected=true;
 			if (--pointers[j].rumble>0) WPAD_Rumble(j,1); else WPAD_Rumble(j,0);
@@ -3161,7 +3074,7 @@ void drawButtons()
 	}
 }
 
-GRRLIB_texImg imageBubble(boolean selected, int color)
+GRRLIB_texImg * imageBubble(boolean selected, int color)
 {
     if (selected)
     {  
@@ -3233,16 +3146,9 @@ GRRLIB_texImg imageBubble(boolean selected, int color)
 
 void drawGameboard(void)
 {
-   /*int i;   
-   for (i=0; i<maxGameboard; i++)
-   {
-       GRRLIB_DrawImg(gameboard[i].x, gameboard[i].y, gameboard[i].image, 0, 1, 1, IMAGE_COLOR );
-   }*/
-   
-   
    // Better fps performance when gameboard is one image instead of 196 small images.
    int xoffset=172;
-   int yoffset=20;	
+   int yoffset=20+yOffset;	
    
    GRRLIB_DrawImg(xoffset, yoffset, images.gameboard, 0, 1, 1, IMAGE_COLOR );
 }
@@ -3253,24 +3159,40 @@ void drawBubbles(void)
    for (i=0; i<maxBubbles; i++)
    {
       if (bubbles[i].enabled)
-	  {
-         GRRLIB_DrawImg(bubbles[i].x, bubbles[i].y, imageBubble(bubbles[i].selected,bubbles[i].color), 0, bubbles[i].size, bubbles[i].size, IMAGE_COLOR);
+		{
+         GRRLIB_DrawImg(bubbles[i].x, bubbles[i].y+yOffset, imageBubble(bubbles[i].selected,bubbles[i].color), 0, bubbles[i].size, bubbles[i].size, IMAGE_COLOR);
 
-		 // bubble with hint option enable will change size value
-		 if (((time(NULL)-game.idleTime)>MAX_IDLE_TIME) && bubbles[i].hint && ((stateMachine==stateGame) || stateMachine==stateQuit))
-		 {
-		    game.selectScore=0;
-		    bubbles[i].selected=false;
-		    if (bubbles[i].sizeDirection)
+			// bubble with hint option enable will change size value
+			if ( ((time(NULL)-game.idleTime)>MAX_IDLE_TIME) && 
+		       bubbles[i].hint && 
+				 ((stateMachine==stateGame) || stateMachine==stateQuit))
 			{
-			   if (bubbles[i].size<MAX_BUBBLE_SIZE) bubbles[i].size+=0.05; else bubbles[i].sizeDirection=false;
-			}
-			else
-			{
-			   if (bubbles[i].size>MIN_BUBBLE_SIZE) bubbles[i].size-=0.05; else bubbles[i].sizeDirection=true;
-			}  
+				game.selectScore=0;
+				bubbles[i].selected=false;
+				if (bubbles[i].sizeDirection)
+				{
+					if (bubbles[i].size<MAX_BUBBLE_SIZE) 
+					{
+						bubbles[i].size+=0.05; 
+					}
+					else 
+					{
+						bubbles[i].sizeDirection=false;
+					}
+				}
+				else
+				{
+					if (bubbles[i].size>MIN_BUBBLE_SIZE) 
+					{
+						bubbles[i].size-=0.05; 
+					}
+					else 
+					{
+						bubbles[i].sizeDirection=true;
+					}
+				}  
          }		    
-	  }
+		}
    }
 }
 
@@ -3281,11 +3203,11 @@ void drawExplodes(void)
    for (i=0; i<MAX_BUBBLES; i++)
    {
       if (explodes[i].enabled)
-	  {
-         GRRLIB_DrawImg(explodes[i].x, explodes[i].y, 
+		{
+         GRRLIB_DrawImg(explodes[i].x, explodes[i].y+yOffset, 
 		   imageBubble(false,explodes[i].color), 0, 
 		   explodes[i].size, explodes[i].size , 0xFFFFFF00 | explodes[i].alfa );
-	  }
+		}
    }
 }
 
@@ -3377,716 +3299,691 @@ void drawInfoBar(void)
    struct tm *dt;
 		
    // Draw panels
-   GRRLIB_DrawImg(10,0, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-   GRRLIB_DrawImg(10,120, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-   GRRLIB_DrawImg(10,240, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-   GRRLIB_DrawImg(10,360, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );  
+	
+   GRRLIB_DrawImg(10,yOffset, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
+   GRRLIB_DrawImg(10,120+yOffset, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
+   GRRLIB_DrawImg(10,240+yOffset, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
+   GRRLIB_DrawImg(10,360+yOffset, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );  
   
    // Init text layer	  
    GRRLIB_initTexture();
 		  
-   drawText(55, 20, fontSubTitle, "Score");
+   drawText(55, 20+yOffset, fontSubTitle, "Score");
    sprintf(tmp,"%05d", game.score);
-   drawText(50, 50, fontSubTitle, tmp);
+   drawText(50, 50+yOffset, fontSubTitle, tmp);
 		  
    time_t timeLevel=game.maxTime-game.playTime;
    dt = localtime(&timeLevel);		  
    sprintf(tmp,"%02d:%02d", dt->tm_min, dt->tm_sec);
    if (timeLevel<=OUT_OF_TIME)
    {
-	  drawText(55, 140, fontSubTitle2, "Time");
-	  drawText(50, 170, fontSubTitle2, tmp);
+	  drawText(55, 140+yOffset, fontSubTitle2, "Time");
+	  drawText(50, 170+yOffset, fontSubTitle2, tmp);
    }
    else
    {
-	  drawText(55, 140, fontSubTitle, "Time");  
-	  drawText(50, 170, fontSubTitle, tmp);
+	  drawText(55, 140+yOffset, fontSubTitle, "Time");  
+	  drawText(50, 170+yOffset, fontSubTitle, tmp);
    }
 		   
-   drawText(50, 265, fontSubTitle, "Level");
+   drawText(50, 265+yOffset, fontSubTitle, "Level");
    sprintf(tmp,"%d", game.level);
-   drawText(80, 295, fontSubTitle, tmp);
+   drawText(80, 295+yOffset, fontSubTitle, tmp);
 		  
-   drawText(50, 385, fontSubTitle, "Moves");
+   drawText(50, 385+yOffset, fontSubTitle, "Moves");
    sprintf(tmp," %02d", game.possiblities);
-   drawText(70, 415, fontSubTitle, tmp);   
+   drawText(70, 415+yOffset, fontSubTitle, tmp);   
 }
 		  		  
 void drawScreen(void)
 { 	   
-    int i=0;
+   int i=0;
+	int ypos=yOffset;
+	
 	char tmp[MAX_LEN];
 				  
-    switch( stateMachine )	
+   switch( stateMachine )	
 	{	
-
 	   case stateIntro1:
 	   {
-	      int  ypos=yOffset;
+			// Draw background
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
 		  
-	      // Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
+			// Draw background
+			GRRLIB_DrawImg( (640/2), 
+								 (rmode->xfbHeight/2), 
+								 images.logo1, 0, size, size, IMAGE_COLOR );
 		  
-		  // Draw background
-		  GRRLIB_DrawImg(((640-images.logo1.w)/2) , ((480-images.logo1.h)/2)-20, images.logo1, 0, size, size, IMAGE_COLOR );
+			// Init text layer	  
+         GRRLIB_initTexture();	
 		  
-		  // Init text layer	  
-          GRRLIB_initTexture();	
+			ypos+=50;
+			drawText(0, ypos, fontParagraph,  "Created by wplaat"  );
+			ypos+=20;
+			drawText(0, ypos, fontParagraph,  "http://www.plaatsoft.nl"  );
+			ypos+=320;
+			drawText(40, ypos, fontNormal,  "This software is open source and may be copied, distributed or modified"  );
+			ypos+=20;
+			drawText(60, ypos, fontNormal,  "under the terms of the GNU General Public License (GPL) version 2" );
 		  
-		  drawText(0, ypos, fontParagraph,  "Created by wplaat"  );
-		  ypos+=20;
-		  drawText(0, ypos, fontParagraph,  "http://www.plaatsoft.nl"  );
-		  ypos+=340;
-		  drawText(40, ypos, fontNormal,  "This software is open source and may be copied, distributed or modified"  );
-		  ypos+=20;
-		  drawText(60, ypos, fontNormal,  "under the terms of the GNU General Public License (GPL) version 2" );
+			sprintf(tmp,"%d fps", CalculateFrameRate());
+			drawText(20, 450+yOffset, fontSpecial, tmp);
 		  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
-		  
-		  // Draw text layer on top of background 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }	   
 	   break;
 	   
 	   case stateIntro2:
 	   {
-	      int  ypos=yOffset+320;
-		  int  j;
+			int  j;
 		  
 	      // Draw background
-		  GRRLIB_DrawImg(0,0, images.background2, 0, 1, 1, IMAGE_COLOR );
+			GRRLIB_DrawImg(0,yOffset, images.background2, 0, 1, 1, IMAGE_COLOR );
 
-		  // Draw Plaatsoft logo		 
-   	      for(j=0;j<images.logo.h;j++)
-		  {
-             GRRLIB_DrawTile(((640-images.logo2.w)/2)+sin(wave1)*50, (((480-images.logo2.h)/2)-50)+j, images.logo, 0, 1, 1, IMAGE_COLOR,j );
+			// Draw Plaatsoft logo		 
+   	   for(j=0;j<images.logo->h;j++)
+			{
+             GRRLIB_DrawTile(((640-images.logo2->w)/2)+sin(wave1)*50, (((480-images.logo2->h)/2)-50)+j, images.logo, 0, 1, 1, IMAGE_COLOR,j );
              wave1+=0.02;
-          }
-		  wave2+=0.02;
-          wave1=wave2;
+         }
+			wave2+=0.02;
+         wave1=wave2;
 		  
-		  // Init text layer	  
-          GRRLIB_initTexture();	
+			// Init text layer	  
+         GRRLIB_initTexture();	
 		  
-		  drawText(0, ypos, fontParagraph,  "Please visit my website for more information."  );
-		  ypos+=40;
-		  drawText(0, ypos, fontParagraph,  "http://www.plaatsoft.nl"  );
+		   ypos+=345;
+			drawText(0, ypos, fontParagraph,  "Please visit my website for more information."  );
+			ypos+=40;
+			drawText(0, ypos, fontParagraph,  "http://www.plaatsoft.nl"  );
 			  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
+			sprintf(tmp,"%d fps", CalculateFrameRate());
+			drawText(20, 450+yOffset, fontSpecial, tmp);
 		  
-		  // Draw text layer on top of background 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }	   
 	   break;
 	   	   
 	   case stateIntro3:
 	   {
-	      int  ypos=yOffset+390;
+			// Draw Game logo's
+			GRRLIB_DrawImg(10, yOffset, images.logo3, 0, 0.95, 0.98, IMAGE_COLOR );
+			GRRLIB_DrawImg(320, yOffset,images.logo4, 0, 0.95, 0.98, IMAGE_COLOR );
+			GRRLIB_DrawImg(10, 240+yOffset, images.logo5, 0, 0.95, 0.98, IMAGE_COLOR );
+			GRRLIB_DrawImg(320, 240+yOffset,images.logo6, 0, 0.95, 0.98, IMAGE_COLOR );
+			
+			// Draw Plaatsoft logo
+         GRRLIB_DrawImg(410, 300+yOffset, 
+				images.logo2, 0, 0.5, 0.5, IMAGE_COLOR );
 
-		  // Draw background
-		  GRRLIB_DrawImg(0,0, images.logo3, 0, 0.95, 0.98, IMAGE_COLOR );
-		  GRRLIB_DrawImg(310,0, images.logo4, 0, 0.95, 0.98, IMAGE_COLOR );
-		  GRRLIB_DrawImg(0,240, images.logo5, 0, 0.95, 0.98, IMAGE_COLOR );
-		  GRRLIB_DrawImg(310,240, images.logo6, 0, 0.95, 0.98, IMAGE_COLOR );
+			// Init text layer	  
+         GRRLIB_initTexture();	
 		  
-          GRRLIB_DrawImg(350, 240, images.logo2, 0, 0.5, 0.5, IMAGE_COLOR );
-
-		  // Init text layer	  
-          GRRLIB_initTexture();	
-		  
-		  drawText(350, ypos, fontNormal,  "Some more Wii games developed"  );
-		  ypos+=20;
-		  drawText(400, ypos, fontNormal,  "by www.plaatsoft.nl"  );
+			ypos+=415;
+			drawText(350, ypos, fontNormal,  "Some more Wii games developed"  );
+			ypos+=20;
+			drawText(400, ypos, fontNormal,  "by www.plaatsoft.nl"  );
 			 
-		  sprintf(tmp,"%d fps", CalculateFrameRate()); 
-		  drawText(580, 460, fontSpecial, tmp); 
- 
-		  // Draw text layer on top of background 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }	   
 	   break;
 
 	   case stateMenu:
 	   {
-	      int  ypos=yOffset;
-		  char *version;
-		  
-   	      // Init text layer	  
-          GRRLIB_initTexture();
-		   
-		  //debug stuff
-		  //if (snd1.manual_polling)  drawText(10, 200, fontNormal, "snd1.manual_polling=true");
-		  //if (snd1.paused)  drawText(10, 220, fontNormal, "snd1.paused=true");
-		  //if (snd1.playing)  drawText(10, 240, fontNormal, "snd1.playing=true");
-
+		   char *version;
+		  		   
 	      /// Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
-		  		  
-		  sprintf(tmp,"%s v%s",PROGRAM_NAME, PROGRAM_VERSION );
-		  drawText(20, ypos, fontWelcome, tmp);
-          ypos+=50;
+		   GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
+		  
+   	   // Init text layer	  
+         GRRLIB_initTexture();
+	
+			ypos+=25;
+		   sprintf(tmp,"%s v%s",PROGRAM_NAME, PROGRAM_VERSION );
+		   drawText(20, ypos, fontWelcome, tmp);
+         ypos+=50;
           
-     	  sprintf(tmp,"%s",RELEASE_DATE );
-		  drawText(20, ypos, fontParagraph, tmp);
-		  ypos+=230;
+     	   sprintf(tmp,"%s",RELEASE_DATE );
+		   drawText(20, ypos, fontParagraph, tmp);
+		   ypos+=230;
 		   
-          version=tcp_get_version();
-          if ( (version!=NULL) && (strlen(version)>0) && (strcmp(version,PROGRAM_VERSION)!=0) )
-          {    
+         version=tcp_get_version();
+         if ( (version!=NULL) && (strlen(version)>0) && (strcmp(version,PROGRAM_VERSION)!=0) )
+         {    
 	         sprintf(tmp,"New version [v%s] is available.",version);
 	         drawText(20, ypos, fontNew, tmp);
 			 
-			 ypos+=20;			 			 			 
-			 sprintf(tmp,"Check the release notes.");
+				ypos+=20;			 			 			 
+				sprintf(tmp,"Check the release notes.");
 	         drawText(20, ypos, fontNew, tmp);			 
-          }  
+         }  
 
-          sprintf(tmp,"NETWORK THREAD: %s",tcp_get_state());
-		  drawText(20, 440, fontSpecial, tmp);
+         sprintf(tmp,"Network: %s",tcp_get_state());
+			drawText(20, 445+yOffset, fontSpecial, tmp);
  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
+			sprintf(tmp,"%d fps", CalculateFrameRate());
+			drawText(20, 460+yOffset, fontSpecial, tmp);
 		  
-		  // Draw buttons
+			// Draw buttons
 	      drawButtons(); 
 		  
-		  // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 	   
 	   case stateGame:
-       {   		  		   
+      {   		  		   
 	      // Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
       	
-		  // Draw gameboard		  
-		  drawGameboard();
+			// Draw gameboard		  
+			drawGameboard();
 
-		  // Explode bubble effect
-		  bubbleExplodeMove();
+			// Explode bubble effect
+			bubbleExplodeMove();
 		  
-		  // Draw explode
-		  drawExplodes();
+			// Draw explode
+			drawExplodes();
 		  
-		  // Draw bubbles
-		  drawBubbles();
+			// Draw bubbles
+			drawBubbles();
 		  		  		  	  
-		  // Draw Game Info bar
-          drawInfoBar();
+			// Draw Game Info bar
+         drawInfoBar();
 		  		 
-		  // Draw buttons
+			// Draw buttons
 	      drawButtons(); 
 		  
-		  // Show selected bubble score ir1
-		  for (i=0; i<MAX_POINTER; i++)
-		  {
-		    if ((game.selectScore>1) && (pointers[i].xOffset>10) && (pointers[i].xOffset<MAX_HORZ_PIXELS-10) && (pointers[i].yOffset>10) && (pointers[i].yOffset<MAX_VERT_PIXELS-10))
-		    {
-  		       sprintf(tmp,"[%d]", game.selectScore);
-		       drawText(pointers[i].xOffset-20, pointers[i].yOffset-20, fontNormal, tmp);
-		    }	
-		  }
+			// Show selected bubble score ir1
+			for (i=0; i<MAX_POINTER; i++)
+			{
+				if ((game.selectScore>1) && (pointers[i].xOffset>10) && (pointers[i].xOffset<MAX_HORZ_PIXELS-10) && (pointers[i].yOffset>10) && (pointers[i].yOffset<MAX_VERT_PIXELS-10))
+				{
+					sprintf(tmp,"[%d]", game.selectScore);
+					drawText(pointers[i].xOffset-20, pointers[i].yOffset-20, fontNormal, tmp);
+				}	
+			}
 
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(80, 460, fontSpecial, tmp);
+			sprintf(tmp,"%d fps", CalculateFrameRate());
+			drawText(80, 480, fontSpecial, tmp);
 			
-		  // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 	   	   
 	   case stateLevelCleared:
-	   {
-	      int ypos=yOffset;		   
-				  	         	
+	   {				  	         	
 	      // Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
       		
   		   // Draw gameboard		  
-		  drawGameboard();
+			drawGameboard();
 
-		  // Explode bubble effect
-		  bubbleExplodeMove();
+			// Explode bubble effect
+			bubbleExplodeMove();
 		  
-		  // Draw explode
-		  drawExplodes();
+			// Draw explode
+			drawExplodes();
 		  
-		  // Draw bubbles
-		  drawBubbles();
+			// Draw bubbles
+			drawBubbles();
 		 
-		  // Draw Game Info bar
-          drawInfoBar();
+			// Draw Game Info bar
+			drawInfoBar();
   
-          // Draw Popup window
-          GRRLIB_DrawImg(320, 190, images.panel1, 0, 2.5, 3.1, IMAGE_COLOR );
+			// Draw Popup window
+			GRRLIB_DrawImg(205, 55+yOffset, images.panel1, 0, 2.5, 3.1, IMAGE_COLOR );
 	 
-		  // Draw Bonus information
-		  ypos+=70;		   
-		  drawText(305, ypos, fontSubTitle, "LEVEL CLEARED");
-		  ypos+=30;		   
-		  drawText(330, ypos, fontSubTitle, "WELL DONE!");
+			// Draw Bonus information
+			ypos+=70;		   
+			drawText(305, ypos, fontSubTitle, "LEVEL CLEARED");
+			ypos+=30;		   
+			drawText(330, ypos, fontSubTitle, "WELL DONE!");
 		  
-		  ypos+=50;	
-		  drawText(230, ypos, fontParagraph, "Time Bonus");
-		  sprintf(tmp,"%d * %d = ",game.timeBonus,game.timeBonusFactor);
-		  drawText(370, ypos, fontParagraph, tmp);		  
-		  sprintf(tmp,"%d",game.timeBonusScore);
-		  drawText(505, ypos, fontParagraph, tmp);
+			ypos+=50;	
+			drawText(230, ypos, fontParagraph, "Time Bonus");
+			sprintf(tmp,"%d * %d = ",game.timeBonus,game.timeBonusFactor);
+			drawText(370, ypos, fontParagraph, tmp);		  
+			sprintf(tmp,"%d",game.timeBonusScore);
+			drawText(505, ypos, fontParagraph, tmp);
 		  
-		  ypos+=35;	
-		  drawText(230, ypos, fontParagraph, "Bubbles Over");
-		  sprintf(tmp,"%d * %d = ",game.bubbleOver,game.bubbleOverFactor);
-		  drawText(370, ypos, fontParagraph, tmp);	
-		  sprintf(tmp,"%d",game.bubbleOverScore);
-		  drawText(505, ypos, fontParagraph, tmp);
+			ypos+=35;	
+			drawText(230, ypos, fontParagraph, "Bubbles Over");
+			sprintf(tmp,"%d * %d = ",game.bubbleOver,game.bubbleOverFactor);
+			drawText(370, ypos, fontParagraph, tmp);	
+			sprintf(tmp,"%d",game.bubbleOverScore);
+			drawText(505, ypos, fontParagraph, tmp);
 		  
-		  ypos+=35;	
-		  drawText(230, ypos, fontParagraph, "Total Clear");
-		  sprintf(tmp,"%d * %d = ",game.totalClear,game.totalClearFactor);
-		  drawText(370, ypos, fontParagraph, tmp);	
-		  sprintf(tmp,"%d",game.totalClearScore);
-		  drawText(505, ypos, fontParagraph, tmp);
+			ypos+=35;	
+			drawText(230, ypos, fontParagraph, "Total Clear");
+			sprintf(tmp,"%d * %d = ",game.totalClear,game.totalClearFactor);
+			drawText(370, ypos, fontParagraph, tmp);	
+			sprintf(tmp,"%d",game.totalClearScore);
+			drawText(505, ypos, fontParagraph, tmp);
 		  
-		  ypos+=35;	
-		  drawText(230, ypos, fontParagraph, "Extra Bonus");
-		  sprintf(tmp,"%d",game.extraBonus);
-		  drawText(505, ypos, fontParagraph, tmp);
-		   
-		  ypos+=20;	
-		  drawText(505, ypos, fontParagraph, "____ +");
+			ypos+=35;	
+			drawText(230, ypos, fontParagraph, "Extra Bonus");
+			sprintf(tmp,"%d",game.extraBonus);
+			drawText(505, ypos, fontParagraph, tmp);
+				
+			ypos+=20;	
+			drawText(505, ypos, fontParagraph, "____ +");
 		  
-		  ypos+=35;	
-		  drawText(230, ypos, fontParagraph, "Total Bonus");
-		  sprintf(tmp,"%d",game.timeBonusScore+game.bubbleOverScore+game.extraBonus+game.totalClearScore);
-		  drawText(505, ypos, fontParagraph, tmp);
+			ypos+=35;	
+			drawText(230, ypos, fontParagraph, "Total Bonus");
+			sprintf(tmp,"%d",game.timeBonusScore+game.bubbleOverScore+game.extraBonus+game.totalClearScore);
+			drawText(505, ypos, fontParagraph, tmp);
 		    		 	  
-		  // Draw buttons
+			// Draw buttons
 	      drawButtons(); 
 
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(80, 460, fontSpecial, tmp);
+			sprintf(tmp,"%d fps", CalculateFrameRate());
+			drawText(80, 480, fontSpecial, tmp);
 		   		  
-          // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 	   
 	   case stateGameOver:
-	   {
-	      int ypos=yOffset+170;		   
-				  	         	
-		  // Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
+	   {		  	         	
+			// Draw background
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
       		
-		  // Draw gameboard		  
-		  drawGameboard();
+			// Draw gameboard		  
+			drawGameboard();
 
-		  // Explode bubble effect
-		  bubbleExplodeMove();
+			// Explode bubble effect
+			bubbleExplodeMove();
 		  
-		  // Draw explode
-		  drawExplodes();
+			// Draw explode
+			drawExplodes();
 		  
-		  // Draw bubbles
-		  drawBubbles();
+			// Draw bubbles
+			drawBubbles();
 		  
-		  // Draw Game Info bar
-          drawInfoBar();
+			// Draw Game Info bar
+         drawInfoBar();
 
-          // Draw Popup window
-          GRRLIB_DrawImg(315,185, images.panel1, 0, 1.5, 1.5, IMAGE_COLOR );
+         // Draw Popup window
+         GRRLIB_DrawImg(280,150+yOffset, images.panel1, 0, 1.5, 1.5, IMAGE_COLOR );
 		  		  		  
-		  // Draw text 
-		  if (gameResult)
-		  {	   
+			// Draw text
+			ypos+=170;
+			if (gameResult)
+			{	   
 		     drawText(330, ypos, fontSubTitle, "YOU WIN!");
-		  }
-		  else
-		  {
+			}
+			else
+			{
 		     drawText(320, ypos, fontSubTitle, "GAME OVER"); 
-		  }
+			}
 		 	  
 		   // Draw buttons
 	      drawButtons(); 
+
+			sprintf(tmp,"%d fps", CalculateFrameRate());
+			drawText(80, 480, fontSpecial, tmp);
 		  				   		  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(80, 460, fontSpecial, tmp);
-		  
-          // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 
 	   case stateQuit:
 	   {
-	      int ypos=yOffset+170;		   
-				  	         	
-		  // Draw background
-		  GRRLIB_DrawImg(0,0,images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
+			// Draw background
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
       		
-		  // Draw gameboard		  
-		  drawGameboard();
+			// Draw gameboard		  
+			drawGameboard();
 
-		  // Explode bubble effect
-		  bubbleExplodeMove();
+			// Explode bubble effect
+			bubbleExplodeMove();
 		  
-		  // Draw explode
-		  drawExplodes();
+			// Draw explode
+			drawExplodes();
 		  
-		  // Draw bubbles
-		  drawBubbles();
+			// Draw bubbles
+			drawBubbles();
     				  
-		  // Draw Game Info bar
-          drawInfoBar();
+			// Draw Game Info bar
+         drawInfoBar();
 
-          // Draw Popup window
-          GRRLIB_DrawImg(315,185, images.panel1, 0, 1.5, 1.5, IMAGE_COLOR );
+         // Draw Popup window
+         GRRLIB_DrawImg(280,150+yOffset, images.panel1, 0, 1.5, 1.5, IMAGE_COLOR );
 		  		  
-		  // Draw text
-		  drawText(315, ypos, fontSubTitle, "QUIT GAME?");
+			// Draw text
+			ypos+=170;
+			drawText(315, ypos, fontSubTitle, "QUIT GAME?");
 		 	  
 		   // Draw buttons
 	      drawButtons(); 
+
+			sprintf(tmp,"%d fps", CalculateFrameRate());
+			drawText(80, 480, fontSpecial, tmp);
 		  				   		
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(80, 460, fontSpecial, tmp);
-		  
-          // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 	   	   
 	   case stateLocalHighScore:
 	   {
-	      int  ypos=yOffset;
 	      struct tm *local;
-		  int startEntry;
-		  int endEntry;
+			int startEntry;
+			int endEntry;
 		  		  
-		  if (maxLocalHighScore<13)
-		  {
-		    startEntry=0;
-			endEntry=maxLocalHighScore;
-			scrollEnabled=false;
-		  }
-		  else
-		  {
-			 startEntry=(((float) maxLocalHighScore-13.0)/26.0)*(float)scrollIndex;
-			 endEntry=startEntry+13;
-			 scrollEnabled=true;
-		  }
+			// Draw background
+         GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
+			
+			if (maxLocalHighScore<13)
+			{
+				startEntry=0;
+				endEntry=maxLocalHighScore;
+				scrollEnabled=false;
+			}
+			else
+			{
+				startEntry=(((float) maxLocalHighScore-13.0)/26.0)*(float)scrollIndex;
+				endEntry=startEntry+13;
+				scrollEnabled=true;
+			}
 		  
-		  // Init text layer	  
-          GRRLIB_initTexture();
-		  				   
-          // Draw background
-          GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
-      	     	
-		  // Draw scrollbar
-		  if (scrollEnabled)
-		  {
-		    ypos=SCROLLBAR_Y_MIN;
+			// Init text layer	  
+         GRRLIB_initTexture();
+		  				        	     	
+			// Draw scrollbar
+			if (scrollEnabled)
+			{
+				int ypos=SCROLLBAR_Y_MIN;
             GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollTop, 0, 1, 1, IMAGE_COLOR );
-		    for (i=0; i<9; i++) 
-		    {
-		      ypos+=24;
-		      GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
-		    }
-		    ypos+=24;
-		    GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
-		  }
+				for (i=0; i<9; i++) 
+				{
+					ypos+=24;
+					GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
+				}
+				ypos+=24;
+				GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
+			}
 		 
 	      // Draw title
-		  ypos=yOffset;
+			ypos+=20;
 	      drawText(0, ypos, fontTitle, "      Local High Score");	
 
-          // Show Content
-          ypos+=90;
-		  drawText(60, ypos, fontParagraph, "TOP"  );
-	      drawText(130, ypos, fontParagraph, "DATE"  );
+         // Show Content
+         ypos+=90;
+			drawText(60, ypos, fontParagraph, "TOP"  );
+			drawText(130, ypos, fontParagraph, "DATE"  );
 	      drawText(320, ypos, fontParagraph, "SCORE" );
-		  drawText(410, ypos, fontParagraph, "NAME"  );
-		  drawText(500, ypos, fontParagraph, "LEVEL" );
-		  ypos+=10;
+			drawText(410, ypos, fontParagraph, "NAME"  );
+			drawText(500, ypos, fontParagraph, "LEVEL" );
+			ypos+=10;
 		  
-          for (i=startEntry; i<endEntry; i++)
+         for (i=startEntry; i<endEntry; i++)
 	      {
   	          ypos+=20;  
 	    
 		      sprintf(tmp,"%02d", i+1);
 		      drawText(60, ypos, fontNormal, tmp);
 			  
-	          local = localtime(&localHighScore[i].localTime);
-	          sprintf(tmp,"%02d-%02d-%04d %02d:%02d:%02d", 
+	         local = localtime(&localHighScore[i].localTime);
+	         sprintf(tmp,"%02d-%02d-%04d %02d:%02d:%02d", 
 			     local->tm_mday, local->tm_mon+1, local->tm_year+1900, 
 			     local->tm_hour, local->tm_min, local->tm_sec);
 		      drawText(130, ypos, fontNormal, tmp);
 	   
-	   	      sprintf(tmp,"%05d", localHighScore[i].score);
+	   	   sprintf(tmp,"%05d", localHighScore[i].score);
 		      drawText(320, ypos, fontNormal, tmp);
 	
 		      drawText(410, ypos, fontNormal, localHighScore[i].name);
 	  
-	          sprintf(tmp,"%02d", localHighScore[i].level);
+	         sprintf(tmp,"%02d", localHighScore[i].level);
 		      drawText(500, ypos, fontNormal, tmp);
-		  }	 
+			}		 
 		
-          // Draw buttons
+         // Draw buttons
 	      drawButtons(); 
-
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
 		  
-          // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	 	   
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
 	   }
 	   break;
 	   
 	   case stateTodayHighScore:
 	   {	      
-		  int  ypos=yOffset;
 	      struct tm *local;
-		  int startEntry;
-		  int endEntry;
-		  		  
-		  if (maxTodayHighScore<13)
-		  {
-		    startEntry=0;
-			endEntry=maxTodayHighScore;
-			scrollEnabled=false;
-		  }
-		  else
-		  {
-			 startEntry=(((float) maxTodayHighScore-13.0)/26.0)*(float)scrollIndex;
-			 endEntry=startEntry+13;
-			 scrollEnabled=true;
-		  }
+			int startEntry;
+			int endEntry;
+
+         // Draw background
+         GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
 		  
-          // Init text layer	  
-          GRRLIB_initTexture();
-		   
-          // Draw background
-          GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
-      	     	
-		  // Draw scrollbar
-		  if (scrollEnabled)
-		  {
-		    ypos=SCROLLBAR_Y_MIN;
+			if (maxTodayHighScore<13)
+			{
+				startEntry=0;
+				endEntry=maxTodayHighScore;
+				scrollEnabled=false;
+			}
+			else
+			{
+				startEntry=(((float) maxTodayHighScore-13.0)/26.0)*(float)scrollIndex;
+				endEntry=startEntry+13;
+				scrollEnabled=true;
+			}
+		  
+         // Init text layer	  
+         GRRLIB_initTexture();
+		       	
+			// Draw scrollbar
+			if (scrollEnabled)
+			{
+				int ypos=SCROLLBAR_Y_MIN;
             GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollTop, 0, 1, 1, IMAGE_COLOR );
-		    for (i=0; i<9; i++) 
-		    {
-		      ypos+=24;
-		      GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
-		    }
-		    ypos+=24;
-		    GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
-		  }
+				for (i=0; i<9; i++) 
+				{
+					ypos+=24;
+					GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
+				}
+				ypos+=24;
+				GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
+			}
 		  
-	      // Draw title
-		  ypos=yOffset;
+			// Draw title
+			ypos+=20;
 	      drawText(0, ypos, fontTitle, "   Today High Score");	
 
-          // Show Content
-          ypos+=90;
+         // Show Content
+         ypos+=90;
 
-		  drawText(20, ypos, fontParagraph,  "TOP"  );
-	      drawText(80, ypos, fontParagraph, "DATE" );
+			drawText(20, ypos, fontParagraph,  "TOP"  );
+	      drawText(80, ypos, fontParagraph,  "DATE" );
 	      drawText(270, ypos, fontParagraph, "SCORE" );
-		  drawText(350, ypos, fontParagraph, "NAME"  );
-		  drawText(430, ypos, fontParagraph, "LOCATION" );
-		  ypos+=10;
+			drawText(350, ypos, fontParagraph, "NAME"  );
+			drawText(430, ypos, fontParagraph, "LOCATION" );
+			ypos+=10;
 		  
-		  if (todayHighScore[0].dt!=0)
-		  {
+			if (todayHighScore[0].dt!=0)
+			{
             for (i=startEntry; i<endEntry; i++)
             {
-  	          ypos+=20;  
+					ypos+=20;  
 	    
-		      sprintf(tmp,"%02d", i+1);
-		      drawText(20, ypos, fontNormal, tmp);
+					sprintf(tmp,"%02d", i+1);
+					drawText(20, ypos, fontNormal, tmp);
 			  			  
-	          local = localtime(&todayHighScore[i].dt);
-	          sprintf(tmp,"%02d-%02d-%04d %02d:%02d:%02d", 
-			     local->tm_mday, local->tm_mon+1, local->tm_year+1900, 
-			     local->tm_hour, local->tm_min, local->tm_sec);
-		      drawText(80, ypos, fontNormal, tmp);
+					local = localtime(&todayHighScore[i].dt);
+					sprintf(tmp,"%02d-%02d-%04d %02d:%02d:%02d", 
+						local->tm_mday, local->tm_mon+1, local->tm_year+1900, 
+						local->tm_hour, local->tm_min, local->tm_sec);
+					drawText(80, ypos, fontNormal, tmp);
 	   
-		      drawText(270, ypos, fontNormal, todayHighScore[i].score);			  
-			  drawText(350, ypos, fontNormal, todayHighScore[i].name);			  
-			  drawText(430, ypos, fontNormal, todayHighScore[i].location);
-		    }			
-		  }
-		  else
-		  {
-		      ypos+=120;
-		      drawText(0, ypos, fontParagraph, "No information available!");
-			  ypos+=20;
-			  drawText(0, ypos, fontParagraph, "Information could not be fetch from internet.");
-		  }
+					drawText(270, ypos, fontNormal, todayHighScore[i].score);			  
+					drawText(350, ypos, fontNormal, todayHighScore[i].name);			  
+					drawText(430, ypos, fontNormal, todayHighScore[i].location);
+				}			
+			}
+			else
+			{
+				ypos+=120;
+				drawText(0, ypos, fontParagraph, "No information available!");
+				ypos+=20;
+				drawText(0, ypos, fontParagraph, "Information could not be fetch from internet.");
+			}
 			 
           // Draw buttons
 	      drawButtons(); 
 		  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
-		  
-          // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	 	   
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
 	   }
 	   break;
 	   
 	   case stateGlobalHighScore:
 	   {	      
-		  int  ypos=yOffset;
 	      struct tm *local;
-		  int startEntry;
-		  int endEntry;
-		  		  
-		  if (maxGlobalHighScore<13)
-		  {
-		    startEntry=0;
-			endEntry=maxGlobalHighScore;
-			scrollEnabled=false;
-		  }
-		  else
-		  {
-			 startEntry=(((float) maxGlobalHighScore-13.0)/26.0)*(float)scrollIndex;
-			 endEntry=startEntry+13;
-			 scrollEnabled=true;
-		  }
-		  
-          // Init text layer	  
-          GRRLIB_initTexture();
-		   
+			int startEntry;
+			int endEntry;
+
           // Draw background
-          GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
-      	     	
-		  // Draw scrollbar
-		  if (scrollEnabled)
-		  {
-		    ypos=SCROLLBAR_Y_MIN;
-            GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollTop, 0, 1, 1, IMAGE_COLOR );
-		    for (i=0; i<9; i++) 
-		    {
-		      ypos+=24;
-		      GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
-		    }
-		    ypos+=24;
-		    GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
-		  }
+          GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
+		  		  
+			if (maxGlobalHighScore<13)
+			{
+				startEntry=0;
+				endEntry=maxGlobalHighScore;
+				scrollEnabled=false;
+			}
+			else
+			{
+				startEntry=(((float) maxGlobalHighScore-13.0)/26.0)*(float)scrollIndex;
+				endEntry=startEntry+13;
+				scrollEnabled=true;
+			}
+		 
+         // Init text layer	  
+         GRRLIB_initTexture();
+		        	
+			// Draw scrollbar
+			if (scrollEnabled)
+			{
+				int ypos=SCROLLBAR_Y_MIN;
+				GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollTop, 0, 1, 1, IMAGE_COLOR );
+				for (i=0; i<9; i++) 
+				{
+					ypos+=24;
+					GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
+				}
+				ypos+=24;
+				GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
+			}
 		  
 	      // Draw title
-		  ypos=yOffset;
+			ypos+=20;
 	      drawText(0, ypos, fontTitle, "   Global High Score");	
 
-          // Show Content
-          ypos+=90;
+         // Show Content
+         ypos+=90;
 
-		  drawText(20, ypos, fontParagraph,  "TOP"  );
+			drawText(20, ypos, fontParagraph,  "TOP"  );
 	      drawText(80, ypos, fontParagraph, "DATE" );
 	      drawText(270, ypos, fontParagraph, "SCORE" );
-		  drawText(350, ypos, fontParagraph, "NAME"  );
-		  drawText(430, ypos, fontParagraph, "LOCATION" );
-		  ypos+=10;
+			drawText(350, ypos, fontParagraph, "NAME"  );
+			drawText(430, ypos, fontParagraph, "LOCATION" );
+			ypos+=10;
 		  
-		  if (globalHighScore[0].dt!=0)
-		  {
+			if (globalHighScore[0].dt!=0)
+			{
             for (i=startEntry; i<endEntry; i++)
             {
-  	          ypos+=20;  
+					ypos+=20;  
 	    
-		      sprintf(tmp,"%02d", i+1);
-		      drawText(20, ypos, fontNormal, tmp);
+					sprintf(tmp,"%02d", i+1);
+					drawText(20, ypos, fontNormal, tmp);
 			  			  
-	          local = localtime(&globalHighScore[i].dt);
-	          sprintf(tmp,"%02d-%02d-%04d %02d:%02d:%02d", 
-			     local->tm_mday, local->tm_mon+1, local->tm_year+1900, 
-			     local->tm_hour, local->tm_min, local->tm_sec);
-		      drawText(80, ypos, fontNormal, tmp);
+					local = localtime(&globalHighScore[i].dt);
+					sprintf(tmp,"%02d-%02d-%04d %02d:%02d:%02d", 
+						local->tm_mday, local->tm_mon+1, local->tm_year+1900, 
+						local->tm_hour, local->tm_min, local->tm_sec);
+					drawText(80, ypos, fontNormal, tmp);
 	   
-		      drawText(270, ypos, fontNormal, globalHighScore[i].score);			  
-			  drawText(350, ypos, fontNormal, globalHighScore[i].name);			  
-			  drawText(430, ypos, fontNormal, globalHighScore[i].location);
-		    }			
-		  }
-		  else
-		  {
+					drawText(270, ypos, fontNormal, globalHighScore[i].score);			  
+					drawText(350, ypos, fontNormal, globalHighScore[i].name);			  
+					drawText(430, ypos, fontNormal, globalHighScore[i].location);
+				}			
+			}
+			else
+			{
 		      ypos+=120;
 		      drawText(0, ypos, fontParagraph, "No information available!");
-			  ypos+=20;
-			  drawText(0, ypos, fontParagraph, "Information could not be fetch from internet.");
-		  }
+				ypos+=20;
+				drawText(0, ypos, fontParagraph, "Information could not be fetch from internet.");
+			}
 			 
-          // Draw buttons
+         // Draw buttons
 	      drawButtons(); 
 		  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
-		  
-          // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	 	   
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
 	   }
 	   break;
 	   	   
 	   case stateHelp:
-	   {
-	      int  ypos=yOffset;
-		  
-		  // Init text layer	  
-          GRRLIB_initTexture();
-		  
+	   {		  		  
 	      // Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
 		  
+		  	// Init text layer	  
+         GRRLIB_initTexture();
+			
 		   // Show title
-		  drawText(0, ypos, fontTitle, "Help");
-          ypos+=100;
-		  
-		  drawText(0, ypos, fontParagraph, "SpaceBubble is a classic board puzzle game based");
-		  ypos+=25;
-     	  drawText(0, ypos, fontParagraph, "on bubble breaker. Select multiple bubbles");	
-		  ypos+=25;
+			ypos+=20;
+			drawText(0, ypos, fontTitle, "Help");
+         
+			ypos+=100;
+			drawText(0, ypos, fontParagraph, "SpaceBubble is a classic board puzzle game based");
+			ypos+=25;
+			drawText(0, ypos, fontParagraph, "on bubble breaker. Select multiple bubbles");	
+			ypos+=25;
 	      drawText(0, ypos, fontParagraph, "with the same color and destroy them, the more");
-		  ypos+=25;
+			ypos+=25;
 	      drawText(0, ypos, fontParagraph, "you hit in one the higher score you will get.");		
 		
-          ypos+=60;
+         ypos+=60;
 	      drawText(0, ypos, fontParagraph, "Tip: You can control which music track is played during");
-		  ypos+=25;
+			ypos+=25;
 	      drawText(0, ypos, fontParagraph, "the game with the 1 and 2 button on your WiiMote!");
 		  
-		  ypos+=60;
-	      drawText(0, ypos, fontParagraph, "Note: The global highscore contains the Top 40 of best");
-		  ypos+=25;
+			ypos+=60;
+			drawText(0, ypos, fontParagraph, "Note: The global highscore contains the Top 40 of best");
+			ypos+=25;
 	      drawText(0, ypos, fontParagraph, "internet players. Only one entry per player is showed.");
 				  
-		  // Draw buttons
+			// Draw buttons
 	      drawButtons(); 
 		  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
-		  
-		  // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
 	   
 	   case stateCredits:
 	   {
-	      int  ypos=yOffset;
+			// Draw background
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
+		
+         // Init text layer	  
+         GRRLIB_initTexture();
  
-          // Init text layer	  
-          GRRLIB_initTexture();
- 
-	      // Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
-		  
-		  // Show title
-		  drawText(0, ypos, fontTitle, "      Credits");
-          ypos+=90;
+			// Show title
+			ypos+=20;
+			drawText(0, ypos, fontTitle, "      Credits");
+         ypos+=90;
 		  
 		  // Show Content
 	      drawText(0, ypos, fontParagraph, "GAME LOGIC ");
@@ -4120,205 +4017,186 @@ void drawScreen(void)
 
 		  // Draw buttons
 	      drawButtons(); 
-
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
 		  
-		  // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
 	   
 	   case stateSound:
 	   {
-	      int  ypos=yOffset;
+	      // Draw background
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
 	
 	      // Init text layer	  
-          GRRLIB_initTexture();
- 
-	      // Draw background
-		  GRRLIB_DrawImg(0,0, images.background1, 0, 1, 1, IMAGE_COLOR );
-		  
+         GRRLIB_initTexture();
+ 		  
 	      // Draw Sound icon
-	      GRRLIB_DrawImg((640/2)-128, ((480/2)-140)+yOffset, images.sound, angle, 1.4, 1.4, IMAGE_COLOR );
+	      GRRLIB_DrawImg((640/2), ((rmode->xfbHeight/2)), images.sound, angle, 1.4, 1.4, IMAGE_COLOR );
 	
-		  // Show title
-		  drawText(0, ypos, fontTitle, "   Sound Settings");
-          ypos+=100;
-		  
-          // Draw content	
-          drawText(0, ypos, fontParagraph, "Music Volume");	
+		   // Show title
+			ypos+=20;
+		   drawText(0, ypos, fontTitle, "   Sound Settings");
+        
+         // Draw content	
+			ypos+=100;
+         drawText(0, ypos, fontParagraph, "Music Volume");	
 	      ypos+=20;
-          GRRLIB_DrawImg(104,ypos,images.bar, 0, 1, 1, IMAGE_COLOR );
+         GRRLIB_DrawImg(104,ypos,images.bar, 0, 1, 1, IMAGE_COLOR );
 	      ypos+=10;
 	      GRRLIB_DrawImg(115+(musicVolume*40),ypos, images.barCursor, 0, 1, 1, IMAGE_COLOR );
   
-          ypos+=80;
-          drawText(0, ypos, fontParagraph, "Effects Volume" );
+         ypos+=80;
+         drawText(0, ypos, fontParagraph, "Effects Volume" );
 	      ypos+=20;	
 	      GRRLIB_DrawImg(104,ypos, images.bar, 0, 1, 1, IMAGE_COLOR );
 	      ypos+=10;
 	      GRRLIB_DrawImg(115+(effectVolume*40),ypos,images.barCursor, 0, 1, 1, IMAGE_COLOR );
 	
 	      ypos+=70;
-		  sprintf(tmp,"  Music track [%d]", selectedMusic);
+		   sprintf(tmp,"  Music track [%d]", selectedMusic);
 	      drawText(0, ypos, fontParagraph, tmp);	
 		  
-		  drawText(60, 395, fontNormal,  "Loop track");	
-		  drawText(505, 395, fontNormal, "Play MP3");	
+		   drawText(60, 395, fontNormal,  "Loop track");	
+		   drawText(505, 395, fontNormal, "Play MP3");	
 		  		
 		   // Draw buttons
 	      drawButtons(); 
 		  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
-		  
-		  // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
 	   
 	   case stateReleaseNotes:
 	   {
-	      int  ypos;
-	      int  i=0;
-		  int len=0;
-		  int  lineCount=0;
-		  int maxLines=0;
-		  char *buffer;
-		  char text[MAX_BUFFER_SIZE];
+			int  i=0;
+			int len=0;
+			int  lineCount=0;
+			int maxLines=0;
+			char *buffer;
+			char text[MAX_BUFFER_SIZE];
 		  
-		  int startEntry;
-		  int endEntry;
+			int startEntry;
+			int endEntry;
+
+	      // Draw background
+		   GRRLIB_DrawImg(0, yOffset,images.background1, 0, 1, 1, IMAGE_COLOR );
 		  		  
-		  // Fetch release notes from network thread
-		  buffer=tcp_get_releasenote();
-          if (buffer!=NULL) 
-		  {
-		     strncpy(text,buffer,MAX_BUFFER_SIZE);
-			 len=strlen(text);
-			 for (i=0;i<len;i++) if (text[i]=='\n') maxLines++;
-		  }
+			// Fetch release notes from network thread
+			buffer=tcp_get_releasenote();
+         if (buffer!=NULL) 
+			{
+				strncpy(text,buffer,MAX_BUFFER_SIZE);
+				len=strlen(text);
+				for (i=0;i<len;i++) if (text[i]=='\n') maxLines++;
+			}
 		  
-		  // Calculate start and end line.
-		  if (maxLines<18)
-		  {
-		    startEntry=0;
-			endEntry=maxLines;
-			scrollEnabled=false;
-		  }
-		  else
-		  {
-			 startEntry=(((float) maxLines-18.0)/26.0)*(float)scrollIndex;
-			 endEntry=startEntry+18;
-			 scrollEnabled=true;
-		  }
+			// Calculate start and end line.
+			if (maxLines<18)
+			{
+				startEntry=0;
+				endEntry=maxLines;
+				scrollEnabled=false;
+			}
+			else
+			{
+				startEntry=(((float) maxLines-18.0)/26.0)*(float)scrollIndex;
+				endEntry=startEntry+18;
+				scrollEnabled=true;
+			}
 		  
 	      // Init text layer	  
-          GRRLIB_initTexture();
+         GRRLIB_initTexture();
  
-	      // Draw background
-		  GRRLIB_DrawImg(0,0,images.background1, 0, 1, 1, IMAGE_COLOR );
-
-          // Draw scrollbar
-		  if (scrollEnabled)
-		  {
-		    ypos=SCROLLBAR_Y_MIN;
-            GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollTop, 0, 1, 1, IMAGE_COLOR );
-		    for (i=0; i<9; i++) 
-		    {
-		      ypos+=24;
-		      GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
-		    }
-		    ypos+=24;
-		    GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
-		  }
+         // Draw scrollbar
+			if (scrollEnabled)
+			{
+				int ypos=SCROLLBAR_Y_MIN;
+				GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollTop, 0, 1, 1, IMAGE_COLOR );
+				for (i=0; i<9; i++) 
+				{
+					ypos+=24;
+					GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollMiddle, 0, 1, 1, IMAGE_COLOR );
+				}
+				ypos+=24;
+				GRRLIB_DrawImg(SCROLLBAR_x,ypos, images.scrollBottom, 0, 1, 1, IMAGE_COLOR );
+			}
 		 
 	      // Draw Title	
-		  ypos=yOffset;
-          drawText(0, ypos, fontTitle, "Release Notes");
-          ypos+=80;
+			ypos+=20;
+         drawText(0, ypos, fontTitle, "Release Notes");
+         ypos+=80;
 	      
-		  if (len!=0)
-		  {		  
-		    int startpos=0;
-  		    for (i=0; i<len; i++)
-		    {
-			  if (text[i]=='\n') 
-			  {			   
-			     text[i]=0x00;
+			if (len!=0)
+			{		  
+				int startpos=0;
+				for (i=0; i<len; i++)
+				{
+					if (text[i]=='\n') 
+					{			   
+						text[i]=0x00;
 				 
-				 // Show only 17 lines on screen
-			     if ((lineCount++)>endEntry) break;
-			     if (lineCount>startEntry) 
-				 {				   
-			        ypos+=15;
-				    sprintf(tmp,"%s",text+startpos);
-			        drawText(40, ypos, fontNormal, tmp);	
-				 }		
-			     startpos=i+1;
-		
-		      }
-		    }
-		  }
-		  else
-		  {
-		     ypos+=120;
-			 drawText(0, ypos, fontParagraph, "No information available!" );	
-		     ypos+=20;
-			 drawText(0, ypos, fontParagraph, "Information could not be fetch from internet.");
-		  }
+						// Show only 17 lines on screen
+						if ((lineCount++)>endEntry) break;
+						if (lineCount>startEntry) 
+						{				   
+							ypos+=15;
+							sprintf(tmp,"%s",text+startpos);
+							drawText(40, ypos, fontNormal, tmp);	
+						}		
+						startpos=i+1;
+					}
+				}
+			}
+			else
+			{
+				ypos+=120;
+				drawText(0, ypos, fontParagraph, "No information available!" );	
+				ypos+=20;
+				drawText(0, ypos, fontParagraph, "Information could not be fetch from internet.");
+			}
 		  
-		  // Draw buttons
+			// Draw buttons
 	      drawButtons(); 
-
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
 		  
-		  // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
 	   
 	   case stateSettings:
-	   {
-	      int ypos=yOffset;	   
-			  	         	
-	      // Init text layer	  
-          GRRLIB_initTexture();
-		   
+	   {			  	         			   
 	      // Draw background
-		  GRRLIB_DrawImg(0,0,images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
+			GRRLIB_DrawImg(0, yOffset,images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
       		
+			// Init text layer	  
+         GRRLIB_initTexture();
+			 
 	      // Draw Title	
-          drawText(0, ypos, fontTitle, "    User Initials");
-          ypos+=90;
-		  
-		  drawText(0, ypos, fontParagraph, "This user initials are used in the highscore area.");	
-	      ypos+=80;
-		  
+			ypos+=20;
+         drawText(0, ypos, fontTitle, "    Game Settings");
+			
+         ypos+=90;
+			drawText(0, ypos, fontParagraph, "The user initials are used in the highscore area.");	
+	     
 	      // Draw panels		 
-		  GRRLIB_DrawImg(60,ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-      	  GRRLIB_DrawImg(240,ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-		  GRRLIB_DrawImg(420,ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-      	  ypos+=10;
-		  
-		  // Draw text  
-		  if (settings[0].value[0]!=0x00) drawText(110, ypos, fontTitle, settings[0].value);
-		  if (settings[1].value[0]!=0x00) drawText(300, ypos, fontTitle, settings[1].value);
-		  if (settings[2].value[0]!=0x00) drawText(480, ypos, fontTitle, settings[2].value);
-
-		  ypos+=170;
-	  	  //drawText(0, ypos, fontParagraph, "This initials are used in the highscore area.");	
+			ypos+=85;
+			GRRLIB_DrawImg(60,  ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
+      	GRRLIB_DrawImg(240, ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
+			GRRLIB_DrawImg(420, ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
+      	
+			// Draw text  
+			ypos+=10;
+			if (settings[0].value[0]!=0x00) drawText(110, ypos, fontTitle, settings[0].value);
+			if (settings[1].value[0]!=0x00) drawText(300, ypos, fontTitle, settings[1].value);
+			if (settings[2].value[0]!=0x00) drawText(480, ypos, fontTitle, settings[2].value);
 	      
 		   // Draw buttons
 	      drawButtons(); 
-		  
-		  sprintf(tmp,"%d fps", CalculateFrameRate());
-		  drawText(20, 460, fontSpecial, tmp);
-				  
-          // Draw text layer on top of gameboard 
-          GRRLIB_DrawImg2(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, 255);	
+		  	  
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 	}
@@ -4330,51 +4208,52 @@ void drawScreen(void)
 
 int main()
 {
-    char *s_fn="main";
-    int i;
+   char *s_fn="main";
+   int i;
 			
-    // Init video layer
-    VIDEO_Init();
+   // Init video layer
+   VIDEO_Init();
 	
 	// Init wiimote layer
-    WPAD_Init();
-    WPAD_SetIdleTimeout(60); // Wiimote is shutdown after 60 seconds of innactivity.
-	//WPAD_SetDataFormat(WPAD_CHAN_0, WPAD_FMT_BTNS_ACC_IR);	// enable accelerometers and IR
-    WPAD_SetDataFormat(WPAD_CHAN_ALL,WPAD_FMT_BTNS_ACC_IR);
+   WPAD_Init();
+	 
+	// Wiimote is shutdown after 60 seconds of innactivity.
+   WPAD_SetIdleTimeout(60); 
+	 
+	// enable accelerometers and IR
+   WPAD_SetDataFormat(WPAD_CHAN_ALL,WPAD_FMT_BTNS_ACC_IR);
   
   	// Set Shutdown Callbacks.
 	SYS_SetPowerCallback( doPowerOff );
 	WPAD_SetPowerButtonCallback( doPadPowerOff );
 	
-    // Obtain the preferred video mode from the system
+   // Obtain the preferred video mode from the system
 	// This will correspond to the settings in the Wii menu
 	rmode = VIDEO_GetPreferredMode(NULL);
 		
 	// Set up the video registers with the chosen mode
 	VIDEO_Configure(rmode);
-	
+
 	if (rmode->xfbHeight==528)
 	{
-	    // TV mode PAL 50Hz
-	    yOffset = 25;  
-		yjpegOffset = 25;
+	   // TV mode PAL 50Hz
+	   yOffset = 25;  
 	}
 	else
 	{      
-	    // TV mode PAL 60Hz
-	    yOffset = 25;
-		yjpegOffset = 0;
+	   // TV mode PAL 60Hz
+	   yOffset = 0;
 	}
 
-    // Init Fat
-    fatInitDefault();
+   // Init Fat
+   fatInitDefault();
 
 	// Open trace module
 	traceOpen(TRACE_FILENAME);
 	traceEvent(s_fn, 0,"%s %s Started", PROGRAM_NAME, PROGRAM_VERSION);
 	
 	// Load highscore from SD card
-    loadLocalHighScoreFile(HIGHSCORE_FILENAME);	
+   loadLocalHighScoreFile(HIGHSCORE_FILENAME);	
 	
 	// Load setting from SD card
 	loadSettingFile(SETTING_FILENAME);	
@@ -4384,7 +4263,7 @@ int main()
 	
   	// Init game variables    
 	//initMP3Files();
-    initImages();
+   initImages();
 	initGame();	
 	initSound();
 	initGameBoard();
@@ -4394,77 +4273,77 @@ int main()
 	// Init FreeType font engine
 	GRRLIB_InitFreetype();
 	  			
-    // Init GRRLib graphics library
-    GRRLIB_Init();
+   // Init GRRLib graphics library
+   GRRLIB_Init();
         
 	// Make screen black
 	GRRLIB_FillScreen(0xFFFFFF);
-    GRRLIB_Render();
+   GRRLIB_Render();
 		
 	// Repeat forever
-    while(!bPowerOff )
+   while(!bPowerOff )
 	{		
-        // icon angle 
-	    if (++angle>=MAX_ANGLE) angle=0;
+      // icon angle 
+	   if (++angle>=MAX_ANGLE) angle=0;
 		if (size<=MAX_SIZE) size+=0.05;
 		
-        // Init StateMachine			
-	    initStateMachine();
+      // Init StateMachine			
+	   initStateMachine();
 			
-        // Draw game board and other items (buttons, bubbles, etc...)
-        drawScreen();		
+      // Draw game board and other items (buttons, bubbles, etc...)
+      drawScreen();		
 
-	    // Scan for button events
-		WPAD_SetVRes(0, 640, 480);
-        WPAD_ScanPads();
+	   // Scan for button events
+		WPAD_SetVRes(0, 640, rmode->xfbHeight);
+      WPAD_ScanPads();
 			
 		for (i=0; i<MAX_POINTER; i++)
 		{
-		  u32 wpaddown = WPAD_ButtonsDown(i);
-		  u32 wpadup = WPAD_ButtonsDown(i);
-		  u32 wpadheld = WPAD_ButtonsHeld(i);
+			u32 wpaddown = WPAD_ButtonsDown(i);
+			u32 wpadup = WPAD_ButtonsDown(i);
+			u32 wpadheld = WPAD_ButtonsHeld(i);
 		
-          // Scan for ir events 
-		  WPAD_IR(i, &pointers[i].ir); 
-		  pointers[i].x=pointers[i].ir.sx-WSP_POINTER_X;
-		  pointers[i].xOffset=pointers[i].x+IR_X_OFFSET;
-		  pointers[i].y=pointers[i].ir.sy-WSP_POINTER_Y;
-		  pointers[i].yOffset=pointers[i].y+IR_Y_OFFSET;
-		  pointers[i].angle=pointers[i].ir.angle;
+			// Scan for ir events 
+			WPAD_IR(i, &pointers[i].ir); 
+			pointers[i].x=pointers[i].ir.sx-WSP_POINTER_X;
+			pointers[i].xOffset=pointers[i].x+IR_X_OFFSET;
+			pointers[i].y=pointers[i].ir.sy-WSP_POINTER_Y;
+			pointers[i].yOffset=pointers[i].y+IR_Y_OFFSET;
+			pointers[i].angle=pointers[i].ir.angle;
 				
-          // Scan for button events
-		  if (wpadheld & BUTTON_A) buttonScroll(pointers[i].xOffset,pointers[i].yOffset);	 		
-          if (wpaddown & BUTTON_A) buttonA(pointers[i].xOffset,pointers[i].yOffset); 		
-		  if (wpadup & BUTTON_A) selectedA=false;
+         // Scan for button events
+			if (wpadheld & BUTTON_A) buttonScroll(pointers[i].xOffset,pointers[i].yOffset);	 		
+         if (wpaddown & BUTTON_A) buttonA(pointers[i].xOffset,pointers[i].yOffset); 		
+			if (wpadup & BUTTON_A) selectedA=false;
 		  
-		  // Only this first WiiMote can control the music and stop a running game.
-		  if (i==0)
-		  {		  
-		    if (wpaddown & BUTTON_HOME) 
-			{ 
-			   if (stateMachine==stateGame) stateMachine=stateQuit;			   
-			}
+			// Only this first WiiMote can control the music and stop a running game.
+			if (i==0)
+			{		  
+				if (wpaddown & BUTTON_HOME) 
+				{ 
+					if (stateMachine==stateGame) stateMachine=stateQuit;			   
+				}
 		  
-  		    if (wpaddown & BUTTON_1 ) button1x();								
+				if (wpaddown & BUTTON_1 ) button1x();								
             if (wpadup & BUTTON_1) selected1=false;		
 		  
-		    if (wpaddown & BUTTON_2 ) button2y();		
-		    if (wpadup & BUTTON_2) selected2=false;
+				if (wpaddown & BUTTON_2 ) button2y();		
+				if (wpadup & BUTTON_2) selected2=false;
 		
-		    // Make screenshot 
-		    if (wpadheld & BUTTON_PLUS)
-		    {
-		      char filename[MAX_LEN];
+				// Make screenshot 
+				if (wpadheld & BUTTON_PLUS)
+				{
+					char filename[MAX_LEN];
       	      struct tm *level;	   
-		      time_t dt=time(NULL);
-		      level = localtime(&dt);
-		      sprintf(filename,"%sSpaceBubble-%04d%02d%02d%02d%02d%02d.png", GAME_DIRECTORY, level->tm_year+1900,level->tm_mon+1, level->tm_mday,  level->tm_hour, level->tm_min, level->tm_sec);		  
-              GRRLIB_ScrShot(filename);	
-		    }
-		  }
+					time_t dt=time(NULL);
+					level = localtime(&dt);
+					sprintf(filename,"%sSpaceBubble-%04d%02d%02d%02d%02d%02d.png", GAME_DIRECTORY, level->tm_year+1900,level->tm_mon+1, level->tm_mday,  level->tm_hour, level->tm_min, level->tm_sec);		  
+					GRRLIB_ScrShot(filename);	
+				}
+			}
 	
-       	  // Draw wiimote ir pointer
-          GRRLIB_DrawImg( pointers[i].x, pointers[i].y, pointers[i].image, pointers[i].angle, 1, 1, IMAGE_COLOR );			 
+       	// Draw wiimote ir pointer
+         GRRLIB_DrawImg( pointers[i].x, pointers[i].y, pointers[i].image, pointers[i].angle, 1, 1, IMAGE_COLOR );			 
 		}
 		GRRLIB_Render();
 	}
