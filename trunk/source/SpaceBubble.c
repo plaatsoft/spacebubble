@@ -1100,7 +1100,7 @@ void initImages(void)
    images.bar=GRRLIB_LoadTexture( pic14data); 
    images.barCursor=GRRLIB_LoadTexture( pic15data);
    
-	images.sound=GRRLIB_LoadTexture( pic16data);    
+   images.sound=GRRLIB_LoadTexture( pic16data);    
    GRRLIB_SetMidHandle( images.sound, true );
   
    images.pointer1=GRRLIB_LoadTexture( pic17data); 
