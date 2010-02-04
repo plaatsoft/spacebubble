@@ -3,7 +3,7 @@
  * Welcome to the SpaceBubble documentation.
  *
  * @section Introduction
- * SpaceBubble is a 2D classic game for the Nintedo Wii.
+ * SpaceBubble is a 2D classic game for the Nintendo Wii.
  *
  * @section Links
  * Website: http://www.plaatsoft.nl\n
@@ -14,7 +14,12 @@
  *
  * @section ReleaseNotes
  *
- *  08/01/2009 Version 0.93
+ *  XX-XX-XXXX Version 0.94 (Up coming release)
+ *  - Added source code to Google Code Repository
+ *  - Added source code documentation (Javadoc style).
+ *  - Added Doxygen (automatic documentation generation tool) config file.
+ *
+ *  08-01-2010 Version 0.93
  *  - Improve main menu screen.
  *  - Added 60Hz (640x480) TV Mode support.
  *  - Increase local highscore list to maximum 100 entries.
@@ -24,7 +29,7 @@
  *  - Use libogc v1.8.1 library as Wii interface engine.
  *  - Build game with devkitPPC r19 compiler.
  *
- *  19/11/2009 Version 0.92
+ *  19-11-2009 Version 0.92
  *  - Added today top highscore screen.
  *  - Added functionality to trace game events to trace file.
  *  - High score is send to web service if score is better then 5000 points.
@@ -34,14 +39,14 @@
  *  - Use libogc v1.8.0 library as Wii interface engine
  *  - Build game with devkitPPC r19 compiler.
  *
- *  17/09/2009 Version 0.91
+ *  17-09-2009 Version 0.91
  *  - This version is compiled with the newest available Wii libraries.
  *  - Use the asndlib (part of libogc) now as standard sound engine.
  *  - Use libfat 1.0.4 as disk access engine.
  *  - Use libogc 1.7.1a as Wii interface engine
  *  - Game build with devkitPPC r17 compiler.
  *
- *  09/03/2009 Version 0.90
+ *  09-03-2009 Version 0.90
  *  - Added new GRRLIB v4.0 library as graphical render engine.
  *  - Improve intro screens.
  *  - Added fps information on all screens.
@@ -49,13 +54,13 @@
  *  - Pictures are store on the SdCard in the following directory sd:/apps/SpaceBubble
  *  - Game build with devkitPPC r17 compiler.
  *
- *  14/02/2000 Version 0.81
+ *  14-02-2000 Version 0.81
  *  - HotFix: Solve major bug in global highscore screen. If the local score did
  *   - not contain more the 13 entries the global highscore screen crashed. 
  *  - Use libogc 1.7.1 as Wii inteface engine.
  *  - Game build with devkitPPC r16 compiler.
  *
- *  11/02/2009 Version 0.80
+ *  11-02-2009 Version 0.80
  *  - Improve Frame-per-second performance during game play.
  *  - Show frame per second information on game screen.
  *  - Added information popup windows.
@@ -64,7 +69,7 @@
  *  - Bug fix: Global highscore screen is not crashing anymore!
  *  - Game build with devkitPPC r16 compiler.
  *
- *  08/02/2009 Version 0.70
+ *  08-02-2009 Version 0.70
  *  - Increase gameboard size from 12x12 to 14x14 bubbles. 
  *  - Added total clear (no bubbles left) bonus per level. 
  *  - Remove gameboard control buttons. Use the WiiMote A button instead.
@@ -75,7 +80,7 @@
  *  - Bug fix: Hint is now always working correct.
  *  - Game build with devkitPPC r16 compiler.
  * 
- *  05/02/2009 Version 0.60
+ *  05-02-2009 Version 0.60
  *  - Add two, three and four multi player mode.
  *  - Added in sound settings button "loop music track".
  *  - Sound settings are stored in configuration file.
@@ -88,7 +93,7 @@
  *  - Bug fix: Clock color is now showed always right.
  *  - Game build with devkitPPC r15 compiler.
  *
- *  28/01/2009 Version 0.50
+ *  28-01-2009 Version 0.50
  *  - Hot fix: Prevent crash if IR pointer is going out of the screen.
  *  - Adjusted effect and music default volume.
  *  - Added bubble destroy graphical effect.
@@ -98,7 +103,7 @@
  *  - Reposition some buttons.
  *  - Game build with devkitPPC r15 compiler.
  *
- *  26/01/2009 Version 0.40
+ *  26-01-2009 Version 0.40
  *  - Show score of selected bubbles on screen.
  *  - The 40 highest global scores are showed.
  *  - Reposition some buttons.
@@ -106,7 +111,7 @@
  *  - Increase http receive buffer size to 8196 bytes.
  *  - Game build with devkitPPC r15 compiler.
  *
- *  25/01/2009 Version 0.31
+ *  25-01-2009 Version 0.31
  *  - HotFix: Prevent random crashes if wifi connection does not response.
  *  - HotFix: Prevent wrong calculation of possible moves.
  *  - Added Winner text if player clears all six levels.
@@ -116,14 +121,15 @@
  *  - Adapted button size on most screens.
  *  - Game build with devkitPPC r15 compiler.
  * 
- *  24/01/2009 Version 0.30
+ *  24-01-2009 Version 0.30
  *  - Added scrollbar to highscore and release notes screens.
  *  - The fifty highest local scores are showed.
  *  - The thirty highest global localHighScore are showed.
  *  - Improve button layout.
  *  - Improve three intro screen.
+ *  - Game build with devkitPPC r15 compiler.
  *
- *  23/01/2009 Version 0.20
+ *  23-01-2009 Version 0.20
  *  - Added 9 background music tracks.
  *  - Added several sound effects.
  *  - Each level has it on score matrix and time parameter.
@@ -141,12 +147,14 @@
  *  - Gamescore is send anonymouse to webservices on internet.
  *  - Added help screen information.
  *  - Cleanup not used source code.
+ *  - Game build with devkitPPC r15 compiler.
  *
- *  19/01/2009 Version 0.10
+ *  19-01-2009 Version 0.10
  *  - Started programming.
  *  - Created raw gameboard layout
  *  - Created intro screens.
  *  - Basic game engine ready.
+ *  - Game build with devkitPPC r15 compiler.
  *
  * @section WishList
  *  - Multi language support (Move language to xml data files)
