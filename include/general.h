@@ -12,6 +12,146 @@
  * @section Credits
  * Documentation  : wplaat\n
  *
+ * @section ReleaseNotes
+ *
+ *  08/01/2009 Version 0.93
+ *  - Improve main menu screen.
+ *  - Added 60Hz (640x480) TV Mode support.
+ *  - Increase local highscore list to maximum 100 entries.
+ *  - Store current game score in highscore area also when game is quited.
+ *  - Added extra help screen with WiiMote control information.
+ *  - use GRRLIB v4.2.0 library as graphical engine.
+ *  - Use libogc v1.8.1 library as Wii interface engine.
+ *  - Build game with devkitPPC r19 compiler.
+ *
+ *  19/11/2009 Version 0.92
+ *  - Added today top highscore screen.
+ *  - Added functionality to trace game events to trace file.
+ *  - High score is send to web service if score is better then 5000 points.
+ *  - Improve network thread
+ *  - Use libfat v1.0.6 as disk access engine
+ *  - Use libmxml v2.6 library as xml engine
+ *  - Use libogc v1.8.0 library as Wii interface engine
+ *  - Build game with devkitPPC r19 compiler.
+ *
+ *  17/09/2009 Version 0.91
+ *  - This version is compiled with the newest available Wii libraries.
+ *  - Use the asndlib (part of libogc) now as standard sound engine.
+ *  - Use libfat 1.0.4 as disk access engine.
+ *  - Use libogc 1.7.1a as Wii interface engine
+ *  - Game build with devkitPPC r17 compiler.
+ *
+ *  09/03/2009 Version 0.90
+ *  - Added new GRRLIB v4.0 library as graphical render engine.
+ *  - Improve intro screens.
+ *  - Added fps information on all screens.
+ *  - Added screenshot functionality with plus button.
+ *  - Pictures are store on the SdCard in the following directory sd:/apps/SpaceBubble
+ *  - Game build with devkitPPC r17 compiler.
+ *
+ *  14/02/2000 Version 0.81
+ *  - HotFix: Solve major bug in global highscore screen. If the local score did
+ *   - not contain more the 13 entries the global highscore screen crashed. 
+ *  - Use libogc 1.7.1 as Wii inteface engine.
+ *  - Game build with devkitPPC r16 compiler.
+ *
+ *  11/02/2009 Version 0.80
+ *  - Improve Frame-per-second performance during game play.
+ *  - Show frame per second information on game screen.
+ *  - Added information popup windows.
+ *  - Add 10 seconds extra playtime to each level.
+ *  - Disable MP3 background music support. Too slow!
+ *  - Bug fix: Global highscore screen is not crashing anymore!
+ *  - Game build with devkitPPC r16 compiler.
+ *
+ *  08/02/2009 Version 0.70
+ *  - Increase gameboard size from 12x12 to 14x14 bubbles. 
+ *  - Added total clear (no bubbles left) bonus per level. 
+ *  - Remove gameboard control buttons. Use the WiiMote A button instead.
+ *  - Press the Home button on WiiMote to return to the menu screen.
+ *  - High score is send to web service if score is better then 12.000 point.
+ *  - Only this first WiiMote can control the music and stop a running game.
+ *  - Bug fix: Do not show bubble select hint when game is over. 
+ *  - Bug fix: Hint is now always working correct.
+ *  - Game build with devkitPPC r16 compiler.
+ * 
+ *  05/02/2009 Version 0.60
+ *  - Add two, three and four multi player mode.
+ *  - Added in sound settings button "loop music track".
+ *  - Sound settings are stored in configuration file.
+ *  - Play random music track during game.
+ *  - If player is 10 seconds idle give a random bubble select hint.
+ *  - From level five SuperShift bubble option is activated.
+ *  - Rename "General Setting" menu button to "User Initials".
+ *  - Improve score calculation on cleared level screen.
+ *  - Add level seven with more bonus points to earn.
+ *  - Bug fix: Clock color is now showed always right.
+ *  - Game build with devkitPPC r15 compiler.
+ *
+ *  28/01/2009 Version 0.50
+ *  - Hot fix: Prevent crash if IR pointer is going out of the screen.
+ *  - Adjusted effect and music default volume.
+ *  - Added bubble destroy graphical effect.
+ *  - Add 10 seconds extra playtime to each level.
+ *  - Clock color is changing to red for the last 15 seconds.
+ *  - Improve help screen.
+ *  - Reposition some buttons.
+ *  - Game build with devkitPPC r15 compiler.
+ *
+ *  26/01/2009 Version 0.40
+ *  - Show score of selected bubbles on screen.
+ *  - The 40 highest global scores are showed.
+ *  - Reposition some buttons.
+ *  - Add level cleared information screen.
+ *  - Increase http receive buffer size to 8196 bytes.
+ *  - Game build with devkitPPC r15 compiler.
+ *
+ *  25/01/2009 Version 0.31
+ *  - HotFix: Prevent random crashes if wifi connection does not response.
+ *  - HotFix: Prevent wrong calculation of possible moves.
+ *  - Added Winner text if player clears all six levels.
+ *  - Added 2.000 bonus points if you clear all levels.
+ *  - Added clock color is changing to red for the last 10 seconds.
+ *  - Added clock sound effects.
+ *  - Adapted button size on most screens.
+ *  - Game build with devkitPPC r15 compiler.
+ * 
+ *  24/01/2009 Version 0.30
+ *  - Added scrollbar to highscore and release notes screens.
+ *  - The fifty highest local scores are showed.
+ *  - The thirty highest global localHighScore are showed.
+ *  - Improve button layout.
+ *  - Improve three intro screen.
+ *
+ *  23/01/2009 Version 0.20
+ *  - Added 9 background music tracks.
+ *  - Added several sound effects.
+ *  - Each level has it on score matrix and time parameter.
+ *  - First offical release for the Wii HomeBrew scene.
+ *  - Added player initials setting screen.
+ *  - Added load/save game setting to sdcard.
+ *  - Use only one unique cookie number during the game.
+ *  - Improve score calculation.
+ *  - If level is cleared (remaining time * factor) is added to score.
+ *  - Added Local / Global highscore functionality.
+ *  - Added game info panel to game screen.
+ *  - Added countdown clock.
+ *  - Added ShiftRight bubble functionality.
+ *  - Added six game levels.
+ *  - Gamescore is send anonymouse to webservices on internet.
+ *  - Added help screen information.
+ *  - Cleanup not used source code.
+ *
+ *  19/01/2009 Version 0.10
+ *  - Started programming.
+ *  - Created raw gameboard layout
+ *  - Created intro screens.
+ *  - Basic game engine ready.
+ *
+ * @section WishList
+ *  - Multi language support (Move language to xml data files)
+ *  - Nintendo External LAN device support 
+ *
  * @section Licence
  * Copyright (c) 2008-2010 Plaatsoft
  *
