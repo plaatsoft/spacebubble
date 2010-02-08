@@ -1,6 +1,6 @@
 /**
  *  @file
- *  Wii SpaceBubble game core
+ *  @brief Wii SpaceBubble game core
  *  
  *  Created by wplaat (www.plaatsoft.nl)
  *

@@ -1,5 +1,10 @@
 /**
+ * 
+ * @file
+ * @brief This file contain all defines.
+ *
  * @mainpage Wii SpaceBubble Documentation
+ * @image html SpaceBubble.png
  * Welcome to the SpaceBubble documentation.
  *
  * @section Introduction
