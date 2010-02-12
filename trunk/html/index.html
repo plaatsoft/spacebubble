@@ -36,26 +36,51 @@ Credits</a></h2>
 </p>
 <h2><a class="anchor" id="ReleaseNotes">
 ReleaseNotes</a></h2>
-<p>XX-XX-XXXX Version 0.94 (Up coming release)</p>
+<p><b>XX-XX-XXXX Version 0.94 (Up coming release)</b></p>
 <ul>
+<li>GUI:<ul>
+<li>Improve game settings screen.</li>
+<li>Added donate screen.</li>
+</ul>
+</li>
+<li>Core:<ul>
+<li>Extend user name from 3 to 6 characters.</li>
+<li>Default user name is based on Wii nickname.</li>
+<li>Increase http buffer size from 8kb to 10kb.</li>
+</ul>
+</li>
+<li>General:<ul>
 <li>Added source code to Google Code Repository</li>
 <li>Added source code documentation (Javadoc style).</li>
 <li>Added Doxygen (automatic documentation generation tool) config file.</li>
+<li>Build game with devkitPPC r19 compiler.</li>
 </ul>
-<p>08-01-2010 Version 0.93</p>
+</li>
+</ul>
+<p><b>08-01-2010 Version 0.93</b></p>
 <ul>
+<li>GUI:<ul>
 <li>Improve main menu screen.</li>
 <li>Added 60Hz (640x480) TV Mode support.</li>
+<li>Added extra help screen with WiiMote control information.</li>
+</ul>
+</li>
+<li>Core:<ul>
 <li>Increase local highscore list to maximum 100 entries.</li>
 <li>Store current game score in highscore area also when game is quited.</li>
-<li>Added extra help screen with WiiMote control information.</li>
 <li>use GRRLIB v4.2.0 library as graphical engine.</li>
 <li>Use libogc v1.8.1 library as Wii interface engine.</li>
 <li>Build game with devkitPPC r19 compiler.</li>
 </ul>
-<p>19-11-2009 Version 0.92</p>
+</li>
+</ul>
+<p><b>19-11-2009 Version 0.92</b></p>
 <ul>
+<li>GUI:<ul>
 <li>Added today top highscore screen.</li>
+</ul>
+</li>
+<li>Core:<ul>
 <li>Added functionality to trace game events to trace file.</li>
 <li>High score is send to web service if score is better then 5000 points.</li>
 <li>Improve network thread</li>
@@ -64,45 +89,60 @@ ReleaseNotes</a></h2>
 <li>Use libogc v1.8.0 library as Wii interface engine</li>
 <li>Build game with devkitPPC r19 compiler.</li>
 </ul>
-<p>17-09-2009 Version 0.91</p>
+</li>
+</ul>
+<p><b>17-09-2009 Version 0.91</b></p>
 <ul>
+<li>Core:<ul>
+<li>Maintenance release</li>
 <li>This version is compiled with the newest available Wii libraries.</li>
 <li>Use the asndlib (part of libogc) now as standard sound engine.</li>
 <li>Use libfat 1.0.4 as disk access engine.</li>
 <li>Use libogc 1.7.1a as Wii interface engine</li>
 <li>Game build with devkitPPC r17 compiler.</li>
 </ul>
-<p>09-03-2009 Version 0.90</p>
+</li>
+</ul>
+<p><b>09-03-2009 Version 0.90</b></p>
 <ul>
-<li>Added new GRRLIB v4.0 library as graphical render engine.</li>
+<li>GUI:<ul>
 <li>Improve intro screens.</li>
 <li>Added fps information on all screens.</li>
+</ul>
+</li>
+<li>Core:<ul>
+<li>Added new GRRLIB v4.0 library as graphical render engine.</li>
 <li>Added screenshot functionality with plus button.</li>
 <li>Pictures are store on the SdCard in the following directory sd:/apps/SpaceBubble</li>
 <li>Game build with devkitPPC r17 compiler.</li>
 </ul>
-<p>14-02-2000 Version 0.81</p>
-<ul>
-<li>HotFix: Solve major bug in global highscore screen. If the local score did<ul>
-<li>not contain more the 13 entries the global highscore screen crashed.</li>
-</ul>
 </li>
-<li>Use libogc 1.7.1 as Wii inteface engine.</li>
-<li>Game build with devkitPPC r16 compiler.</li>
 </ul>
-<p>11-02-2009 Version 0.80</p>
+<p><b>14-02-2000 Version 0.80</b></p>
 <ul>
-<li>Improve Frame-per-second performance during game play.</li>
+<li>GUI:<ul>
 <li>Show frame per second information on game screen.</li>
 <li>Added information popup windows.</li>
+</ul>
+</li>
+<li>Core:<ul>
+<li>Improve Frame-per-second performance during game play.</li>
 <li>Add 10 seconds extra playtime to each level.</li>
 <li>Disable MP3 background music support. Too slow!</li>
 <li>Bug fix: Global highscore screen is not crashing anymore!</li>
+<li>Use libogc 1.7.1 as Wii inteface engine.</li>
 <li>Game build with devkitPPC r16 compiler.</li>
 </ul>
-<p>08-02-2009 Version 0.70</p>
+</li>
+</ul>
+<p><b>08-02-2009 Version 0.70</b></p>
 <ul>
+<li>GUI:<ul>
 <li>Increase gameboard size from 12x12 to 14x14 bubbles.</li>
+<li>Improve level cleared screen.</li>
+</ul>
+</li>
+<li>Core:<ul>
 <li>Added total clear (no bubbles left) bonus per level.</li>
 <li>Remove gameboard control buttons. Use the WiiMote A button instead.</li>
 <li>Press the Home button on WiiMote to return to the menu screen.</li>
@@ -112,7 +152,9 @@ ReleaseNotes</a></h2>
 <li>Bug fix: Hint is now always working correct.</li>
 <li>Game build with devkitPPC r16 compiler.</li>
 </ul>
-<p>05-02-2009 Version 0.60</p>
+</li>
+</ul>
+<p><b>05-02-2009 Version 0.60</b></p>
 <ul>
 <li>Add two, three and four multi player mode.</li>
 <li>Added in sound settings button "loop music track".</li>
@@ -126,7 +168,7 @@ ReleaseNotes</a></h2>
 <li>Bug fix: Clock color is now showed always right.</li>
 <li>Game build with devkitPPC r15 compiler.</li>
 </ul>
-<p>28-01-2009 Version 0.50</p>
+<p><b>28-01-2009 Version 0.50</b></p>
 <ul>
 <li>Hot fix: Prevent crash if IR pointer is going out of the screen.</li>
 <li>Adjusted effect and music default volume.</li>
@@ -137,17 +179,13 @@ ReleaseNotes</a></h2>
 <li>Reposition some buttons.</li>
 <li>Game build with devkitPPC r15 compiler.</li>
 </ul>
-<p>26-01-2009 Version 0.40</p>
+<p><b>26-01-2009 Version 0.40</b></p>
 <ul>
 <li>Show score of selected bubbles on screen.</li>
 <li>The 40 highest global scores are showed.</li>
 <li>Reposition some buttons.</li>
 <li>Add level cleared information screen.</li>
 <li>Increase http receive buffer size to 8196 bytes.</li>
-<li>Game build with devkitPPC r15 compiler.</li>
-</ul>
-<p>25-01-2009 Version 0.31</p>
-<ul>
 <li>HotFix: Prevent random crashes if wifi connection does not response.</li>
 <li>HotFix: Prevent wrong calculation of possible moves.</li>
 <li>Added Winner text if player clears all six levels.</li>
@@ -157,7 +195,7 @@ ReleaseNotes</a></h2>
 <li>Adapted button size on most screens.</li>
 <li>Game build with devkitPPC r15 compiler.</li>
 </ul>
-<p>24-01-2009 Version 0.30</p>
+<p><b>24-01-2009 Version 0.30</b></p>
 <ul>
 <li>Added scrollbar to highscore and release notes screens.</li>
 <li>The fifty highest local scores are showed.</li>
@@ -166,7 +204,7 @@ ReleaseNotes</a></h2>
 <li>Improve three intro screen.</li>
 <li>Game build with devkitPPC r15 compiler.</li>
 </ul>
-<p>23-01-2009 Version 0.20</p>
+<p><b>23-01-2009 Version 0.20</b></p>
 <ul>
 <li>Added 9 background music tracks.</li>
 <li>Added several sound effects.</li>
@@ -187,7 +225,7 @@ ReleaseNotes</a></h2>
 <li>Cleanup not used source code.</li>
 <li>Game build with devkitPPC r15 compiler.</li>
 </ul>
-<p>19-01-2009 Version 0.10</p>
+<p><b>19-01-2009 Version 0.10</b></p>
 <ul>
 <li>Started programming.</li>
 <li>Created raw gameboard layout</li>

@@ -2,6 +2,7 @@
  * 
  * @file
  * @brief This file contain all defines.
+ * @author wplaat
  *
  * @mainpage Wii SpaceBubble Documentation
  * @image html SpaceBubble.png
@@ -15,77 +16,94 @@
  * Code: http://code.google.com/p/spacebubble\n
  *
  * @section Credits
- * Documentation  : wplaat\n
+ * Documentation: wplaat\n
  *
  * @section ReleaseNotes
  *
- *  XX-XX-XXXX Version 0.94 (Up coming release)
- *  - Added source code to Google Code Repository
- *  - Added source code documentation (Javadoc style).
- *  - Added Doxygen (automatic documentation generation tool) config file.
+ *  <b>XX-XX-XXXX Version 0.94 (Up coming release)</b>
+ *  - GUI:
+ *   - Improve game settings screen.
+ *   - Added donate screen. 
+ *  - Core:
+ *   - Extend user name from 3 to 6 characters.
+ *   - Default user name is based on Wii nickname.
+ *   - Increase http buffer size from 8kb to 10kb.
+ *  - General:
+ *   - Added source code to Google Code Repository
+ *   - Added source code documentation (Javadoc style).
+ *   - Added Doxygen (automatic documentation generation tool) config file.
+ *   - Build game with devkitPPC r19 compiler.
  *
- *  08-01-2010 Version 0.93
- *  - Improve main menu screen.
- *  - Added 60Hz (640x480) TV Mode support.
- *  - Increase local highscore list to maximum 100 entries.
- *  - Store current game score in highscore area also when game is quited.
- *  - Added extra help screen with WiiMote control information.
- *  - use GRRLIB v4.2.0 library as graphical engine.
- *  - Use libogc v1.8.1 library as Wii interface engine.
- *  - Build game with devkitPPC r19 compiler.
+ *  <b>08-01-2010 Version 0.93</b>
+ *  - GUI:
+ *   - Improve main menu screen.
+ *   - Added 60Hz (640x480) TV Mode support.
+ *   - Added extra help screen with WiiMote control information.
+ *  - Core:
+ *   - Increase local highscore list to maximum 100 entries.
+ *   - Store current game score in highscore area also when game is quited.
+ *   - use GRRLIB v4.2.0 library as graphical engine.
+ *   - Use libogc v1.8.1 library as Wii interface engine.
+ *   - Build game with devkitPPC r19 compiler.
  *
- *  19-11-2009 Version 0.92
- *  - Added today top highscore screen.
- *  - Added functionality to trace game events to trace file.
- *  - High score is send to web service if score is better then 5000 points.
- *  - Improve network thread
- *  - Use libfat v1.0.6 as disk access engine
- *  - Use libmxml v2.6 library as xml engine
- *  - Use libogc v1.8.0 library as Wii interface engine
- *  - Build game with devkitPPC r19 compiler.
+ *  <b>19-11-2009 Version 0.92</b>
+ *  - GUI:
+ *    - Added today top highscore screen.
+ *  - Core: 
+ *   - Added functionality to trace game events to trace file.
+ *   - High score is send to web service if score is better then 5000 points.
+ *   - Improve network thread
+ *   - Use libfat v1.0.6 as disk access engine
+ *   - Use libmxml v2.6 library as xml engine
+ *   - Use libogc v1.8.0 library as Wii interface engine
+ *   - Build game with devkitPPC r19 compiler.
  *
- *  17-09-2009 Version 0.91
- *  - This version is compiled with the newest available Wii libraries.
- *  - Use the asndlib (part of libogc) now as standard sound engine.
- *  - Use libfat 1.0.4 as disk access engine.
- *  - Use libogc 1.7.1a as Wii interface engine
- *  - Game build with devkitPPC r17 compiler.
+ *  <b>17-09-2009 Version 0.91</b>
+ *  - Core:
+ *   - Maintenance release
+ *   - This version is compiled with the newest available Wii libraries.
+ *   - Use the asndlib (part of libogc) now as standard sound engine.
+ *   - Use libfat 1.0.4 as disk access engine.
+ *   - Use libogc 1.7.1a as Wii interface engine
+ *   - Game build with devkitPPC r17 compiler.
  *
- *  09-03-2009 Version 0.90
- *  - Added new GRRLIB v4.0 library as graphical render engine.
- *  - Improve intro screens.
- *  - Added fps information on all screens.
- *  - Added screenshot functionality with plus button.
- *  - Pictures are store on the SdCard in the following directory sd:/apps/SpaceBubble
- *  - Game build with devkitPPC r17 compiler.
+ *  <b>09-03-2009 Version 0.90</b>
+ *  - GUI:
+ *   - Improve intro screens.
+ *   - Added fps information on all screens.
+ *  - Core:
+ *   - Added new GRRLIB v4.0 library as graphical render engine.
+ *   - Added screenshot functionality with plus button.
+ *   - Pictures are store on the SdCard in the following directory sd:/apps/SpaceBubble
+ *   - Game build with devkitPPC r17 compiler.
  *
- *  14-02-2000 Version 0.81
- *  - HotFix: Solve major bug in global highscore screen. If the local score did
- *   - not contain more the 13 entries the global highscore screen crashed. 
- *  - Use libogc 1.7.1 as Wii inteface engine.
- *  - Game build with devkitPPC r16 compiler.
+ *  <b>14-02-2000 Version 0.80</b>
+ *  - GUI:
+ *   - Show frame per second information on game screen.
+ *   - Added information popup windows.
+ *  - Core: 
+ *   - Improve Frame-per-second performance during game play.
+ *   - Add 10 seconds extra playtime to each level.
+ *   - Disable MP3 background music support. Too slow!
+ *   - Bug fix: Global highscore screen is not crashing anymore!
+ *   - Use libogc 1.7.1 as Wii inteface engine.
+ *   - Game build with devkitPPC r16 compiler.
  *
- *  11-02-2009 Version 0.80
- *  - Improve Frame-per-second performance during game play.
- *  - Show frame per second information on game screen.
- *  - Added information popup windows.
- *  - Add 10 seconds extra playtime to each level.
- *  - Disable MP3 background music support. Too slow!
- *  - Bug fix: Global highscore screen is not crashing anymore!
- *  - Game build with devkitPPC r16 compiler.
- *
- *  08-02-2009 Version 0.70
- *  - Increase gameboard size from 12x12 to 14x14 bubbles. 
- *  - Added total clear (no bubbles left) bonus per level. 
- *  - Remove gameboard control buttons. Use the WiiMote A button instead.
- *  - Press the Home button on WiiMote to return to the menu screen.
- *  - High score is send to web service if score is better then 12.000 point.
- *  - Only this first WiiMote can control the music and stop a running game.
- *  - Bug fix: Do not show bubble select hint when game is over. 
- *  - Bug fix: Hint is now always working correct.
- *  - Game build with devkitPPC r16 compiler.
+ *  <b>08-02-2009 Version 0.70</b>
+ *  - GUI:
+ *   - Increase gameboard size from 12x12 to 14x14 bubbles. 
+ *   - Improve level cleared screen.
+ *  - Core: 
+ *   - Added total clear (no bubbles left) bonus per level. 
+ *   - Remove gameboard control buttons. Use the WiiMote A button instead.
+ *   - Press the Home button on WiiMote to return to the menu screen.
+ *   - High score is send to web service if score is better then 12.000 point.
+ *   - Only this first WiiMote can control the music and stop a running game.
+ *   - Bug fix: Do not show bubble select hint when game is over. 
+ *   - Bug fix: Hint is now always working correct.
+ *   - Game build with devkitPPC r16 compiler.
  * 
- *  05-02-2009 Version 0.60
+ *  <b>05-02-2009 Version 0.60</b>
  *  - Add two, three and four multi player mode.
  *  - Added in sound settings button "loop music track".
  *  - Sound settings are stored in configuration file.
@@ -98,7 +116,7 @@
  *  - Bug fix: Clock color is now showed always right.
  *  - Game build with devkitPPC r15 compiler.
  *
- *  28-01-2009 Version 0.50
+ *  <b>28-01-2009 Version 0.50</b>
  *  - Hot fix: Prevent crash if IR pointer is going out of the screen.
  *  - Adjusted effect and music default volume.
  *  - Added bubble destroy graphical effect.
@@ -108,15 +126,12 @@
  *  - Reposition some buttons.
  *  - Game build with devkitPPC r15 compiler.
  *
- *  26-01-2009 Version 0.40
+ *  <b>26-01-2009 Version 0.40</b>
  *  - Show score of selected bubbles on screen.
  *  - The 40 highest global scores are showed.
  *  - Reposition some buttons.
  *  - Add level cleared information screen.
  *  - Increase http receive buffer size to 8196 bytes.
- *  - Game build with devkitPPC r15 compiler.
- *
- *  25-01-2009 Version 0.31
  *  - HotFix: Prevent random crashes if wifi connection does not response.
  *  - HotFix: Prevent wrong calculation of possible moves.
  *  - Added Winner text if player clears all six levels.
@@ -126,7 +141,7 @@
  *  - Adapted button size on most screens.
  *  - Game build with devkitPPC r15 compiler.
  * 
- *  24-01-2009 Version 0.30
+ *  <b>24-01-2009 Version 0.30</b>
  *  - Added scrollbar to highscore and release notes screens.
  *  - The fifty highest local scores are showed.
  *  - The thirty highest global localHighScore are showed.
@@ -134,7 +149,7 @@
  *  - Improve three intro screen.
  *  - Game build with devkitPPC r15 compiler.
  *
- *  23-01-2009 Version 0.20
+ *  <b>23-01-2009 Version 0.20</b>
  *  - Added 9 background music tracks.
  *  - Added several sound effects.
  *  - Each level has it on score matrix and time parameter.
@@ -154,7 +169,7 @@
  *  - Cleanup not used source code.
  *  - Game build with devkitPPC r15 compiler.
  *
- *  19-01-2009 Version 0.10
+ *  <b>19-01-2009 Version 0.10</b>
  *  - Started programming.
  *  - Created raw gameboard layout
  *  - Created intro screens.
@@ -181,6 +196,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+#ifndef __GENERAL_H__
+#define __GENERAL_H__
+
+#include <wiiuse/wpad.h>
 
 #include "GRRLIB.h"
 
@@ -224,17 +244,12 @@
 #define IMAGE_COLOR3        	0x44444444
 #define IMAGE_COLOR4        	0xAAAAAAAA
 
-#define MAX_BUTTONS         	10
+#define MAX_BUTTONS         	20
 #define MAX_RUMBLE				4
 #define MAX_BOARDSIZE 			14
 #define MAX_BUBBLES   			(MAX_BOARDSIZE*MAX_BOARDSIZE)
 #define MAX_HORZ_PIXELS			640
 #define MAX_VERT_PIXELS			480
-
-#define MAX_LOCAL_HIGHSCORE 	100
-#define MAX_TODAY_HIGHSCORE	50
-#define MAX_GLOBAL_HIGHSCORE	50
-
 #define MAX_SETTINGS				10
 #define MAX_LEVEL    	    	7
 #define MAX_LEN			    	256
@@ -250,6 +265,11 @@
 #define MAX_BUFFER_SIZE			8192
 #define MAX_IDLE_TIME	    	10
 #define MAX_POINTER         	4
+
+#define MAX_LOCAL_HIGHSCORE 	100
+#define MAX_TODAY_HIGHSCORE	50
+#define MAX_GLOBAL_HIGHSCORE	50
+
 #define EXPLODE_STEP	    		4
 #define OUT_OF_TIME		    	15
 
@@ -296,7 +316,8 @@ enum
    stateSound=14,
    stateReleaseNotes=15,
    stateSettings=16,  
-   stateNone=17
+	stateDonate=17,
+   stateNone=18
 };
 
 enum
@@ -419,23 +440,6 @@ board;
 
 board gameboard[MAX_BUBBLES];
 
-// Setting[0] First Character Initial
-// Setting[1] Second Character Initial
-// Setting[2] Third Character Initial
-// Setting[3] Music volume
-// Setting[4] Sound Effect volume
-// Setting[5] Loop music track
-// Setting[6] MP3 support
-
-typedef struct
-{
-   char   key[MAX_LEN];
-   char   value[MAX_LEN];
-}
-setting;
-
-setting settings[MAX_SETTINGS+1];
-
 typedef struct
 {
    time_t localTime;
@@ -484,7 +488,6 @@ struct
   int     score;
   int     level;
   int     possiblities;
-  char    name[MAX_LEN];
   int     maxTime;
   int     bubbleCount;
   
@@ -503,7 +506,6 @@ struct
 }
 game;
 
-
 typedef struct 
 {
   ir_t    ir;
@@ -518,6 +520,8 @@ typedef struct
 pointer;
 
 pointer pointers[MAX_POINTER];
+
+#endif
 
 // -----------------------------------------------------------
 // The End
