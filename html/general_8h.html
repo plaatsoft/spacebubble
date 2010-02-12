@@ -27,6 +27,7 @@
 <h1>include/general.h File Reference</h1>
 <p>This file contain all defines.  
 <a href="#_details">More...</a></p>
+<code>#include &lt;wiiuse/wpad.h&gt;</code><br/>
 <code>#include &quot;<a class="el" href="_g_r_r_l_i_b_8h_source.html">GRRLIB.h</a>&quot;</code><br/>
 
 <p><a href="general_8h_source.html">Go to the source code of this file.</a></p>
@@ -36,7 +37,6 @@
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbubble.html">bubble</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structexplode.html">explode</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structboard.html">board</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsetting.html">setting</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhighscore.html">highscore</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtopscore.html">topscore</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbutton.html">button</a></td></tr>
@@ -69,7 +69,7 @@
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a4d37cfbb23ae75625bf763bcf55eba40">IMAGE_COLOR2</a>&nbsp;&nbsp;&nbsp;0xDDDDDDDD</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a02153467bea6412c860152294ae5e765">IMAGE_COLOR3</a>&nbsp;&nbsp;&nbsp;0x44444444</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#af61fdf82767dcfebcc0bf94b28dbcbc4">IMAGE_COLOR4</a>&nbsp;&nbsp;&nbsp;0xAAAAAAAA</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a8bb0c7f312bb8665c3377a061dae552c">MAX_BUTTONS</a>&nbsp;&nbsp;&nbsp;10</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a8bb0c7f312bb8665c3377a061dae552c">MAX_BUTTONS</a>&nbsp;&nbsp;&nbsp;20</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#abb075b990a09b23dea1c20427e918926">MAX_RUMBLE</a>&nbsp;&nbsp;&nbsp;4</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a74c1ffef3a146ee44e9f20df67a26c6d">MAX_BOARDSIZE</a>&nbsp;&nbsp;&nbsp;14</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a8076acb56e7d2a01dc950f175b7c6c4e">MAX_BUBBLES</a>&nbsp;&nbsp;&nbsp;(MAX_BOARDSIZE*MAX_BOARDSIZE)</td></tr>
@@ -134,7 +134,8 @@
 <a class="el" href="general_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba1d3114fa4b1058b88a1c0f2048903eb8">stateReleaseNotes</a> = 15, 
 <br/>
 &nbsp;&nbsp;<a class="el" href="general_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba26649c3e6e5c3c4a1e82777379561edd">stateSettings</a> = 16, 
-<a class="el" href="general_8h.html#a06fc87d81c62e9abb8790b6e5713c55badda81b3ed70da91c871d0e0ec7ace2f9">stateNone</a> = 17
+<a class="el" href="general_8h.html#a06fc87d81c62e9abb8790b6e5713c55bae77cf65205eef7061a1909264e6f03a4">stateDonate</a> = 17, 
+<a class="el" href="general_8h.html#a06fc87d81c62e9abb8790b6e5713c55badda81b3ed70da91c871d0e0ec7ace2f9">stateNone</a> = 18
 <br/>
  }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom">{ <br/>
@@ -156,7 +157,6 @@
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structbubble.html">bubble</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#ac1f079943d139c7fa5dc7d7e3302a40f">bubbles</a> [MAX_BUBBLES+1]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structexplode.html">explode</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#af4d90a6c2463c130d59255e9903c336a">explodes</a> [MAX_BUBBLES+1]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structboard.html">board</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a38ceedc6162485ff2ed267d113878948">gameboard</a> [MAX_BUBBLES]</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsetting.html">setting</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a8d32c01aa56246caf406bfa48fb8e390">settings</a> [MAX_SETTINGS+1]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhighscore.html">highscore</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#ae1ecf65e0e07cca7caeddec17ec28c2f">localHighScore</a> [MAX_LOCAL_HIGHSCORE+1]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtopscore.html">topscore</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a6982f934c26b9560f4fbdf8fd8bca8c3">todayHighScore</a> [MAX_TODAY_HIGHSCORE+1]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structtopscore.html">topscore</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="general_8h.html#a5328027bfb8e924af937163b12211754">globalHighScore</a> [MAX_GLOBAL_HIGHSCORE+1]</td></tr>
@@ -169,7 +169,6 @@
 <tr><td class="memItemLeft" >&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;&nbsp;<a class="el" href="general_8h.html#aef160b7437d94056f1dc59646cd5b87d">score</a></td></tr>
 <tr><td class="memItemLeft" >&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;&nbsp;<a class="el" href="general_8h.html#acf4d33ee4cff36f69b924471174dcb11">level</a></td></tr>
 <tr><td class="memItemLeft" >&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;&nbsp;<a class="el" href="general_8h.html#a1cf7a50e0cafa5a43758592cc8396e9b">possiblities</a></td></tr>
-<tr><td class="memItemLeft" >&nbsp;&nbsp;&nbsp;char&nbsp;&nbsp;&nbsp;<a class="el" href="general_8h.html#a030acafb9b252bd959ffad7da432e854">name</a> [MAX_LEN]</td></tr>
 <tr><td class="memItemLeft" >&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;&nbsp;<a class="el" href="general_8h.html#af21a89a812c2d76e78c617b62d86e0f1">maxTime</a></td></tr>
 <tr><td class="memItemLeft" >&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;&nbsp;<a class="el" href="general_8h.html#a457fd7453115680d647727425cb149cd">bubbleCount</a></td></tr>
 <tr><td class="memItemLeft" >&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;&nbsp;<a class="el" href="general_8h.html#a76728a36cc21e8d5425e9fc76cb7c079">timeBonus</a></td></tr>
@@ -188,6 +187,7 @@
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>This file contain all defines. </p>
+<dl class="author"><dt><b>Author:</b></dt><dd>wplaat </dd></dl>
 <hr/><h2>Define Documentation</h2>
 <a class="anchor" id="af58f5adf2c4e479e30f2efaa24e38324"></a><!-- doxytag: member="general.h::BUTTON_1" ref="af58f5adf2c4e479e30f2efaa24e38324" args="" -->
 <div class="memitem">
@@ -623,7 +623,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAX_BUTTONS&nbsp;&nbsp;&nbsp;10</td>
+          <td class="memname">#define MAX_BUTTONS&nbsp;&nbsp;&nbsp;20</td>
         </tr>
       </table>
 </div>
@@ -1132,6 +1132,8 @@
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba26649c3e6e5c3c4a1e82777379561edd"></a><!-- doxytag: member="stateSettings" ref="a06fc87d81c62e9abb8790b6e5713c55ba26649c3e6e5c3c4a1e82777379561edd" args="" -->stateSettings</em>&nbsp;</td><td>
 </td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55bae77cf65205eef7061a1909264e6f03a4"></a><!-- doxytag: member="stateDonate" ref="a06fc87d81c62e9abb8790b6e5713c55bae77cf65205eef7061a1909264e6f03a4" args="" -->stateDonate</em>&nbsp;</td><td>
+</td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55badda81b3ed70da91c871d0e0ec7ace2f9"></a><!-- doxytag: member="stateNone" ref="a06fc87d81c62e9abb8790b6e5713c55badda81b3ed70da91c871d0e0ec7ace2f9" args="" -->stateNone</em>&nbsp;</td><td>
 </td></tr>
 </table>
@@ -1398,19 +1400,6 @@
 
 </div>
 </div>
-<a class="anchor" id="a030acafb9b252bd959ffad7da432e854"></a><!-- doxytag: member="general.h::name" ref="a030acafb9b252bd959ffad7da432e854" args="[MAX_LEN]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char <a class="el" href="general_8h.html#a030acafb9b252bd959ffad7da432e854">name</a>[MAX_LEN]</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="ac8bda48b82b10a7d9d649695b7c7c8d9"></a><!-- doxytag: member="general.h::playTime" ref="ac8bda48b82b10a7d9d649695b7c7c8d9" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1482,19 +1471,6 @@
       <table class="memname">
         <tr>
           <td class="memname">int <a class="el" href="general_8h.html#a45c21a2b8c1e4e786bc414c5fc9166e7">selectScore</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8d32c01aa56246caf406bfa48fb8e390"></a><!-- doxytag: member="general.h::settings" ref="a8d32c01aa56246caf406bfa48fb8e390" args="[MAX_SETTINGS+1]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structsetting.html">setting</a> <a class="el" href="general_8h.html#a8d32c01aa56246caf406bfa48fb8e390">settings</a>[MAX_SETTINGS+1]</td>
         </tr>
       </table>
 </div>

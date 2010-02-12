@@ -1,6 +1,6 @@
 /** 
  *  @file
- *  @brief Wii trace include file
+ *  @brief The file contain the settings prototypes
  *  @author wplaat
  *
  *  Copyright (C) 2008-2010 PlaatSoft
@@ -19,38 +19,34 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __TRACE_H__
-#define __TRACE_H__
+#ifndef __SETTINGS_H__
+#define __SETTINGS_H__
+
+#include "general.h"
+
+#define MAX_NAME_SIZE 7
+
+struct
+{
+   char name[MAX_NAME_SIZE];
+   int  musicVolume;   
+	int  effectVolume;
+	int  loopMusicTrack;
+}
+settings;
 
 /**
- * Create trace file
- * @param filename  The filename of the trace file
+ * Load Settings file 
+ * @param filename	The xml setting data
  */
-int traceOpen(char *filename);
+void loadSettingFile(char* filename);
 
 
-/**
- * Close trace file
+/** 
+ * Save the setting xml file
+ * @param filename	The setting filename.
  */
-int traceClose();
- 
-/**
- * Save trace event in trace file
- * @param functionName	The functionName
- * @param threadNr		The thread number [0=main thread, 1=network thread]
- * @param event			The event discription
- * @param ...				Optional parameters.
- * @return Zero is succesful.
- */ 
-int traceEvent( char *functionName, int threadNr, char *event, ...);
-
-
-/**
- * Save trace event in trace file.
- * @param character	The character range between 0...255
- * @return Zero is succesful.
- */ 
-int traceEventRaw( char character);
+void saveSettingFile(char* filename);
 
 
 #endif

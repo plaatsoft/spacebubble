@@ -1,11 +1,9 @@
 /**
  *  @file
  *  @brief Wii SpaceBubble game core
+ *  @author wplaat
  *  
- *  Created by wplaat (www.plaatsoft.nl)
- *
- *  Copyright (C) 2008-2010
- *  =======================
+ *  Copyright (C) 2008-2010 PlaatSoft
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,7 +27,6 @@
 #include <ogcsys.h>
 #include <gccore.h>
 #include <gcmodplay.h> 
-#include <wiiuse/wpad.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <time.h> 
@@ -39,10 +36,12 @@
 #include <sys/dir.h>
 #include <mp3player.h>
 #include <ogc/lwp_watchdog.h>	
+#include <stdarg.h>
 
 #include "General.h" 
 #include "http.h"
 #include "trace.h"
+#include "settings.h"
 #include "effect1_pcm.h"
 #include "effect2_pcm.h"
 #include "effect3_pcm.h"
@@ -66,7 +65,7 @@ void saveLocalHighScoreFile(char* filename);
 void loadTodayHighScore(char *buffer);
 void loadGlobalHighScore(char *buffer);
 
-void drawText(int x, int y, int type, char *text);
+void drawText(int x, int y, int type, const char *text, ...);
 void buttonExit(int index);
 void bubbleShiftDown(void);
 void bubblePossibleOption(void);
@@ -104,25 +103,15 @@ int     prevStateMachine    	= stateNone;
 int     maxLocalHighScore  	= 0;
 int     maxTodayHighScore  	= 0;
 int     maxGlobalHighScore	 	= 0;
-
 int     maxButtons       		= 0;
 int     maxBubbles        		= 0;
 int     maxGameboard      		= 0;
 int     maxExplodes		  		= 0;
+
 int     selectedMusic     		= 1;
-int     musicVolume       		= 5;
-int     effectVolume      		= 9;
-int     loopMusicTrack    		= 1;
-int     enableMP3		  			= 0;
 int     hintCount		  			= 0;
 bool    bPowerOff         		= false;	
 bool    gameResult		  		= false;
-
-// MP3 support
-//char    mp3files[1000][80]; 
-//int     mp3count=0;
-//char    mp3file[MAXPATHLEN]; 
-//char    *mp3buffer=NULL;*/
 
 // Background1 Image
 extern const unsigned char     pic4data[];
@@ -297,6 +286,22 @@ extern const int      pic49length;
 // GAME LOGIC
 // -----------------------------------------------------------
 
+char getLetter(char letter, bool up)
+{
+	if (up)
+	{	
+		if (letter==90) return '0';
+		if (letter==57) return 'A';
+		return ++letter;				
+	}
+	else
+	{	
+		if (letter==65) return '9';
+		if (letter==48) return 'Z';
+		return --letter;					
+	}
+}
+
 static u8 CalculateFrameRate() 
 {
     static u8 frameCount = 0;
@@ -313,109 +318,26 @@ static u8 CalculateFrameRate()
     return FPS;
 }
 
-/*int initMP3Files(void)
-{
-  mp3count= 0;
-
-  struct stat st;
-  DIR_ITER* dir; 
-  dir = diropen (MP3_DIRECTORY); 
-
-  if (dir == NULL) //If empty
-  {
-	return -1;
-  } 
-  else 
-  {
-	 while (dirnext(dir,mp3file,&st) == 0) 
-	 {
-		if (!(st.st_mode & S_IFDIR ))
-		{
-		  // st.st_mode & S_IFDIR indicates a directory
-		  strcpy(mp3files[mp3count], mp3file);
-		  ++mp3count;	
-		}		
-	 
-      }	
-   }	
-   return mp3count;
-}*/
-
-/*s32  my_reader(void *fp,void *dat, s32 size)
-{
-	
-	return fread(dat, 1, size, fp);
-}*/
 
 int initMusicTrack(void)
 {
    char *s_fn="initMusicTrack";
    traceEvent(s_fn,0,"enter");
    
-   /*if (enableMP3)
-   {
-       long lSize=0;
-       char tmp[MAX_LEN];
-       sprintf(tmp,"%s%s",MP3_DIRECTORY, mp3files[selectedMusic]);	   
-	   
-	   if (mp3buffer!=NULL)
-	   {
- 	      free (mp3buffer);	   
-	   }
-	   
-	   FILE* pFile = fopen (tmp, "r");
-		 
-	   //Check that pFile exist
-	   if (pFile!=NULL) 
-	   {   
-		  // obtain file size:
-		  fseek (pFile , 0 , SEEK_END);
-		  lSize = ftell (pFile);
-		  rewind (pFile);
-
-		  // allocate memory to contain the whole file:
-		  mp3buffer = (char*) malloc (sizeof(char)*lSize);
-		  if (mp3buffer == NULL) 
-		  {
-		     return -1;
-		  }
-		 
-          // copy the file into the buffer:
-		  int result = fread (mp3buffer,1,lSize,pFile);
-		  if (result != lSize) return -2;
-
-   		  // whole file is now loaded in the memory buffer
-  	  	  fclose (pFile); 
-	   }
-	   else
-	   {
-	      return -3;
-       } 
-	 		
-	   //if (mp3buffer != NULL) 
-	   if (pFile != NULL) 
-	   {
-		   MP3Player_Init();		
-		   //MP3Player_PlayBuffer(mp3buffer,lSize,NULL);
-		   MP3Player_PlayFile(pFile, my_reader, NULL);
-	   }
-   }
-   else*/
-   {
-     MODPlay_Init(&snd1);
-     MODPlay_Stop(&snd1);
-     MODPlay_Pause(&snd1,false);
+   MODPlay_Init(&snd1);
+   MODPlay_Stop(&snd1);
+   MODPlay_Pause(&snd1,false);
  
-     if (loopMusicTrack==1)
-     {
-        // Restart music track after finished
-        snd1.manual_polling=false;
-     }
-     else
-     {
-        // Stop after music track finised
-        snd1.manual_polling=true;
-     }
+   if (settings.loopMusicTrack==1)
+   {
+      // Restart music track after finished
+      snd1.manual_polling=false;
+   }
+   else
+   {
+      // Stop after music track finised
+      snd1.manual_polling=true;
+   }
    
      switch (selectedMusic)
      {
@@ -455,8 +377,7 @@ int initMusicTrack(void)
 			    MODPlay_Start(&snd1);	
 			    break;
      } 
-     MODPlay_SetVolume( &snd1, musicVolume*MUSIC_MULTIPLER,musicVolume*MUSIC_MULTIPLER); 
-  }
+     MODPlay_SetVolume( &snd1, settings.musicVolume*MUSIC_MULTIPLER,settings.musicVolume*MUSIC_MULTIPLER); 
   
   	traceEvent(s_fn,0,"leave [0]");
   return 0;
@@ -473,7 +394,7 @@ void initSound(void)
    
    initMusicTrack();	
    
-   	traceEvent(s_fn,0,"leave [void]");
+   traceEvent(s_fn,0,"leave [void]");
 }
 
 void initThreads(void)
@@ -729,7 +650,7 @@ void initButtons(void)
 	  
 	case stateSound:
     {
-        maxButtons=9;
+        maxButtons=8;
 
 		// Music Volume - button 
 		buttons[0].image=images.button2;
@@ -783,7 +704,7 @@ void initButtons(void)
 		// Loop music track button 
 		buttons[7].image=images.button2;
 		buttons[7].imageSelect=images.button2select;
-		if (loopMusicTrack==0)
+		if (settings.loopMusicTrack==0)
 		{
 		   strcpy(buttons[7].name,"No");
 		}
@@ -793,20 +714,6 @@ void initButtons(void)
 		}
 		buttons[7].x=60;
 		buttons[7].y=425+yOffset;
-		
-		// MP3 music support button 
-		buttons[8].image=images.button2;
-		buttons[8].imageSelect=images.button2select;
-		if (enableMP3==0)
-		{
-		   strcpy(buttons[8].name,"No");
-		}
-		else
-		{		
-  		   strcpy(buttons[8].name,"Yes");
-		}
-		buttons[8].x=500;
-		buttons[8].y=425+yOffset;
 	}
 	break;
    
@@ -831,59 +738,127 @@ void initButtons(void)
 	break;
 	  
 	case stateSettings:
-	{
-	    maxButtons=7;
+	  {
+	   maxButtons=13;
 		
-	    // First letter + button 
+		int xOffset=50;
+		
+	   // First letter + button 
 		buttons[0].image=images.button2;
 		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"+");
-		buttons[0].x=100;
+		buttons[0].x=xOffset;
 		buttons[0].y=155+yOffset;
    
 		// First letter - button 
 		buttons[1].image=images.button2;
 		buttons[1].imageSelect=images.button2select;
 		strcpy(buttons[1].name,"-");   
-		buttons[1].x=100;
+		buttons[1].x=xOffset;
 		buttons[1].y=320+yOffset;
 				
+		xOffset+=90;
+		
 		// Second letter + button 
 		buttons[2].image=images.button2;
 		buttons[2].imageSelect=images.button2select;
 		strcpy(buttons[2].name,"+");
-		buttons[2].x=280;
+		buttons[2].x=xOffset;
 		buttons[2].y=155+yOffset;
-
+   
 		// Second letter - button 
 		buttons[3].image=images.button2;
 		buttons[3].imageSelect=images.button2select;
 		strcpy(buttons[3].name,"-");   
-		buttons[3].x=280;
+		buttons[3].x=xOffset;
 		buttons[3].y=320+yOffset;
 				
+		xOffset+=90;
+		
 		// Third letter + button 
 		buttons[4].image=images.button2;
 		buttons[4].imageSelect=images.button2select;
 		strcpy(buttons[4].name,"+");
-		buttons[4].x=460;
+		buttons[4].x=xOffset;
 		buttons[4].y=155+yOffset;
    
 		// Third letter - button 
 		buttons[5].image=images.button2;
 		buttons[5].imageSelect=images.button2select;
 		strcpy(buttons[5].name,"-");   
-		buttons[5].x=460;
+		buttons[5].x=xOffset;
 		buttons[5].y=320+yOffset;
 		
-		// Back button 
+		xOffset+=90;
+		
+		// Fourth letter + button 
 		buttons[6].image=images.button2;
 		buttons[6].imageSelect=images.button2select;
-		strcpy(buttons[6].name,"Back");
-		buttons[6].x=280;
-		buttons[6].y=425+yOffset;
-	}
-	break;
+		strcpy(buttons[6].name,"+");
+		buttons[6].x=xOffset;
+		buttons[6].y=155+yOffset;
+   
+		// Fourth letter - button 
+		buttons[7].image=images.button2;
+		buttons[7].imageSelect=images.button2select;
+		strcpy(buttons[7].name,"-");   
+		buttons[7].x=xOffset;
+		buttons[7].y=320+yOffset;
+		
+		xOffset+=90;
+		
+		// Fifth letter + button 
+		buttons[8].image=images.button2;
+		buttons[8].imageSelect=images.button2select;
+		strcpy(buttons[8].name,"+");
+		buttons[8].x=xOffset;
+		buttons[8].y=155+yOffset;
+   
+		// Fitth letter - button 
+		buttons[9].image=images.button2;
+		buttons[9].imageSelect=images.button2select;
+		strcpy(buttons[9].name,"-");   
+		buttons[9].x=xOffset;
+		buttons[9].y=320+yOffset;
+		
+		xOffset+=90;
+		
+		// Sixth letter + button 
+		buttons[10].image=images.button2;
+		buttons[10].imageSelect=images.button2select;
+		strcpy(buttons[10].name,"+");
+		buttons[10].x=xOffset;
+		buttons[10].y=155+yOffset;
+   
+		// Sixth letter - button 
+		buttons[11].image=images.button2;
+		buttons[11].imageSelect=images.button2select;
+		strcpy(buttons[11].name,"-");   
+		buttons[11].x=xOffset;
+		buttons[11].y=320+yOffset;
+	
+		// Back button 
+		buttons[12].image=images.button1;
+		buttons[12].imageSelect=images.button1select;
+		strcpy(buttons[12].name,"Back");	
+		buttons[12].x=200;
+		buttons[12].y=425+yOffset;	
+	  }
+	  break;
+
+	  case stateDonate:
+	  {
+	    maxButtons=1;
+
+		// Back button 
+		buttons[0].image=images.button1;
+		buttons[0].imageSelect=images.button1select;
+		strcpy(buttons[0].name,"Back");
+		buttons[0].x=200;
+		buttons[0].y=425+yOffset;
+	  }
+	  break;
+	  
   }
 }
 
@@ -1167,14 +1142,20 @@ void initStateMachine(void)
 		   {
 		     if  ( ((game.maxTime-game.playTime)<=OUT_OF_TIME) || ((game.playTime%5)==0) ) 
 		     {		   
-   	           SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_8BIT, 8000, 0, (u8 *) effect1_pcm, effect1_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
+   	           SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_8BIT, 
+						8000, 0, (u8 *) effect1_pcm, effect1_pcm_size, 
+						settings.effectVolume*EFFECT_MULTIPLER, 
+						settings.effectVolume*EFFECT_MULTIPLER, NULL);
 		       game.prevPlayTime=game.playTime;
 			 }
 		   }
 		   		
 		   if (game.possiblities==0)
 		   {			  
-    	      SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_8BIT, 8000, 0, (u8 *) effect2_pcm, effect2_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);				   
+    	      SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_8BIT, 
+				8000, 0, (u8 *) effect2_pcm, effect2_pcm_size, 
+				settings.effectVolume*EFFECT_MULTIPLER, 
+				settings.effectVolume*EFFECT_MULTIPLER, NULL);				   
 			  gameResult=true; 
 			  stateMachine=stateLevelCleared;	
 		   }
@@ -1182,7 +1163,10 @@ void initStateMachine(void)
            if (	game.playTime>=game.maxTime )
 		   {
 		      // Player lose, time up
-  	          SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_8BIT, 8000, 0, (u8 *) effect2_pcm, effect2_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
+  	          SND_SetVoice(SND_GetFirstUnusedVoice(), 
+					VOICE_MONO_8BIT, 8000, 0, (u8 *) effect2_pcm, effect2_pcm_size, 
+					settings.effectVolume*EFFECT_MULTIPLER, 
+					settings.effectVolume*EFFECT_MULTIPLER, NULL);
    			  gameResult=false;  
 		      stateMachine=stateGameOver;	
            }		   
@@ -1429,7 +1413,7 @@ void saveLocalHighScoreFile(char* filename)
 		 sprintf(tmp, "%d", game.level);
 	     mxmlElementSetAttr(data, "level", tmp);
 		 
-	     mxmlElementSetAttr(data, "name", game.name);
+	     mxmlElementSetAttr(data, "name", settings.name);
 		 
 		 store=true;
 	  }
@@ -1464,51 +1448,6 @@ void saveLocalHighScoreFile(char* filename)
    mxmlDelete(data);
    mxmlDelete(group);
    mxmlDelete(xml);
-   
-    traceEvent(s_fn,0,"leave [void]");
-}
-
-void saveSettingFile(char* filename)
-{
-    char *s_fn="saveSettingFile";
-    traceEvent(s_fn,0,"enter");
-	
-   int i;
-   mxml_node_t *xml;
-   mxml_node_t *group;
-   mxml_node_t *data;   
-   char temp[MAX_LEN];
-      
-   xml = mxmlNewXML("1.0");
-   
-   group = mxmlNewElement(xml, "SpaceBubble");
-   
-   for(i=0; i<MAX_SETTINGS; i++)
-   {
-        sprintf(temp, "entry%d", i);
-        data = mxmlNewElement(group, temp);
-  
-        mxmlElementSetAttr(data, "key", settings[i].key);	  
- 	    mxmlElementSetAttr(data, "value", settings[i].value);			  
-   }
-  
-   /* now lets save the xml file to a file! */
-   FILE *fp;
-   fp = fopen(filename, "w");
-
-   mxmlSaveFile(xml, fp, MXML_NO_CALLBACK);
-   
-   fclose(fp);
-   mxmlDelete(data);
-   mxmlDelete(group);
-   mxmlDelete(xml);
-   
-   // Update game.name value
-   if ((settings[0].value[0]!=0x00) && (settings[1].value[0]!=0x00) && (settings[2].value[0]!=0x00))
-   {
-      sprintf(temp,"%c%c%c",settings[0].value[0],settings[1].value[0],settings[2].value[0]);
-      strcpy(game.name,temp);
-   }
    
     traceEvent(s_fn,0,"leave [void]");
 }
@@ -1682,113 +1621,6 @@ void loadLocalHighScoreFile(char* filename)
     traceEvent(s_fn,0,"leave [void]");
 }
  
-void loadSettingFile(char* filename)
-{
-    char *s_fn="loadSettingFile";
-    traceEvent(s_fn,0,"enter");
-	
-   int i;
-   FILE *fp;
-   mxml_node_t *tree=NULL;
-   mxml_node_t *data=NULL;
-   const char *tmp;
-   char temp[MAX_LEN];
-   
-   /*Load our xml file! */
-   fp = fopen(filename, "r");
-   if (fp!=NULL)
-   {
-     tree = mxmlLoadFile(NULL, fp, MXML_NO_CALLBACK);
-     fclose(fp);
-
-     for(i=0; i<MAX_SETTINGS; i++)
-     {
-	    sprintf(temp, "entry%d", i);
-        data = mxmlFindElement(tree, tree, temp, NULL, NULL, MXML_DESCEND);
-  
-        tmp=mxmlElementGetAttr(data,"key");   
-        if (tmp!=NULL) strcpy(settings[i].key,tmp); else strcpy(settings[i].key,"");
-		
-		tmp=mxmlElementGetAttr(data,"value"); 
-		if (tmp!=NULL) strcpy(settings[i].value,tmp); else strcpy(settings[i].value,"");
-		
-		switch (i)
-		{
-		   case 3: if (strcmp(settings[i].key,"MUSIC_VOLUME")==0)
-				   {
-					  musicVolume=atoi(settings[i].value);
-				   }
-		           break;
-
-           case 4: if (strcmp(settings[i].key,"EFFECT_VOLUME")==0)
-		           {
-				      effectVolume=atoi(settings[i].value);
-				   }
-		           break;
-
-           case 5: if (strcmp(settings[i].key,"LOOP_TRACK")==0)
-		           {
-				      loopMusicTrack=atoi(settings[i].value);
-				   }
-				   break;
-					
-		   case 6: if (strcmp(settings[i].key,"PLAY_MP3")==0)
-		           { 
-				      enableMP3=atoi(settings[i].value);
-				   }
-				   break;
-	    } 
-	 } 
-   }
-   else
-   {
-     // If file not found, create empty highscore list.
-     for(i=0; i<MAX_SETTINGS; i++)
-     {
-        memset(settings[i].key,0x00, MAX_LEN);
-		memset(settings[i].value,0x00, MAX_LEN);
-
-		// Setting[0] First Character Initial
-		strcpy(settings[0].key,"FIRST_CHAR");		
-		strcpy(settings[0].value,"A");
-		
-		// Setting[1] Second Character Initial
-		strcpy(settings[1].key,"SECOND_CHAR");
-		strcpy(settings[1].value,"A");
-		
-		// Setting[2] Third Character Initial
-		strcpy(settings[2].key,"THIRD_CHAR");
-		strcpy(settings[2].value,"A");
-		
-		// Setting[3] Music volume
-		strcpy(settings[3].value,"5");
-		strcpy(settings[3].key,"MUSIC_VOLUME");
-		
-		// Setting[4] Sound Effect volume
-		strcpy(settings[4].value,"9");
-		strcpy(settings[4].key,"EFFECT_VOLUME");
-		
-		// Setting[5] Loop music track
-		strcpy(settings[5].value,"0");
-		strcpy(settings[5].key,"LOOP_TRACK");
-		
-		// Setting[6] MP3 support
-		strcpy(settings[6].value,"0");
-		strcpy(settings[6].key,"PLAY_MP3");
-	 } 
-   }
-
-   mxmlDelete(data);
-   mxmlDelete(tree);
-   
-   // Update game.name value  
-   if ((settings[0].value[0]!=0x00) && (settings[1].value[0]!=0x00) && (settings[2].value[0]!=0x00))
-   {
-      sprintf(temp,"%c%c%c",settings[0].value[0],settings[1].value[0],settings[2].value[0]);
-      strcpy(game.name,temp);
-   }
-    traceEvent(s_fn,0,"leave [void]");
-}
 
 // Gameboard matrix (10x10)
 // 00 01 02 03 04 05 06 07 08 09 
@@ -2090,7 +1922,10 @@ int bubbleSelected(int x, int y)
 					count=bubbleSelectedCount();				
 					game.selectScore=count*(count-1);
 				}          			  
-            SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 22050, 0, (char *) effect3_pcm, effect3_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
+            SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 
+					22050, 0, (char *) effect3_pcm, effect3_pcm_size, 
+					settings.effectVolume*EFFECT_MULTIPLER, 
+					settings.effectVolume*EFFECT_MULTIPLER, NULL);
  	         return i;			 
 			}
 	   }	   
@@ -2111,7 +1946,7 @@ void storeScore(void)
 			PROGRAM_NAME,
 			game.level,
 			game.score,
-			game.name,
+			settings.name,
 			(int)game.localTime,
 			PROGRAM_VERSION,
 			1);
@@ -2132,7 +1967,10 @@ int buttonSelected(int x, int y, bool sound)
        if ( (x>=buttons[i].x-2) && (x<=buttons[i].x+buttons[i].image->w+2) && 
 	        (y>=buttons[i].y-2) && (y<=buttons[i].y+buttons[i].image->h+2) )
 	   {
-          if (sound) SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 22050, 0, (char *) effect3_pcm, effect3_pcm_size, effectVolume*EFFECT_MULTIPLER, effectVolume*EFFECT_MULTIPLER, NULL);
+          if (sound) SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 
+				22050, 0, (char *) effect3_pcm, effect3_pcm_size, 
+				settings.effectVolume*EFFECT_MULTIPLER, 
+				settings.effectVolume*EFFECT_MULTIPLER, NULL);
 	      return i;
 	   }	   
    }
@@ -2166,13 +2004,15 @@ void buttonMinus(int index)
    {
        case 0:
 	      // Music volume
-	      if (musicVolume>0) musicVolume--;   
-	      MODPlay_SetVolume( &snd1, musicVolume*MUSIC_MULTIPLER,musicVolume*MUSIC_MULTIPLER);
+	      if (settings.musicVolume>0) settings.musicVolume--;   
+	      MODPlay_SetVolume( &snd1, 
+				settings.musicVolume*MUSIC_MULTIPLER,
+				settings.musicVolume*MUSIC_MULTIPLER);
 		  break;
        
 	   case 1:
           // Effect volume
-          if (effectVolume>0) effectVolume--; 
+          if (settings.effectVolume>0) settings.effectVolume--; 
 		  break;
    
        case 2:
@@ -2183,42 +2023,33 @@ void buttonMinus(int index)
 		  break;
 	
 	    case 3:
-		  // First Character
-		  if (settings[0].value[0]==0x00) 
-		  {
-		     settings[0].value[0]='A';
-			 strcpy(settings[0].key,"FIRST_CHAR");
-		  }
-		  else
-		  {
-		     if (settings[0].value[0]>65) settings[0].value[0]--; else settings[0].value[0]='Z';
-		  }		
+		   // First Character
+		   settings.name[0]=getLetter(settings.name[0],false);
 		  break;
 		  
 		case 4:
-		  // Second Character
-		  if (settings[1].value[0]==0x00) 
-		  {
-		     settings[1].value[0]='A';
-			 strcpy(settings[1].key,"SECOND_CHAR");
-		  }
-		  else
-		  {
-		     if (settings[1].value[0]>65) settings[1].value[0]--; else settings[1].value[0]='Z';
-		  }		
+		   // Second Character
+		   settings.name[1]=getLetter(settings.name[1],false);
 		  break;
 		  
 		case 5:
+		   // Third Character
+		   settings.name[2]=getLetter(settings.name[0],false);
+			break;
+
+		case 6:
 		  // Third Character
-		  if (settings[2].value[0]==0x00) 
-		  {
-		     settings[2].value[0]='A';
-			 strcpy(settings[2].key,"THIRD_CHAR");
-		  }
-		  else
-		  {
-		     if (settings[2].value[0]>65) settings[2].value[0]--; else settings[2].value[0]='Z';
-		  }		
+		  settings.name[3]=getLetter(settings.name[3],false);
+		  break;
+		  
+		case 7:
+		  // Fifth Character
+		  settings.name[4]=getLetter(settings.name[4],false);
+		  break;
+		  
+		case 8:
+		  // Sixth Character
+		  settings.name[5]=getLetter(settings.name[5],false);
 		  break;
    }
 }
@@ -2229,13 +2060,15 @@ void buttonPlus(int index)
    {
       case 0:
          // Music volume
-	     if (musicVolume<MAX_SOUND_VOLUME) musicVolume++;   
-	     MODPlay_SetVolume( &snd1, musicVolume*MUSIC_MULTIPLER,musicVolume*MUSIC_MULTIPLER); 
+	     if (settings.musicVolume<MAX_SOUND_VOLUME) settings.musicVolume++;   
+	     MODPlay_SetVolume( &snd1, 
+			settings.musicVolume*MUSIC_MULTIPLER,
+			settings.musicVolume*MUSIC_MULTIPLER); 
 		 break;
 		 
 	  case 1:
          // Effect volume
-         if (effectVolume<MAX_SOUND_VOLUME) effectVolume++; 
+         if (settings.effectVolume<MAX_SOUND_VOLUME) settings.effectVolume++; 
 		 break;
 		 
 	  case 2:
@@ -2247,41 +2080,32 @@ void buttonPlus(int index)
 		 
 	  case 3:
 		  // First Character
-		  if (settings[0].value[0]==0x00) 
-		  {
-		     settings[0].value[0]='A';
-			 strcpy(settings[0].key,"FIRST_CHAR");
-		  }
-		  else
-		  {
-		     if (settings[0].value[0]<90) settings[0].value[0]++; else settings[0].value[0]='A';
-		  }		
+		  settings.name[0]=getLetter(settings.name[0],true);
 		  break;
 		  
 	  case 4:
 		  // Second Character
-		  if (settings[1].value[0]==0x00) 
-		  {
-		     settings[1].value[0]='A';
-			 strcpy(settings[1].key,"SECOND_CHAR");
-		  }
-		  else
-		  {
-		     if (settings[1].value[0]<90) settings[1].value[0]++; else settings[1].value[0]='A';
-		  }		
+		  settings.name[1]=getLetter(settings.name[1],true);	
 		  break;
 		  
 	  case 5:
 		  // Third Character
-		  if (settings[2].value[0]==0x00) 
-		  {
-		     settings[2].value[0]='A';
-			 strcpy(settings[2].key,"THIRD_CHAR");
-		  }
-		  else
-		  {
-		     if (settings[2].value[0]<90) settings[2].value[0]++; else settings[2].value[0]='A';
-		  }		
+		  settings.name[2]=getLetter(settings.name[2],true);		
+		  break;
+
+	  case 6:
+		  // Fourth Character
+		  settings.name[3]=getLetter(settings.name[3],true);
+		  break;
+		  
+	  case 7:
+		  // Fifth Character
+		  settings.name[4]=getLetter(settings.name[4],true);	
+		  break;
+		  
+	  case 8:
+		  // Sixth Character
+		  settings.name[5]=getLetter(settings.name[5],true);		
 		  break;
    }
 }
@@ -2382,11 +2206,15 @@ void buttonA(int x, int y)
 				  stateMachine=stateSettings;
 			      break;
 				  
-		  case 7: // Exit HBC button 
+		  case 7: // Donate button 		 
+					stateMachine=stateDonate;
+			      break;
+
+		  case 8: // Exit HBC button 
 			      buttonExit(0);
 			      break;	
 				  
-		  case 8: // Reset Wii button 
+		  case 9: // Reset Wii button 
 				  buttonExit(1);
 			      break; 
 	    }
@@ -2483,39 +2311,17 @@ void buttonA(int x, int y)
 			         break;
 					 
 			 case 6: // Back button event    
-					 {
-					   char tmp[MAX_LEN];
-					   					   
-					   // Setting[3] Music volume					  
-					   sprintf(tmp,"%d",musicVolume);
-					   strcpy(settings[3].value,tmp);
-					   strcpy(settings[3].key,"MUSIC_VOLUME");
-					   
-					   // Setting[4] Sound Effect volume
-					   sprintf(tmp,"%d",effectVolume );
-					   strcpy(settings[4].value,tmp);
-					   strcpy(settings[4].key,"EFFECT_VOLUME");
-					   
-					   // Setting[5] Loop music track
-					   sprintf(tmp,"%d",loopMusicTrack );
-					   strcpy(settings[5].value,tmp);
-					   strcpy(settings[5].key,"LOOP_TRACK");
-					   
-					   // Setting[6] MP3 support
-					   sprintf(tmp,"%d",enableMP3 );
-					   strcpy(settings[6].value,tmp);
-					   strcpy(settings[6].key,"PLAY_MP3");
-					   
+					 {			   
 					   saveSettingFile(SETTING_FILENAME);  
 					   stateMachine=stateMenu;  
 					 }					
 			         break;	   
 					 
 			 case 7: // Automatic next track music track button 
-					 if (loopMusicTrack==0)
+					 if (settings.loopMusicTrack==0)
 					 {
  				       strcpy(buttons[7].name,"Yes");
-					   loopMusicTrack=1;
+					   settings.loopMusicTrack=1;
 		
 					    // Restart music track after finished
 					   snd1.manual_polling=false;	  
@@ -2523,26 +2329,13 @@ void buttonA(int x, int y)
 					 else
 					 {
 					   strcpy(buttons[7].name,"No");
-					   loopMusicTrack=0;
+					   settings.loopMusicTrack=0;
 					   
 					   // Stop after music track finised
 					   snd1.manual_polling=true;
 
 					 }
-					 break; 
-					
-			 case 8: // MP3 music support button 
-					 if (enableMP3==0)
-					 {
- 				       strcpy(buttons[8].name,"Yes");
-					   enableMP3=1;
-					 }
-					 else
-					 {
-					   strcpy(buttons[8].name,"No");
-					   enableMP3=0;
-					 }
-					 break; 						 
+					 break; 					 
 		  }
 	 }
 	 break;
@@ -2655,8 +2448,34 @@ void buttonA(int x, int y)
 			 case 5: // - Third Character button event           
 			         buttonMinus(5);
 			         break;
-					 
-			 case 6: // Back button event      
+			
+			case 6: // + Fourth Character button event         
+			         buttonPlus(6);
+			         break;	   
+			 
+			 case 7: // - Fourth Character button event           
+			         buttonMinus(6);
+			         break;
+						
+			
+			case 8: // + Fifth Character button event         
+			         buttonPlus(7);
+			         break;	   
+			 
+			 case 9: // - Fifth Character button event           
+			         buttonMinus(7);
+			         break;
+						
+			
+			case 10: // + Sixth Character button event         
+			         buttonPlus(8);
+			         break;	   
+			 
+			 case 11: // - Sixth Character button event           
+			         buttonMinus(8);
+			         break;
+						
+			 case 12: // Back button event      
 					 saveSettingFile(SETTING_FILENAME);    
 			         stateMachine=stateMenu;
 			         break;	   
@@ -2664,6 +2483,18 @@ void buttonA(int x, int y)
 		  }
 	 }
 	 break;
+	 
+	 case stateDonate:
+   {
+        switch (buttonSelected(x,y,true))
+	    {
+          case 0: // Menu button	
+						stateMachine=stateMenu;
+						break;	     
+	    }
+   }
+	break;	 
+	
   }  
 }
 	
@@ -2879,81 +2710,85 @@ void drawExplodes(void)
    }
 }
 
-void drawText(int x, int y, int type, char *text)
+void drawText(int x, int y, int type, const char *text, ...)
 {
-   char tmp[MAX_LEN];
-   memset(tmp,0x00,sizeof(tmp));
+   char buf[MAX_LEN];
+	memset(buf,0x00,sizeof(buf));
    
-   if (text!=NULL)
-   {    		
-     strcpy(tmp, text);
+	if (text!=NULL)
+	{    		
+		// Expend event string
+		va_list list;
+		va_start(list, text );
+		vsprintf(buf, text, list);
+
 	 
      switch (type)
      {	   	   	 
        case fontTitle: 
 	   {
-	      if (x==0) x=320-((strlen(tmp)*34)/2);  
-		  GRRLIB_Printf2(x, y, tmp, 72, COLOR_WHITESMOKE); 
+	      if (x==0) x=320-((strlen(buf)*34)/2);  
+		  GRRLIB_Printf2(x, y, buf, 72, COLOR_WHITESMOKE); 
 	   }
 	   break;
   
        case fontWelcome: 
 	   {
-		  GRRLIB_Printf2(x, y, tmp, 40, COLOR_WHITESMOKE); 
+		  GRRLIB_Printf2(x, y, buf, 40, COLOR_WHITESMOKE); 
 	   }
 	   break;
 	   
 	   case fontSubTitle:
 	   {
-	      if (x==0) x=320-((strlen(tmp)*20)/2);
-		  GRRLIB_Printf2(x, y, tmp, 30, COLOR_WHITESMOKE);          
+	      if (x==0) x=320-((strlen(buf)*20)/2);
+		  GRRLIB_Printf2(x, y, buf, 30, COLOR_WHITESMOKE);          
 	   }
 	   break;
 	   
 	   case fontSubTitle2:
 	   {
-	      if (x==0) x=320-((strlen(tmp)*20)/2);
-		  GRRLIB_Printf2(x, y, tmp, 30, COLOR_LIGHTRED);          
+	      if (x==0) x=320-((strlen(buf)*20)/2);
+		  GRRLIB_Printf2(x, y, buf, 30, COLOR_LIGHTRED);          
 	   }
 	   break;
 	   	   
 	   case fontParagraph:
 	   {
-	       if (x==0) x=320-((strlen(tmp)*10)/2);	   
-		   GRRLIB_Printf2(x, y, tmp, 24, COLOR_WHITESMOKE);            
+	       if (x==0) x=320-((strlen(buf)*10)/2);	   
+		   GRRLIB_Printf2(x, y, buf, 24, COLOR_WHITESMOKE);            
 	   }
 	   break;
 	   	   
 	   case fontNormal:
 	   {
-	       if (x==0) x=320-((strlen(tmp)*7)/2);
-		   GRRLIB_Printf2(x, y, tmp, 18, COLOR_WHITESMOKE);            
+	       if (x==0) x=320-((strlen(buf)*7)/2);
+		   GRRLIB_Printf2(x, y, buf, 18, COLOR_WHITESMOKE);            
 	   }
 	   break;
 	         
 	   case fontNew:
 	   {
-	       if (x==0) x=320-((strlen(tmp)*8)/2);	   
-		   GRRLIB_Printf2(x, y, tmp, 22, COLOR_WHITESMOKE);            
+	       if (x==0) x=320-((strlen(buf)*8)/2);	   
+		   GRRLIB_Printf2(x, y, buf, 22, COLOR_WHITESMOKE);            
 	   }
 	   break;
 	   
 	   case fontSpecial:
 	   {
-	       if (x==0) x=320-((strlen(tmp)*10)/2);
-		   GRRLIB_Printf2(x, y, tmp, 10, COLOR_WHITESMOKE);            
+	       if (x==0) x=320-((strlen(buf)*10)/2);
+		   GRRLIB_Printf2(x, y, buf, 10, COLOR_WHITESMOKE);            
 	   }
 	   break;
 	   
 	   case fontButton:
 	   {
-	       if (strlen(tmp)==1)
+	       if (strlen(buf)==1)
 		   {
-		      GRRLIB_Printf2(x+35, y, tmp, 24, COLOR_WHITESMOKE);            
+		      GRRLIB_Printf2(x+35, y, buf, 24, COLOR_WHITESMOKE);            
 		   }
 		   else
 		   {
-		      GRRLIB_Printf2(x+20, y, tmp, 24, COLOR_WHITESMOKE);    
+		      GRRLIB_Printf2(x+20, y, buf, 24, COLOR_WHITESMOKE);    
 		   }		   
 	   }
 	   break;
@@ -3034,8 +2869,8 @@ void drawScreen(void)
 			ypos+=20;
 			drawText(60, ypos, fontNormal,  "under the terms of the GNU General Public License (GPL) version 2" );
 		  
-			sprintf(tmp,"%d fps", CalculateFrameRate());
-			drawText(20, 450+yOffset, fontSpecial, tmp);
+			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 		  
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
@@ -3065,10 +2900,10 @@ void drawScreen(void)
 			drawText(0, ypos, fontParagraph,  "Please visit my website for more information."  );
 			ypos+=40;
 			drawText(0, ypos, fontParagraph,  "http://www.plaatsoft.nl"  );
+
+			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			  
-			sprintf(tmp,"%d fps", CalculateFrameRate());
-			drawText(20, 450+yOffset, fontSpecial, tmp);
-		  
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }	   
@@ -3129,12 +2964,9 @@ void drawScreen(void)
 	         drawText(20, ypos, fontNew, tmp);			 
          }  
 
-         sprintf(tmp,"Network: %s",tcp_get_state());
-			drawText(20, 445+yOffset, fontSpecial, tmp);
- 
-			sprintf(tmp,"%d fps", CalculateFrameRate());
-			drawText(20, 460+yOffset, fontSpecial, tmp);
-		  
+			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw buttons
 	      drawButtons(); 
 		  
@@ -3332,7 +3164,7 @@ void drawScreen(void)
 		 	  
 		   // Draw buttons
 	      drawButtons(); 
-
+			
 			sprintf(tmp,"%d fps", CalculateFrameRate());
 			drawText(80, 480, fontSpecial, tmp);
 		  				   		
@@ -3418,6 +3250,9 @@ void drawScreen(void)
          // Draw buttons
 	      drawButtons(); 
 		  
+			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
 	   }
@@ -3507,6 +3342,9 @@ void drawScreen(void)
           // Draw buttons
 	      drawButtons(); 
 		  
+		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
 	   }
@@ -3596,6 +3434,9 @@ void drawScreen(void)
          // Draw buttons
 	      drawButtons(); 
 		  
+		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
 	   }
@@ -3635,6 +3476,9 @@ void drawScreen(void)
 			// Draw buttons
 	      drawButtons(); 
 		  
+		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
@@ -3684,6 +3528,9 @@ void drawScreen(void)
 			// Draw buttons
 	      drawButtons(); 
 		  
+		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 		}
@@ -3735,6 +3582,9 @@ void drawScreen(void)
 		  // Draw buttons
 	      drawButtons(); 
 		  
+		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
@@ -3761,14 +3611,16 @@ void drawScreen(void)
 	      ypos+=20;
          GRRLIB_DrawImg(104,ypos,images.bar, 0, 1, 1, IMAGE_COLOR );
 	      ypos+=10;
-	      GRRLIB_DrawImg(115+(musicVolume*40),ypos, images.barCursor, 0, 1, 1, IMAGE_COLOR );
+	      GRRLIB_DrawImg(115+(settings.musicVolume*40),ypos, 
+				images.barCursor, 0, 1, 1, IMAGE_COLOR );
   
          ypos+=80;
          drawText(0, ypos, fontParagraph, "Effects Volume" );
 	      ypos+=20;	
 	      GRRLIB_DrawImg(104,ypos, images.bar, 0, 1, 1, IMAGE_COLOR );
 	      ypos+=10;
-	      GRRLIB_DrawImg(115+(effectVolume*40),ypos,images.barCursor, 0, 1, 1, IMAGE_COLOR );
+	      GRRLIB_DrawImg(115+(settings.effectVolume*40),ypos,
+				images.barCursor, 0, 1, 1, IMAGE_COLOR );
 	
 	      ypos+=70;
 		   sprintf(tmp,"  Music track [%d]", selectedMusic);
@@ -3781,6 +3633,9 @@ void drawScreen(void)
 		   // Draw buttons
 	      drawButtons(); 
 		  
+		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
@@ -3878,6 +3733,9 @@ void drawScreen(void)
 			// Draw buttons
 	      drawButtons(); 
 		  
+		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
@@ -3898,25 +3756,70 @@ void drawScreen(void)
          ypos+=90;
 			drawText(0, ypos, fontParagraph, "The user initials are used in the highscore area.");	
 	     
-	      // Draw panels		 
-			ypos+=85;
-			GRRLIB_DrawImg(60,  ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-      	GRRLIB_DrawImg(240, ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-			GRRLIB_DrawImg(420, ypos, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
-      	
-			// Draw text  
-			ypos+=10;
-			if (settings[0].value[0]!=0x00) drawText(110, ypos, fontTitle, settings[0].value);
-			if (settings[1].value[0]!=0x00) drawText(300, ypos, fontTitle, settings[1].value);
-			if (settings[2].value[0]!=0x00) drawText(480, ypos, fontTitle, settings[2].value);
+		   // Draw text
+	      int xpos=75;			
+			drawText(xpos, ypos, fontTitle, "%c", settings.name[0]);
+			xpos+=90;
+			drawText(xpos, ypos, fontTitle, "%c", settings.name[1]);
+			xpos+=90;
+			drawText(xpos, ypos, fontTitle, "%c", settings.name[2]);
+			xpos+=90;
+			drawText(xpos, ypos, fontTitle, "%c", settings.name[3]);
+			xpos+=90;
+			drawText(xpos, ypos, fontTitle, "%c", settings.name[4]);
+			xpos+=90;
+			drawText(xpos, ypos, fontTitle, "%c", settings.name[5]);
 	      
 		   // Draw buttons
 	      drawButtons(); 
 		  	  
+			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+			
 			// Draw text layer on top of background.
 			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
+		
+		case stateDonate:
+		{
+			// Draw background
+			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
+      		
+			// Init text layer	  
+         GRRLIB_initTexture();
+			
+			// Draw Title	
+			drawText(0, ypos, fontTitle, "Donate");
+			ypos+=100;
+			
+			drawText(0, ypos, fontParagraph, "If you enjoy this game please send me a");
+			ypos+=25;
+		   drawText(0, ypos, fontParagraph, "small donation. You can make a donation ");
+			ypos+=25;
+		   drawText(0, ypos, fontParagraph, "online with your credit card, or paypal account.");
+			ypos+=25;
+		   drawText(0, ypos, fontParagraph, "Your credit card will be processed by PayPal, a");
+			ypos+=25;
+		   drawText(0, ypos, fontParagraph, "trusted name in secure online transactions.");
+			ypos+=65;
+		   drawText(0, ypos, fontParagraph, "Please visit http://www.plaatsoft.nl");			
+			ypos+=25;
+		   drawText(0, ypos, fontParagraph, "Click on the donate link and follow the instructions.");	
+			ypos+=65;
+			drawText(0, ypos, fontParagraph, "Many thanks for your support!");
+
+			// Draw buttons
+	      drawButtons(); 
+			
+			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
+			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
+		  		   		  		   		  
+			// Draw text layer on top of background.
+			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
+		}
+		break;
+
 	}
 }
 
