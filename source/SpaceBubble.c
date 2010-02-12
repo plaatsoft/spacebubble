@@ -429,7 +429,7 @@ void initButtons(void)
    {
       case stateMenu:
       {
-        maxButtons=9;
+        maxButtons=10;
 
 		// Play button 
 		buttons[0].image=images.button1;
@@ -480,19 +480,26 @@ void initButtons(void)
 		buttons[6].x=370;
 		buttons[6].y=275+yOffset;
 		
-		// Exit HBC button 
+		// Donate button 
 		buttons[7].image=images.button1;
 		buttons[7].imageSelect=images.button1select;
-		strcpy(buttons[7].name,"Exit HBC" );
+		strcpy(buttons[7].name,"Donate" );
 		buttons[7].x=370;
-		buttons[7].y=375+yOffset;
-      
-		// Reset Wii button 
+		buttons[7].y=315+yOffset;
+		
+		// Exit HBC button 
 		buttons[8].image=images.button1;
 		buttons[8].imageSelect=images.button1select;
-		strcpy(buttons[8].name,"Reset Wii" );
+		strcpy(buttons[8].name,"Exit HBC" );
 		buttons[8].x=370;
-		buttons[8].y=415+yOffset;
+		buttons[8].y=375+yOffset;
+      
+		// Reset Wii button 
+		buttons[9].image=images.button1;
+		buttons[9].imageSelect=images.button1select;
+		strcpy(buttons[9].name,"Reset Wii" );
+		buttons[9].x=370;
+		buttons[9].y=415+yOffset;
     }
     break;
   
@@ -838,10 +845,10 @@ void initButtons(void)
 		buttons[11].y=320+yOffset;
 	
 		// Back button 
-		buttons[12].image=images.button1;
-		buttons[12].imageSelect=images.button1select;
+		buttons[12].image=images.button2;
+		buttons[12].imageSelect=images.button2select;
 		strcpy(buttons[12].name,"Back");	
-		buttons[12].x=200;
+		buttons[12].x=280;
 		buttons[12].y=425+yOffset;	
 	  }
 	  break;
@@ -851,10 +858,10 @@ void initButtons(void)
 	    maxButtons=1;
 
 		// Back button 
-		buttons[0].image=images.button1;
-		buttons[0].imageSelect=images.button1select;
+		buttons[0].image=images.button2;
+		buttons[0].imageSelect=images.button2select;
 		strcpy(buttons[0].name,"Back");
-		buttons[0].x=200;
+		buttons[0].x=280;
 		buttons[0].y=425+yOffset;
 	  }
 	  break;
@@ -1110,7 +1117,7 @@ void initExplodes(void)
 	  explodes[i].height=0;		   
    }	
    
-   	traceEvent(s_fn,0,"leave [void]");
+   traceEvent(s_fn,0,"leave [void]");
 }
 
 void initStateMachine(void)
@@ -1345,6 +1352,13 @@ void initStateMachine(void)
 		break;
 		
 		case stateSettings:
+		{
+		   if (stateMachine!=prevStateMachine) initButtons();
+		   prevStateMachine=stateMachine;
+		}
+		break;
+		
+		case stateDonate:
 		{
 		   if (stateMachine!=prevStateMachine) initButtons();
 		   prevStateMachine=stateMachine;
@@ -2034,7 +2048,7 @@ void buttonMinus(int index)
 		  
 		case 5:
 		   // Third Character
-		   settings.name[2]=getLetter(settings.name[0],false);
+		   settings.name[2]=getLetter(settings.name[2],false);
 			break;
 
 		case 6:
@@ -3627,13 +3641,11 @@ void drawScreen(void)
 	      drawText(0, ypos, fontParagraph, tmp);	
 		  
 		   ypos=395+yOffset;
-		   drawText(60, ypos, fontNormal,  "Loop track");	
-		   drawText(505, ypos, fontNormal, "Play MP3");	
+		   drawText(60, ypos, fontNormal,  "Loop track");		
 		  		
 		   // Draw buttons
 	      drawButtons(); 
 		  
-		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			
 			// Draw text layer on top of background.
@@ -3754,9 +3766,10 @@ void drawScreen(void)
          drawText(0, ypos, fontTitle, "    Game Settings");
 			
          ypos+=90;
-			drawText(0, ypos, fontParagraph, "The user initials are used in the highscore area.");	
-	     
+			drawText(0, ypos, fontParagraph, "The user name is used in the highscore area.");	
+	      
 		   // Draw text
+			ypos+=90;
 	      int xpos=75;			
 			drawText(xpos, ypos, fontTitle, "%c", settings.name[0]);
 			xpos+=90;
