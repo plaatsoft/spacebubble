@@ -24,6 +24,7 @@
  *  - GUI:
  *   - Improve game settings screen.
  *   - Added donate screen. 
+ *   - Update main menu screen information.
  *  - Core:
  *   - Extend user name from 3 to 6 characters.
  *   - Default user name is based on Wii nickname.
