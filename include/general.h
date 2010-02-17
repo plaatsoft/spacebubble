@@ -20,11 +20,12 @@
  *
  * @section ReleaseNotes
  *
- *  <b>XX-XX-XXXX Version 0.94 (Up coming release)</b>
+ *  <b>17-02-2010 Version 0.94</b>
  *  - GUI:
  *   - Improve game settings screen.
  *   - Added donate screen. 
  *   - Update main menu screen information.
+ *   - Improve bubble graphics.
  *  - Core:
  *   - Extend user name from 3 to 6 characters.
  *   - Default user name is based on Wii nickname.
@@ -45,6 +46,7 @@
  *   - Store current game score in highscore area also when game is quited.
  *   - use GRRLIB v4.2.0 library as graphical engine.
  *   - Use libogc v1.8.1 library as Wii interface engine.
+ *  - General:
  *   - Build game with devkitPPC r19 compiler.
  *
  *  <b>19-11-2009 Version 0.92</b>
@@ -57,6 +59,7 @@
  *   - Use libfat v1.0.6 as disk access engine
  *   - Use libmxml v2.6 library as xml engine
  *   - Use libogc v1.8.0 library as Wii interface engine
+ *  - General:
  *   - Build game with devkitPPC r19 compiler.
  *
  *  <b>17-09-2009 Version 0.91</b>
@@ -66,6 +69,7 @@
  *   - Use the asndlib (part of libogc) now as standard sound engine.
  *   - Use libfat 1.0.4 as disk access engine.
  *   - Use libogc 1.7.1a as Wii interface engine
+ *  - General:
  *   - Game build with devkitPPC r17 compiler.
  *
  *  <b>09-03-2009 Version 0.90</b>
@@ -76,6 +80,7 @@
  *   - Added new GRRLIB v4.0 library as graphical render engine.
  *   - Added screenshot functionality with plus button.
  *   - Pictures are store on the SdCard in the following directory sd:/apps/SpaceBubble
+ *  - General:
  *   - Game build with devkitPPC r17 compiler.
  *
  *  <b>14-02-2000 Version 0.80</b>
@@ -88,6 +93,7 @@
  *   - Disable MP3 background music support. Too slow!
  *   - Bug fix: Global highscore screen is not crashing anymore!
  *   - Use libogc 1.7.1 as Wii inteface engine.
+ *  - General:
  *   - Game build with devkitPPC r16 compiler.
  *
  *  <b>08-02-2009 Version 0.70</b>
@@ -102,85 +108,123 @@
  *   - Only this first WiiMote can control the music and stop a running game.
  *   - Bug fix: Do not show bubble select hint when game is over. 
  *   - Bug fix: Hint is now always working correct.
+ *  - General:
  *   - Game build with devkitPPC r16 compiler.
  * 
  *  <b>05-02-2009 Version 0.60</b>
- *  - Add two, three and four multi player mode.
- *  - Added in sound settings button "loop music track".
- *  - Sound settings are stored in configuration file.
- *  - Play random music track during game.
- *  - If player is 10 seconds idle give a random bubble select hint.
- *  - From level five SuperShift bubble option is activated.
- *  - Rename "General Setting" menu button to "User Initials".
- *  - Improve score calculation on cleared level screen.
- *  - Add level seven with more bonus points to earn.
- *  - Bug fix: Clock color is now showed always right.
- *  - Game build with devkitPPC r15 compiler.
+ *  - GUI:
+ *   - Rename "General Setting" menu button to "User Initials".
+ *   - Add level seven with more bonus points to earn.
+ *   - Bug fix: Clock color is now showed always right.
+ *  - Core:
+ *   - Add two, three and four multi player mode.
+ *   - Added in sound settings button "loop music track".
+ *   - Sound settings are stored in configuration file.
+ *   - Play random music track during game.
+ *   - If player is 10 seconds idle give a random bubble select hint.
+ *   - From level five SuperShift bubble option is activated.
+ *   - Improve score calculation on cleared level screen.
+ *  - General:
+ *   - Game build with devkitPPC r15 compiler.
  *
  *  <b>28-01-2009 Version 0.50</b>
- *  - Hot fix: Prevent crash if IR pointer is going out of the screen.
- *  - Adjusted effect and music default volume.
- *  - Added bubble destroy graphical effect.
- *  - Add 10 seconds extra playtime to each level.
- *  - Clock color is changing to red for the last 15 seconds.
- *  - Improve help screen.
- *  - Reposition some buttons.
- *  - Game build with devkitPPC r15 compiler.
+ *  - GUI:
+ *   - Added bubble destroy graphical effect.
+ *   - Added 10 seconds extra playtime to each level.
+ *   - Clock color is changing to red for the last 15 seconds.
+ *   - Improve help screen.
+ *   - Reposition some buttons.
+ *  - Core:
+ *   - Hot fix: Prevent crash if IR pointer is going out of the screen.
+ *   - Adjusted effect and music default volume.
+ *  - General:
+ *   - Game build with devkitPPC r15 compiler.
  *
  *  <b>26-01-2009 Version 0.40</b>
- *  - Show score of selected bubbles on screen.
- *  - The 40 highest global scores are showed.
- *  - Reposition some buttons.
- *  - Add level cleared information screen.
- *  - Increase http receive buffer size to 8196 bytes.
- *  - HotFix: Prevent random crashes if wifi connection does not response.
- *  - HotFix: Prevent wrong calculation of possible moves.
- *  - Added Winner text if player clears all six levels.
- *  - Added 2.000 bonus points if you clear all levels.
- *  - Added clock color is changing to red for the last 10 seconds.
- *  - Added clock sound effects.
- *  - Adapted button size on most screens.
- *  - Game build with devkitPPC r15 compiler.
+ *  - GUI:
+ *   - Show score of selected bubbles on screen.
+ *   - The 40 highest global scores are showed.
+ *   - Reposition some buttons.
+ *   - Added level cleared information screen.
+ *   - Added clock color is changing to red for the last 10 seconds.
+ *   - Adapted button size on most screens.
+ *  - Core:
+ *   - Increase http receive buffer size to 8196 bytes.
+ *   - HotFix: Prevent random crashes if wifi connection does not response.
+ *   - HotFix: Prevent wrong calculation of possible moves.
+ *   - Added Winner text if player clears all six levels.
+ *   - Added 2.000 bonus points if you clear all levels.
+ *   - Added clock sound effects.
+ *  - General:
+ *   - Game build with devkitPPC r15 compiler.
  * 
  *  <b>24-01-2009 Version 0.30</b>
- *  - Added scrollbar to highscore and release notes screens.
- *  - The fifty highest local scores are showed.
- *  - The thirty highest global localHighScore are showed.
- *  - Improve button layout.
- *  - Improve three intro screen.
- *  - Game build with devkitPPC r15 compiler.
+ *  - GUI:
+ *   - Added scrollbar to highscore and release notes screens.
+ *   - The fifty highest local scores are showed.
+ *   - The thirty highest global localHighScore are showed.
+ *   - Improve button layout.
+ *   - Improve three intro screen.
+ *  - General:
+ *   - Game build with devkitPPC r15 compiler.
  *
  *  <b>23-01-2009 Version 0.20</b>
- *  - Added 9 background music tracks.
- *  - Added several sound effects.
- *  - Each level has it on score matrix and time parameter.
- *  - First offical release for the Wii HomeBrew scene.
- *  - Added player initials setting screen.
- *  - Added load/save game setting to sdcard.
- *  - Use only one unique cookie number during the game.
- *  - Improve score calculation.
- *  - If level is cleared (remaining time * factor) is added to score.
- *  - Added Local / Global highscore functionality.
- *  - Added game info panel to game screen.
- *  - Added countdown clock.
- *  - Added ShiftRight bubble functionality.
- *  - Added six game levels.
- *  - Gamescore is send anonymouse to webservices on internet.
- *  - Added help screen information.
- *  - Cleanup not used source code.
- *  - Game build with devkitPPC r15 compiler.
+ *  - GUI:
+ *   - Added help screen information.
+ *   - Added Local / Global highscore functionality.
+ *   - Added game info panel to game screen.
+ *   - Added countdown clock.
+ *  - Core:
+ *   - Added 9 background music tracks.
+ *   - Added several sound effects.
+ *   - Each level has it on score matrix and time parameter.
+ *   - Added player initials setting screen.
+ *   - Added load/save game setting to sdcard.
+ *   - Use only one unique cookie number during the game.
+ *   - Improve score calculation.
+ *   - If level is cleared (remaining time * factor) is added to score.
+ *   - Added ShiftRight bubble functionality.
+ *   - Added six game levels.
+ *   - Gamescore is send anonymouse to webservices on internet.
+ *  - General:
+ *   - Cleanup not used source code.
+ *   - First offical release for the Wii HomeBrew scene.
+ *   - Game build with devkitPPC r15 compiler.
  *
  *  <b>19-01-2009 Version 0.10</b>
- *  - Started programming.
- *  - Created raw gameboard layout
- *  - Created intro screens.
- *  - Basic game engine ready.
- *  - Game build with devkitPPC r15 compiler.
+ *  - GUI:
+ *   - Created intro screens.
+ *   - Created raw gameboard layout 
+ *  - General:
+ *   - Started programming.
+ *   - Basic game engine ready.
+ *   - Game build with devkitPPC r15 compiler.
  *
  * @section WishList
  *  - Multi language support (Move language to xml data files)
- *  - Nintendo External LAN device support 
+ *  - Add Nintendo external LAN device support 
  *
+ * @section ScreenShots
+ * This section contain some screenshots of the game.
+ * - <a href="../screenshots/SpaceBubble-intro1.jpg">Intro Screen 1</a>
+ * - <a href="../screenshots/SpaceBubble-intro2.jpg">Intro Screen 2</a>
+ * - <a href="../screenshots/SpaceBubble-intro3.jpg">Intro Screen 3</a>
+ * - <a href="../screenshots/SpaceBubble-mainmenu.jpg">Main Menu Screen</a>
+ * - <a href="../screenshots/SpaceBubble-game1.jpg">Game Screen 1</a>
+ * - <a href="../screenshots/SpaceBubble-game2.jpg">Game Screen 2</a>
+ * - <a href="../screenshots/SpaceBubble-game3.jpg">Level cleared Screen</a>
+ * - <a href="../screenshots/SpaceBubble-game4.jpg">Quit game screen</a>
+ * - <a href="../screenshots/SpaceBubble-highscore1.jpg">Local Highscore screen</a>
+ * - <a href="../screenshots/SpaceBubble-highscore2.jpg">Today Highscore screen</a>
+ * - <a href="../screenshots/SpaceBubble-highscore3.jpg">Global Highscore screen</a>
+ * - <a href="../screenshots/SpaceBubble-help1.jpg">Help 1 screen</a>
+ * - <a href="../screenshots/SpaceBubble-help2.jpg">Help 2 screen </a>
+ * - <a href="../screenshots/SpaceBubble-credits.jpg">Credits screen</a>
+ * - <a href="../screenshots/SpaceBubble-releasenotes.jpg">Release Notes screen</a>
+ * - <a href="../screenshots/SpaceBubble-soundsettings.jpg">Sound Settings screen</a>
+ * - <a href="../screenshots/SpaceBubble-gamesettings.jpg">Game Settings screen</a>
+ * - <a href="../screenshots/SpaceBubble-donate.jpg">Donate screen</a>
+ * 
  * @section Licence
  * Copyright (c) 2008-2010 Plaatsoft
  *
@@ -206,8 +250,8 @@
 #include "GRRLIB.h"
 
 #define PROGRAM_NAME	    		"SpaceBubble"
-#define PROGRAM_VERSION     	"0.93"
-#define RELEASE_DATE        	"08-01-2010" 
+#define PROGRAM_VERSION     	"0.94"
+#define RELEASE_DATE        	"17-02-2010" 
 
 // Check latest available version 
 #define URL1                	"http://www.plaatsoft.nl/service/releasenotes4.html"
