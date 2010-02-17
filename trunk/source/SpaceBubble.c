@@ -473,7 +473,7 @@ void initButtons(void)
 		buttons[4].x=370;
 		buttons[4].y=235+yOffset;
 		
-		// Initials Settings button 
+		// Game Settings button 
 		buttons[6].image=images.button1;
 		buttons[6].imageSelect=images.button1select;
 		strcpy(buttons[6].name,"Game Settings" );
