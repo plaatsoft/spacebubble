@@ -56,26 +56,6 @@
 #include "track9_mod.h"
 
 // -----------------------------------------------------------
-// PROTOTYPES
-// -----------------------------------------------------------
-
-void loadLocalHighScoreFile(char* filename);
-void saveLocalHighScoreFile(char* filename);
-
-void loadTodayHighScore(char *buffer);
-void loadGlobalHighScore(char *buffer);
-
-void drawText(int x, int y, int type, const char *text, ...);
-void buttonExit(int index);
-void bubbleShiftDown(void);
-void bubblePossibleOption(void);
-void initBubbles(void);
-int  bubbleEnabledCount(void);
-int  bubbleSelectedCount(void);
-void initExplodes(void);
-void bubbleHint(void);
-
-// -----------------------------------------------------------
 // VARIABLES
 // -----------------------------------------------------------
 
@@ -281,11 +261,13 @@ extern const int      pic48length;
 extern const unsigned char     pic49data[];
 extern const int      pic49length;
 
-
 // -----------------------------------------------------------
-// GAME LOGIC
+// Support methodes
 // -----------------------------------------------------------
 
+/** 
+ * Get letter
+ */
 char getLetter(char letter, bool up)
 {
 	if (up)
@@ -302,6 +284,9 @@ char getLetter(char letter, bool up)
 	}
 }
 
+/**
+ * Calculate FramePerSecond (FPS) rate
+ */
 static u8 CalculateFrameRate() 
 {
     static u8 frameCount = 0;
@@ -318,7 +303,656 @@ static u8 CalculateFrameRate()
     return FPS;
 }
 
+/**
+ *	PowerOff callback function.
+ */
+void doPowerOff( void )
+{
+    char *s_fn="doPowerOff";
+    traceEvent(s_fn,0,"enter");
+   
+	bPowerOff = true;
+	
+	 traceEvent(s_fn,0,"leave [void]");
+	return;
+}
 
+/**
+ * PowerOff callback function for the Wii Remote power button.
+ */
+void doPadPowerOff( s32 chan )
+{
+    char *s_fn="doPadPowerOff";
+    traceEvent(s_fn,0,"enter");
+	
+	if ( chan == WPAD_CHAN_0 )
+	{
+		bPowerOff = true;
+	}
+	
+	traceEvent(s_fn,0,"leave [void]");
+	return;
+}
+
+/**
+ * Save Local highscore to file
+ * @param filename	The filename of the highscore
+ */
+void saveLocalHighScoreFile(char* filename)
+{
+    char *s_fn="saveLocalHighScoreFile";
+    traceEvent(s_fn,0,"enter");
+	
+   int i;
+   bool store=false;
+   int selectedHighScore=0;
+   mxml_node_t *xml;
+   mxml_node_t *group;
+   mxml_node_t *data;   
+   char tmp[MAX_LEN];
+      
+   xml = mxmlNewXML("1.0");
+   
+   group = mxmlNewElement(xml, "SpaceBubble");
+   
+   for(i=0; i<MAX_LOCAL_HIGHSCORE; i++)
+   {
+      if ((game.score>=localHighScore[i].score) && !store)
+		{
+			sprintf(tmp, "entry%d", i);
+         data = mxmlNewElement(group, tmp);
+  
+			sprintf(tmp, "%d", (int) game.localTime);
+         mxmlElementSetAttr(data, "localTime", tmp);
+	  
+			sprintf(tmp, "%d", game.score);
+			mxmlElementSetAttr(data, "score", tmp);
+
+			sprintf(tmp, "%d", game.level);
+			mxmlElementSetAttr(data, "level", tmp);
+		 
+			mxmlElementSetAttr(data, "name", settings.name);
+		 
+			store=true;
+			game.rating=i;
+		}
+		else
+		{	  
+			sprintf(tmp, "entry%d", i);
+			data = mxmlNewElement(group, tmp);
+  
+			sprintf(tmp, "%d", (int) localHighScore[selectedHighScore].localTime);
+			mxmlElementSetAttr(data, "localTime", tmp);
+	  
+			sprintf(tmp, "%d", localHighScore[selectedHighScore].score);
+			mxmlElementSetAttr(data, "score", tmp);
+		
+			sprintf(tmp, "%d", localHighScore[selectedHighScore].level);
+			mxmlElementSetAttr(data, "level", tmp);
+		
+			mxmlElementSetAttr(data, "name", localHighScore[selectedHighScore].name);
+		
+			selectedHighScore++;		
+		}	  
+   }
+  
+   /* now lets save the xml file to a file! */
+   FILE *fp;
+   fp = fopen(filename, "w");
+
+   mxmlSaveFile(xml, fp, MXML_NO_CALLBACK);
+   
+   /*Time to clean up!*/
+   fclose(fp);
+   mxmlDelete(data);
+   mxmlDelete(group);
+   mxmlDelete(xml);
+   
+   traceEvent(s_fn,0,"leave [void]");
+}
+
+/**
+ * Load today highscore 
+ */
+void loadTodayHighScore(char *buffer)
+{
+   char *s_fn="loadTodayHighScore";
+   traceEvent(s_fn,0,"enter");
+	
+   int i;
+   mxml_node_t *tree=NULL;
+   mxml_node_t *data=NULL;
+   const char *tmp;
+   char temp[MAX_LEN];
+   
+   maxTodayHighScore=0;
+   
+   // Clear memory
+   for(i=0; i<MAX_TODAY_HIGHSCORE; i++)
+   {
+      	todayHighScore[i].score[0]=0x00;
+		todayHighScore[i].dt=0;
+		todayHighScore[i].name[0]=0x00;
+		todayHighScore[i].location[0]=0x00;
+   } 
+	 
+   // If xml data available, parse it....
+   if ((buffer!=NULL) && (strlen(buffer)>0))
+   {  
+      tree = mxmlLoadString(NULL, buffer, MXML_NO_CALLBACK);
+
+      for(i=0; i<MAX_TODAY_HIGHSCORE; i++)
+      {		
+	    sprintf(temp, "item%d", i+1);
+        data = mxmlFindElement(tree, tree, temp, NULL, NULL, MXML_DESCEND);
+
+        tmp=mxmlElementGetAttr(data,"dt");   
+        if (tmp!=NULL) todayHighScore[maxTodayHighScore].dt=atoi(tmp); else todayHighScore[maxTodayHighScore].dt=0; 
+		
+		tmp=mxmlElementGetAttr(data,"score");   
+        if (tmp!=NULL) strcpy(todayHighScore[maxTodayHighScore].score,tmp); else strcpy(todayHighScore[maxTodayHighScore].score,"");
+		
+        tmp=mxmlElementGetAttr(data,"name");   
+        if (tmp!=NULL) strcpy(todayHighScore[maxTodayHighScore].name,tmp); else strcpy(todayHighScore[maxTodayHighScore].name,"");
+
+		tmp=mxmlElementGetAttr(data,"location");   
+        if (tmp!=NULL) strcpy(todayHighScore[maxTodayHighScore].location,tmp); else strcpy(todayHighScore[maxTodayHighScore].location,"");
+		
+		// Entry is valid (Keep the inforamtion)
+        if (strlen(todayHighScore[maxTodayHighScore].score)>0) maxTodayHighScore++;	
+      }   
+      mxmlDelete(data);
+      mxmlDelete(tree);
+   }
+   
+    traceEvent(s_fn,0,"leave [void]");
+}
+
+/** 
+ * Load global highsore
+ */
+void loadGlobalHighScore(char *buffer)
+{
+    char *s_fn="loadGlobalHighScore";
+    traceEvent(s_fn,0,"enter");
+	
+   int i;
+   mxml_node_t *tree=NULL;
+   mxml_node_t *data=NULL;
+   const char *tmp;
+   char temp[MAX_LEN];
+   
+   maxGlobalHighScore=0;
+   
+   // Clear memory
+   for(i=0; i<MAX_GLOBAL_HIGHSCORE; i++)
+   {
+      	globalHighScore[i].score[0]=0x00;
+		globalHighScore[i].dt=0;
+		globalHighScore[i].name[0]=0x00;
+		globalHighScore[i].location[0]=0x00;
+   } 
+	 
+   // If xml data available, parse it....
+   if ((buffer!=NULL) && (strlen(buffer)>0))
+   {  
+      tree = mxmlLoadString(NULL, buffer, MXML_NO_CALLBACK);
+
+      for(i=0; i<MAX_GLOBAL_HIGHSCORE; i++)
+      {		
+	    sprintf(temp, "item%d", i+1);
+        data = mxmlFindElement(tree, tree, temp, NULL, NULL, MXML_DESCEND);
+
+        tmp=mxmlElementGetAttr(data,"dt");   
+        if (tmp!=NULL) globalHighScore[maxGlobalHighScore].dt=atoi(tmp); else globalHighScore[maxGlobalHighScore].dt=0; 
+		
+		tmp=mxmlElementGetAttr(data,"score");   
+        if (tmp!=NULL) strcpy(globalHighScore[maxGlobalHighScore].score,tmp); else strcpy(globalHighScore[maxGlobalHighScore].score,"");
+		
+        tmp=mxmlElementGetAttr(data,"name");   
+        if (tmp!=NULL) strcpy(globalHighScore[maxGlobalHighScore].name,tmp); else strcpy(globalHighScore[maxGlobalHighScore].name,"");
+
+		tmp=mxmlElementGetAttr(data,"location");   
+        if (tmp!=NULL) strcpy(globalHighScore[maxGlobalHighScore].location,tmp); else strcpy(globalHighScore[maxGlobalHighScore].location,"");
+		
+		// Entry is valid (Keep the inforamtion)
+        if (strlen(globalHighScore[maxGlobalHighScore].score)>0) maxGlobalHighScore++;	
+      }   
+      mxmlDelete(data);
+      mxmlDelete(tree);
+   }
+   
+    traceEvent(s_fn,0,"leave [void]");
+}
+
+/**
+ * Load localhighscore from disk
+ * @param filename 	THe filename of the local highscore.
+ */
+void loadLocalHighScoreFile(char* filename)
+{
+    char *s_fn="loadLocalHighScoreFile";
+    traceEvent(s_fn,0,"enter");
+	
+   int i;
+   FILE *fp;
+   mxml_node_t *tree=NULL;
+   mxml_node_t *data=NULL;
+   const char *tmp;
+   char temp[MAX_LEN];
+
+   maxLocalHighScore=0;
+   
+   /*Load our xml file! */
+   fp = fopen(filename, "r");
+   
+   if (fp!=NULL)
+   {
+     tree = mxmlLoadFile(NULL, fp, MXML_NO_CALLBACK);
+     fclose(fp);
+
+     for(i=0; i<MAX_LOCAL_HIGHSCORE; i++)
+     {
+	    sprintf(temp, "entry%d", i);
+        data = mxmlFindElement(tree, tree, temp, NULL, NULL, MXML_DESCEND);
+  
+  	    tmp=mxmlElementGetAttr(data,"score"); 
+		if (tmp!=NULL) localHighScore[maxLocalHighScore].score=atoi(tmp); else localHighScore[maxLocalHighScore].score=0;
+		
+        tmp=mxmlElementGetAttr(data,"localTime");   
+        if (tmp!=NULL) localHighScore[maxLocalHighScore].localTime=atoi(tmp); else localHighScore[maxLocalHighScore].localTime=0;
+				
+		tmp=mxmlElementGetAttr(data,"level"); 
+		if (tmp!=NULL) localHighScore[maxLocalHighScore].level=atoi(tmp); else localHighScore[maxLocalHighScore].level=0;
+		
+		tmp=mxmlElementGetAttr(data,"name"); 
+		if (tmp!=NULL) strcpy(localHighScore[maxLocalHighScore].name,tmp); else strcpy(localHighScore[maxLocalHighScore].name,"");
+		
+		// Entry is valid (Keep the inforamtion)
+        if (localHighScore[maxLocalHighScore].score>0) maxLocalHighScore++;		
+	 } 
+   }
+   else
+   {
+     // If file not found, create empty highscore list.
+     for(i=0; i<MAX_LOCAL_HIGHSCORE; i++)
+     {
+       	localHighScore[i].localTime=0;
+		localHighScore[i].score=0;
+		localHighScore[i].level=0;
+		memset(localHighScore[i].name,0x00,MAX_LEN);
+	 } 
+   }
+   
+   mxmlDelete(data);
+   mxmlDelete(tree);
+   
+    traceEvent(s_fn,0,"leave [void]");
+}
+
+
+// -----------------------------------------------------------
+// Bubble Actions
+// -----------------------------------------------------------
+
+/**
+ * Gameboard matrix (10x10)
+ * 00 01 02 03 04 05 06 07 08 09 
+ * 10 11 12 13 14 15 16 17 18 19 
+ * 20 21 22 23 24 25 26 27 28 29
+ * 30 31 32 33 34 35 36 37 38 39
+ * 40 41 42 43 44 45 46 47 48 49
+ * 50 51 52 53 54 55 56 57 58 59
+ * 60 61 62 63 64 65 66 67 68 69
+ * 70 71 72 73 74 75 76 77 78 79
+ * 80 81 82 83 84 85 86 87 88 89
+ * 90 91 92 93 94 95 96 97 98 99
+ */
+ 
+/**
+ * Bubble Super Shift Right methode.
+ */
+void bubbleSuperShiftRight(void)
+{
+   int x, y, i, nr;
+   for (i=0; i<MAX_BOARDSIZE; i++) 
+   {   
+     for (y=0; y<MAX_BOARDSIZE; y++)
+     {
+       for (x=(MAX_BOARDSIZE-1);x>0;x--)    
+       {  
+		 nr=(y*MAX_BOARDSIZE)+x;
+	 	 if ( !bubbles[nr].enabled && bubbles[nr-1].enabled)
+	     {	   
+	       bubbles[nr].enabled=bubbles[nr-1].enabled;
+		   bubbles[nr].selected=false;
+		   bubbles[nr].color=bubbles[nr-1].color;
+			   
+		   bubbles[nr-1].enabled=false;
+		   bubbles[nr-1].selected=false;
+		 }
+	   }
+     }
+   }
+}
+
+/**
+ * Bubble shift Right methode.
+ */
+void bubbleShiftRight(void)
+{
+   int x, y, i, nr;
+   for (i=0; i<MAX_BOARDSIZE; i++) 
+   {
+     for (x=(MAX_BOARDSIZE-1);x>0;x--)
+     {  
+       if ( !bubbles[((MAX_BOARDSIZE-1)*MAX_BOARDSIZE)+x].enabled )
+	   {
+         for (y=0; y<MAX_BOARDSIZE; y++)
+         {  
+		   nr=(y*MAX_BOARDSIZE)+x;
+	       bubbles[nr].enabled=bubbles[nr-1].enabled;
+		   bubbles[nr].selected=false;
+		   bubbles[nr].color=bubbles[nr-1].color;
+			   
+		   bubbles[nr-1].enabled=false;
+		   bubbles[nr-1].selected=false;
+		  }
+        }
+	 }
+   }        
+}
+
+/**
+ * Bubble shift Down methode.
+ */
+void bubbleShiftDown(void)
+{
+   int x, y1, y2;
+   for (x=0;x<MAX_BOARDSIZE;x++)
+   {   
+      for (y2=(MAX_BOARDSIZE-1);y2>0;y2--)
+      {  
+	     if (!bubbles[(y2*MAX_BOARDSIZE)+x].enabled )
+		 {
+           for (y1=(y2-1);y1>=0;y1--)
+           {  
+	         if ( bubbles[(y1*MAX_BOARDSIZE)+x].enabled )
+		     {			  
+		       bubbles[(y2*MAX_BOARDSIZE)+x].enabled=true;
+			   bubbles[(y2*MAX_BOARDSIZE)+x].selected=false;
+			   bubbles[(y2*MAX_BOARDSIZE)+x].color=bubbles[(y1*MAX_BOARDSIZE)+x].color;
+			   
+			   bubbles[(y1*MAX_BOARDSIZE)+x].enabled=false;
+			   bubbles[(y1*MAX_BOARDSIZE)+x].selected=false;
+			   
+			   break;
+		     }
+		   }
+		 }
+	  }
+   }        
+}
+
+/** 
+ * Find all bubbles (same color) connected to each other
+ */
+void bubbleMultiSelect3(int nr)
+{
+   int x=nr % MAX_BOARDSIZE;
+   int y=nr / MAX_BOARDSIZE;
+   		
+   hintCount++;
+		
+   // Set select flag for bubble	   
+   bubbles[nr].hint=true;
+   
+   // Find all connected bubbles with the same color.
+   if ((x>0) && (bubbles[nr].color==bubbles[nr-1].color) && !bubbles[nr-1].hint && bubbles[nr-1].enabled) bubbleMultiSelect3(nr-1); 
+   if ((x<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+1].color) && !bubbles[nr+1].hint && bubbles[nr+1].enabled) bubbleMultiSelect3(nr+1);
+   if ((y>0) && (bubbles[nr].color==bubbles[nr-MAX_BOARDSIZE].color) && !bubbles[nr-MAX_BOARDSIZE].hint && bubbles[nr-MAX_BOARDSIZE].enabled) bubbleMultiSelect3(nr-MAX_BOARDSIZE); 
+   if ((y<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+MAX_BOARDSIZE].color) && !bubbles[nr+MAX_BOARDSIZE].hint && bubbles[nr+MAX_BOARDSIZE].enabled) bubbleMultiSelect3(nr+MAX_BOARDSIZE); 
+}
+
+/** 
+ * Find all bubbles (same color) connected to each other
+ */
+void bubbleMultiSelect2(int nr)
+{
+   int x=nr % MAX_BOARDSIZE;
+   int y=nr / MAX_BOARDSIZE;
+   		
+   // Set select flag for bubble	   
+   bubbles[nr].check=true;
+   game.bubbleCount++;
+   
+   // Find all connected bubbles with the same color.
+   if ((x>0) && (bubbles[nr].color==bubbles[nr-1].color) && !bubbles[nr-1].check && bubbles[nr-1].enabled) bubbleMultiSelect2(nr-1); 
+   if ((x<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+1].color) && !bubbles[nr+1].check && bubbles[nr+1].enabled) bubbleMultiSelect2(nr+1);
+   if ((y>0) && (bubbles[nr].color==bubbles[nr-MAX_BOARDSIZE].color) && !bubbles[nr-MAX_BOARDSIZE].check && bubbles[nr-MAX_BOARDSIZE].enabled) bubbleMultiSelect2(nr-MAX_BOARDSIZE); 
+   if ((y<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+MAX_BOARDSIZE].color) && !bubbles[nr+MAX_BOARDSIZE].check && bubbles[nr+MAX_BOARDSIZE].enabled) bubbleMultiSelect2(nr+MAX_BOARDSIZE); 
+}
+
+/**
+ * Set bubble hint 
+ */
+void bubbleHint(void)
+{ 
+  if (game.possiblities==0) return;
+  
+  int i;
+  int nr;
+  do
+  {
+    hintCount=0;
+    for (i=0; i<maxBubbles; i++) bubbles[i].hint=false;  
+	nr=rand() % MAX_BUBBLES;
+    if (bubbles[nr].enabled) bubbleMultiSelect3(nr);
+  }
+  while (hintCount<=1);
+}
+
+/**
+ * Calculate bubble movements 
+ */
+void bubblePossibleOption(void)
+{
+  int i;
+  for (i=0; i<maxBubbles; i++) bubbles[i].check=false;  
+  
+  game.possiblities=0;  
+  for (i=0; i<maxBubbles; i++)
+  {     
+     if (!bubbles[i].check && bubbles[i].enabled)
+	 {
+	    game.bubbleCount=0;		
+		bubbleMultiSelect2(i);
+		if (game.bubbleCount>1) game.possiblities++;
+	 }
+  }
+}
+
+/** 
+ * Explode bubble 
+ */
+void bubbleExplodeMove(void)
+{
+  int i;
+  for (i=0; i<MAX_BUBBLES; i++)
+  {     
+     if (explodes[i].enabled) 
+	 {
+	    if (!explodes[i].moveX)
+		{
+		   if (explodes[i].x>10) explodes[i].x-=EXPLODE_STEP; else explodes[i].enabled=false;
+		}
+		else
+		{
+		   if (explodes[i].x<(MAX_HORZ_PIXELS-10)) explodes[i].x+=EXPLODE_STEP; else explodes[i].enabled=false;
+		}
+		
+		if (!explodes[i].moveY)
+		{
+		   if (explodes[i].y>10) explodes[i].y-=EXPLODE_STEP; else explodes[i].enabled=false;
+	    }
+		else
+		{
+		   if (bubbles[i].y<(MAX_VERT_PIXELS-10)) explodes[i].y+=EXPLODE_STEP; else explodes[i].enabled=false;
+		}
+		if (explodes[i].alfa>3) explodes[i].alfa-=3;
+		if (explodes[i].size>0) explodes[i].size+=0.02;
+	 }
+  }
+}
+
+/** 
+ * Remove bubble
+ */
+void bubbleRemove(void)
+{
+   int i;
+   
+   // If two or more bubbles are selected then remove them.
+   if (game.selectScore>1)
+   {
+      game.score+=game.selectScore;
+	  
+      for (i=0; i<maxBubbles; i++)
+      {
+        if (bubbles[i].selected) 
+	    {
+		  bubbles[i].selected=false;
+		  bubbles[i].enabled=false;
+		  
+          // Add remove bubble to explodes list		  
+		  explodes[maxExplodes].x=bubbles[i].x;
+		  explodes[maxExplodes].y=bubbles[i].y;
+		  explodes[maxExplodes].width=bubbles[i].width;
+		  explodes[maxExplodes].height=bubbles[i].height;
+		  explodes[maxExplodes].color=bubbles[i].color;
+		  explodes[maxExplodes].alfa=MAX_ALFA;
+		  explodes[maxExplodes].enabled=true;
+		  explodes[maxExplodes].size=1.0;
+		  if ((rand() % 2)==0) explodes[maxExplodes].moveX=true; else explodes[maxExplodes].moveX=false;
+		  if ((rand() % 2)==0) explodes[maxExplodes].moveY=true; else explodes[maxExplodes].moveY=false;
+		  maxExplodes++;
+		  
+	    }	  
+      }
+      bubbleShiftDown();
+	  
+	  if (game.level<5)
+	  {
+	     bubbleShiftRight();
+      }
+	  else
+	  {
+	     bubbleSuperShiftRight();
+	  }
+   }
+}
+
+/**
+ * Bubble multi selected
+ */
+void bubbleMultiSelect(int nr)
+{
+   int x=nr % MAX_BOARDSIZE;
+   int y=nr / MAX_BOARDSIZE;
+   		
+   // Set select flag for bubble	   
+   bubbles[nr].selected=true;
+   
+   // Find all connected bubbles with the same color.
+   if ((x>0) && (bubbles[nr].color==bubbles[nr-1].color) && !bubbles[nr-1].selected && bubbles[nr-1].enabled) bubbleMultiSelect(nr-1); 
+   if ((x<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+1].color) && !bubbles[nr+1].selected && bubbles[nr+1].enabled) bubbleMultiSelect(nr+1);
+   if ((y>0) && (bubbles[nr].color==bubbles[nr-MAX_BOARDSIZE].color) && !bubbles[nr-MAX_BOARDSIZE].selected && bubbles[nr-MAX_BOARDSIZE].enabled) bubbleMultiSelect(nr-MAX_BOARDSIZE); 
+   if ((y<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+MAX_BOARDSIZE].color) && !bubbles[nr+MAX_BOARDSIZE].selected && bubbles[nr+MAX_BOARDSIZE].enabled) bubbleMultiSelect(nr+MAX_BOARDSIZE); 
+}
+
+/**
+ * bubble Enabled count
+ */
+int bubbleEnabledCount(void)
+{
+   int i;
+   int count=0;
+   for (i=0; i<maxBubbles; i++)
+   {
+      if (bubbles[i].enabled) count++;
+   }
+   return count;
+}
+
+/** 
+ * bubble selected count 
+ */
+int bubbleSelectedCount(void)
+{
+   int i;
+   int count=0;
+   for (i=0; i<maxBubbles; i++)
+   {
+      if (bubbles[i].selected) count++;
+   }
+   return count;
+}
+
+/** 
+ * Bubble selected
+ */
+int bubbleSelected(int x, int y)
+{
+   int i,j;
+   int count;
+    
+   for (i=0; i<maxBubbles; i++)
+   {
+       if ( (x>=bubbles[i].x) && (x<=bubbles[i].x+bubbles[i].width) && 
+	        (y>=bubbles[i].y-10) && ((y-10)<=bubbles[i].y+bubbles[i].height) )
+	   {	      
+			if (bubbles[i].enabled)
+			{
+				// Reset idle hint timer
+            game.idleTime=time(NULL);
+				for (j=0;j<maxBubbles;j++) bubbles[j].size=MIN_BUBBLE_SIZE;
+      
+				if (bubbles[i].selected) 
+				{ 
+					// Double select is remove action
+   		      bubbleRemove(); 				
+					bubblePossibleOption();
+					bubbleHint();
+					game.selectScore=0;
+				}
+            else
+				{	
+					// new selection clear old selections
+					for (j=0;j<maxBubbles;j++) bubbles[j].selected=false;
+   
+					// Single select is select action
+					bubbleMultiSelect(i);
+					count=bubbleSelectedCount();				
+					game.selectScore=count*(count-1);
+				}          			  
+            SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 
+					22050, 0, (char *) effect3_pcm, effect3_pcm_size, 
+					settings.effectVolume*EFFECT_MULTIPLER, 
+					settings.effectVolume*EFFECT_MULTIPLER, NULL);
+ 	         return i;			 
+			}
+	   }	   
+   }
+   return -1;
+}
+ 
+// -----------------------------------------------------------
+// Init functions.
+// -----------------------------------------------------------
+
+/** 
+ * Init music track 
+ */
 int initMusicTrack(void)
 {
    char *s_fn="initMusicTrack";
@@ -383,6 +1017,9 @@ int initMusicTrack(void)
   return 0;
 }
 
+/**
+ * init sound
+ */
 void initSound(void)
 {
    char *s_fn="initSound";
@@ -397,6 +1034,9 @@ void initSound(void)
    traceEvent(s_fn,0,"leave [void]");
 }
 
+/** 
+ * init network threads
+ */
 void initThreads(void)
 { 
    char *s_fn="initThreads";
@@ -423,6 +1063,9 @@ void initThreads(void)
    	traceEvent(s_fn,0,"leave [void]");
 }
 
+/**
+ * Init buttons
+ */
 void initButtons(void)
 { 
    switch (stateMachine)
@@ -869,25 +1512,9 @@ void initButtons(void)
   }
 }
 
-void initGame()
-{
-   char *s_fn="initGame";
-   traceEvent(s_fn,0,"enter");
-   
-   // Init variables
-   selectedA=false;   
-   selected1=false;
-   selected2=false;
-      
-   angle=0; 
-   size=0;
- 
-   initBubbles();
-   initExplodes();
-   
-   	traceEvent(s_fn,0,"leave [void]");
-}
-
+/**
+ * Init Level
+ */
 void initLevel()
 {
    char *s_fn="initLevel";
@@ -924,9 +1551,12 @@ void initLevel()
    game.idleTime=time(NULL);
    game.selectScore=0;
    
-   	traceEvent(s_fn,0,"leave [void]");
+   traceEvent(s_fn,0,"leave [void]");
 }
-  			 
+  	
+/**
+ * Init Images
+ */		 
 void initImages(void)
 {
    char *s_fn="initImages";
@@ -996,22 +1626,25 @@ void initImages(void)
 }
 
 
+/** 
+ * init today highscore
+ */
 void initTodayHighScore(void)
 {
    char *s_fn="initTodayHighScore";
    traceEvent(s_fn,0,"enter");
    
-  int i;   
+	int i;   
 
-  // Clear today highscore memory
-  for(i=0; i<MAX_TODAY_HIGHSCORE; i++)
-  {
-  	todayHighScore[i].score[0]=0x00;
-	todayHighScore[i].dt=0;
-	todayHighScore[i].name[0]=0x00;
-	todayHighScore[i].location[0]=0x00;
-  } 
-  traceEvent(s_fn,0,"leave [void]");
+	// Clear today highscore memory
+	for(i=0; i<MAX_TODAY_HIGHSCORE; i++)
+	{
+		todayHighScore[i].score[0]=0x00;
+		todayHighScore[i].dt=0;
+		todayHighScore[i].name[0]=0x00;
+		todayHighScore[i].location[0]=0x00;
+	} 
+	traceEvent(s_fn,0,"leave [void]");
 }
 
 void initGlobalHighScore(void)
@@ -1019,21 +1652,23 @@ void initGlobalHighScore(void)
    char *s_fn="initGlobalHighScore";
    traceEvent(s_fn,0,"enter");
    
-  int i;   
+	int i;   
 
-  // Clear global highscore memory
-  for(i=0; i<MAX_GLOBAL_HIGHSCORE; i++)
-  {
-  	globalHighScore[i].score[0]=0x00;
-	globalHighScore[i].dt=0;
-	globalHighScore[i].name[0]=0x00;
-	globalHighScore[i].location[0]=0x00;
-  } 
+	// Clear global highscore memory
+	for(i=0; i<MAX_GLOBAL_HIGHSCORE; i++)
+	{
+		globalHighScore[i].score[0]=0x00;
+		globalHighScore[i].dt=0;
+		globalHighScore[i].name[0]=0x00;
+		globalHighScore[i].location[0]=0x00;
+	} 
   
-  traceEvent(s_fn,0,"leave [void]");
+	traceEvent(s_fn,0,"leave [void]");
 }
 
-	
+/**
+ * initBubbles
+ */
 void initBubbles(void)
 {
    char *s_fn="initBubbles";
@@ -1063,13 +1698,16 @@ void initBubbles(void)
 		   bubbles[nr].sizeDirection=false;
 		   maxBubbles++;
 	   }	
-    }	
+   }	
 	bubblePossibleOption();
 	bubbleHint();
 	
-		traceEvent(s_fn,0,"leave [void]");
+	traceEvent(s_fn,0,"leave [void]");
 }
 
+/** 
+ * Init gameboard
+ */
 void initGameBoard(void)
 {
    char *s_fn="initGameBoard";
@@ -1108,29 +1746,55 @@ void initExplodes(void)
    for (i=0; i<MAX_BUBBLES; i++)
    {	
       explodes[i].color=0;
-	  explodes[i].size=0.0;
-	  explodes[i].alfa=0;
-	  explodes[i].enabled=false;
-	  explodes[i].x=0;
-	  explodes[i].y=0;
-	  explodes[i].width=0;
-	  explodes[i].height=0;		   
+		explodes[i].size=0.0;
+		explodes[i].alfa=0;
+		explodes[i].enabled=false;
+		explodes[i].x=0;
+		explodes[i].y=0;
+		explodes[i].width=0;
+		explodes[i].height=0;		   
    }	
+   
+   traceEvent(s_fn,0,"leave [void]");
+}
+
+/** 
+ * Init game parameters
+ */
+void initGame()
+{
+   char *s_fn="initGame";
+   traceEvent(s_fn,0,"enter");
+   
+   // Init variables
+   selectedA=false;   
+   selected1=false;
+   selected2=false;
+      
+   angle=0; 
+   size=0;
+			       
+	game.score=0;
+	game.level=0;
+	game.rating=1000;
+
+   initBubbles();
+   initExplodes();
    
    traceEvent(s_fn,0,"leave [void]");
 }
 
 void initStateMachine(void)
 {	   
-    // Start next mod music track
-    if (snd1.manual_polling && snd1.paused) 
+   // Start next mod music track
+   if (snd1.manual_polling && snd1.paused) 
 	{
-	  if (selectedMusic<MAX_MUSIC_TRACK) selectedMusic++; else selectedMusic=1;   
+		if (selectedMusic<MAX_MUSIC_TRACK) selectedMusic++; else selectedMusic=1;   
       initMusicTrack();
 	}
 
-    switch(stateMachine)
-    {
+   switch(stateMachine)
+   {
 		case stateMenu:
 		{
 		   if (stateMachine!=prevStateMachine) initButtons();
@@ -1139,7 +1803,7 @@ void initStateMachine(void)
 		break;
 		
 		case stateQuit:
-        case stateGame:
+      case stateGame:
 		{  		 
 		   if (stateMachine!=prevStateMachine) initButtons();
 		   prevStateMachine=stateMachine;
@@ -1367,587 +2031,11 @@ void initStateMachine(void)
 	} 	
 }
 
-//	PowerOff callback function.
-void doPowerOff( void )
-{
-    char *s_fn="doPowerOff";
-    traceEvent(s_fn,0,"enter");
-   
-	bPowerOff = true;
-	
-	 traceEvent(s_fn,0,"leave [void]");
-	return;
-}
-
-//	PowerOff callback function for the Wii Remote power button.
-void doPadPowerOff( s32 chan )
-{
-    char *s_fn="doPadPowerOff";
-    traceEvent(s_fn,0,"enter");
-	
-	if ( chan == WPAD_CHAN_0 )
-	{
-		bPowerOff = true;
-	}
-	
-	traceEvent(s_fn,0,"leave [void]");
-	return;
-}
-
-void saveLocalHighScoreFile(char* filename)
-{
-    char *s_fn="saveLocalHighScoreFile";
-    traceEvent(s_fn,0,"enter");
-	
-   int i;
-   bool store=false;
-   int selectedHighScore=0;
-   mxml_node_t *xml;
-   mxml_node_t *group;
-   mxml_node_t *data;   
-   char tmp[MAX_LEN];
-      
-   xml = mxmlNewXML("1.0");
-   
-   group = mxmlNewElement(xml, "SpaceBubble");
-   
-   for(i=0; i<MAX_LOCAL_HIGHSCORE; i++)
-   {
-      if ((game.score>=localHighScore[i].score) && !store)
-	  {
-	     sprintf(tmp, "entry%d", i);
-         data = mxmlNewElement(group, tmp);
-  
-	     sprintf(tmp, "%d", (int) game.localTime);
-         mxmlElementSetAttr(data, "localTime", tmp);
-	  
-	     sprintf(tmp, "%d", game.score);
-	     mxmlElementSetAttr(data, "score", tmp);
-
-		 sprintf(tmp, "%d", game.level);
-	     mxmlElementSetAttr(data, "level", tmp);
-		 
-	     mxmlElementSetAttr(data, "name", settings.name);
-		 
-		 store=true;
-	  }
-	  else
-	  {	  
-        sprintf(tmp, "entry%d", i);
-        data = mxmlNewElement(group, tmp);
-  
-	    sprintf(tmp, "%d", (int) localHighScore[selectedHighScore].localTime);
-        mxmlElementSetAttr(data, "localTime", tmp);
-	  
-  	    sprintf(tmp, "%d", localHighScore[selectedHighScore].score);
-	    mxmlElementSetAttr(data, "score", tmp);
-		
-		sprintf(tmp, "%d", localHighScore[selectedHighScore].level);
-	    mxmlElementSetAttr(data, "level", tmp);
-		
-	    mxmlElementSetAttr(data, "name", localHighScore[selectedHighScore].name);
-		
-		selectedHighScore++;		
-	  }	  
-   }
-  
-   /* now lets save the xml file to a file! */
-   FILE *fp;
-   fp = fopen(filename, "w");
-
-   mxmlSaveFile(xml, fp, MXML_NO_CALLBACK);
-   
-   /*Time to clean up!*/
-   fclose(fp);
-   mxmlDelete(data);
-   mxmlDelete(group);
-   mxmlDelete(xml);
-   
-    traceEvent(s_fn,0,"leave [void]");
-}
-
-void loadTodayHighScore(char *buffer)
-{
-    char *s_fn="loadTodayHighScore";
-    traceEvent(s_fn,0,"enter");
-	
-   int i;
-   mxml_node_t *tree=NULL;
-   mxml_node_t *data=NULL;
-   const char *tmp;
-   char temp[MAX_LEN];
-   
-   maxTodayHighScore=0;
-   
-   // Clear memory
-   for(i=0; i<MAX_TODAY_HIGHSCORE; i++)
-   {
-      	todayHighScore[i].score[0]=0x00;
-		todayHighScore[i].dt=0;
-		todayHighScore[i].name[0]=0x00;
-		todayHighScore[i].location[0]=0x00;
-   } 
-	 
-   // If xml data available, parse it....
-   if ((buffer!=NULL) && (strlen(buffer)>0))
-   {  
-      tree = mxmlLoadString(NULL, buffer, MXML_NO_CALLBACK);
-
-      for(i=0; i<MAX_TODAY_HIGHSCORE; i++)
-      {		
-	    sprintf(temp, "item%d", i+1);
-        data = mxmlFindElement(tree, tree, temp, NULL, NULL, MXML_DESCEND);
-
-        tmp=mxmlElementGetAttr(data,"dt");   
-        if (tmp!=NULL) todayHighScore[maxTodayHighScore].dt=atoi(tmp); else todayHighScore[maxTodayHighScore].dt=0; 
-		
-		tmp=mxmlElementGetAttr(data,"score");   
-        if (tmp!=NULL) strcpy(todayHighScore[maxTodayHighScore].score,tmp); else strcpy(todayHighScore[maxTodayHighScore].score,"");
-		
-        tmp=mxmlElementGetAttr(data,"name");   
-        if (tmp!=NULL) strcpy(todayHighScore[maxTodayHighScore].name,tmp); else strcpy(todayHighScore[maxTodayHighScore].name,"");
-
-		tmp=mxmlElementGetAttr(data,"location");   
-        if (tmp!=NULL) strcpy(todayHighScore[maxTodayHighScore].location,tmp); else strcpy(todayHighScore[maxTodayHighScore].location,"");
-		
-		// Entry is valid (Keep the inforamtion)
-        if (strlen(todayHighScore[maxTodayHighScore].score)>0) maxTodayHighScore++;	
-      }   
-      mxmlDelete(data);
-      mxmlDelete(tree);
-   }
-   
-    traceEvent(s_fn,0,"leave [void]");
-}
-
-void loadGlobalHighScore(char *buffer)
-{
-    char *s_fn="loadGlobalHighScore";
-    traceEvent(s_fn,0,"enter");
-	
-   int i;
-   mxml_node_t *tree=NULL;
-   mxml_node_t *data=NULL;
-   const char *tmp;
-   char temp[MAX_LEN];
-   
-   maxGlobalHighScore=0;
-   
-   // Clear memory
-   for(i=0; i<MAX_GLOBAL_HIGHSCORE; i++)
-   {
-      	globalHighScore[i].score[0]=0x00;
-		globalHighScore[i].dt=0;
-		globalHighScore[i].name[0]=0x00;
-		globalHighScore[i].location[0]=0x00;
-   } 
-	 
-   // If xml data available, parse it....
-   if ((buffer!=NULL) && (strlen(buffer)>0))
-   {  
-      tree = mxmlLoadString(NULL, buffer, MXML_NO_CALLBACK);
-
-      for(i=0; i<MAX_GLOBAL_HIGHSCORE; i++)
-      {		
-	    sprintf(temp, "item%d", i+1);
-        data = mxmlFindElement(tree, tree, temp, NULL, NULL, MXML_DESCEND);
-
-        tmp=mxmlElementGetAttr(data,"dt");   
-        if (tmp!=NULL) globalHighScore[maxGlobalHighScore].dt=atoi(tmp); else globalHighScore[maxGlobalHighScore].dt=0; 
-		
-		tmp=mxmlElementGetAttr(data,"score");   
-        if (tmp!=NULL) strcpy(globalHighScore[maxGlobalHighScore].score,tmp); else strcpy(globalHighScore[maxGlobalHighScore].score,"");
-		
-        tmp=mxmlElementGetAttr(data,"name");   
-        if (tmp!=NULL) strcpy(globalHighScore[maxGlobalHighScore].name,tmp); else strcpy(globalHighScore[maxGlobalHighScore].name,"");
-
-		tmp=mxmlElementGetAttr(data,"location");   
-        if (tmp!=NULL) strcpy(globalHighScore[maxGlobalHighScore].location,tmp); else strcpy(globalHighScore[maxGlobalHighScore].location,"");
-		
-		// Entry is valid (Keep the inforamtion)
-        if (strlen(globalHighScore[maxGlobalHighScore].score)>0) maxGlobalHighScore++;	
-      }   
-      mxmlDelete(data);
-      mxmlDelete(tree);
-   }
-   
-    traceEvent(s_fn,0,"leave [void]");
-}
-
-void loadLocalHighScoreFile(char* filename)
-{
-    char *s_fn="loadLocalHighScoreFile";
-    traceEvent(s_fn,0,"enter");
-	
-   int i;
-   FILE *fp;
-   mxml_node_t *tree=NULL;
-   mxml_node_t *data=NULL;
-   const char *tmp;
-   char temp[MAX_LEN];
-
-   maxLocalHighScore=0;
-   
-   /*Load our xml file! */
-   fp = fopen(filename, "r");
-   
-   if (fp!=NULL)
-   {
-     tree = mxmlLoadFile(NULL, fp, MXML_NO_CALLBACK);
-     fclose(fp);
-
-     for(i=0; i<MAX_LOCAL_HIGHSCORE; i++)
-     {
-	    sprintf(temp, "entry%d", i);
-        data = mxmlFindElement(tree, tree, temp, NULL, NULL, MXML_DESCEND);
-  
-  	    tmp=mxmlElementGetAttr(data,"score"); 
-		if (tmp!=NULL) localHighScore[maxLocalHighScore].score=atoi(tmp); else localHighScore[maxLocalHighScore].score=0;
-		
-        tmp=mxmlElementGetAttr(data,"localTime");   
-        if (tmp!=NULL) localHighScore[maxLocalHighScore].localTime=atoi(tmp); else localHighScore[maxLocalHighScore].localTime=0;
-				
-		tmp=mxmlElementGetAttr(data,"level"); 
-		if (tmp!=NULL) localHighScore[maxLocalHighScore].level=atoi(tmp); else localHighScore[maxLocalHighScore].level=0;
-		
-		tmp=mxmlElementGetAttr(data,"name"); 
-		if (tmp!=NULL) strcpy(localHighScore[maxLocalHighScore].name,tmp); else strcpy(localHighScore[maxLocalHighScore].name,"");
-		
-		// Entry is valid (Keep the inforamtion)
-        if (localHighScore[maxLocalHighScore].score>0) maxLocalHighScore++;		
-	 } 
-   }
-   else
-   {
-     // If file not found, create empty highscore list.
-     for(i=0; i<MAX_LOCAL_HIGHSCORE; i++)
-     {
-       	localHighScore[i].localTime=0;
-		localHighScore[i].score=0;
-		localHighScore[i].level=0;
-		memset(localHighScore[i].name,0x00,MAX_LEN);
-	 } 
-   }
-   
-   mxmlDelete(data);
-   mxmlDelete(tree);
-   
-    traceEvent(s_fn,0,"leave [void]");
-}
- 
-
-// Gameboard matrix (10x10)
-// 00 01 02 03 04 05 06 07 08 09 
-// 10 11 12 13 14 15 16 17 18 19 
-// 20 21 22 23 24 25 26 27 28 29
-// 30 31 32 33 34 35 36 37 38 39
-// 40 41 42 43 44 45 46 47 48 49
-// 50 51 52 53 54 55 56 57 58 59
-// 60 61 62 63 64 65 66 67 68 69
-// 70 71 72 73 74 75 76 77 78 79
-// 80 81 82 83 84 85 86 87 88 89
-// 90 91 92 93 94 95 96 97 98 99
-
-void bubbleSuperShiftRight(void)
-{
-   int x, y, i, nr;
-   for (i=0; i<MAX_BOARDSIZE; i++) 
-   {   
-     for (y=0; y<MAX_BOARDSIZE; y++)
-     {
-       for (x=(MAX_BOARDSIZE-1);x>0;x--)    
-       {  
-		 nr=(y*MAX_BOARDSIZE)+x;
-	 	 if ( !bubbles[nr].enabled && bubbles[nr-1].enabled)
-	     {	   
-	       bubbles[nr].enabled=bubbles[nr-1].enabled;
-		   bubbles[nr].selected=false;
-		   bubbles[nr].color=bubbles[nr-1].color;
-			   
-		   bubbles[nr-1].enabled=false;
-		   bubbles[nr-1].selected=false;
-		 }
-	   }
-     }
-   }
-}
-
-void bubbleShiftRight(void)
-{
-   int x, y, i, nr;
-   for (i=0; i<MAX_BOARDSIZE; i++) 
-   {
-     for (x=(MAX_BOARDSIZE-1);x>0;x--)
-     {  
-       if ( !bubbles[((MAX_BOARDSIZE-1)*MAX_BOARDSIZE)+x].enabled )
-	   {
-         for (y=0; y<MAX_BOARDSIZE; y++)
-         {  
-		   nr=(y*MAX_BOARDSIZE)+x;
-	       bubbles[nr].enabled=bubbles[nr-1].enabled;
-		   bubbles[nr].selected=false;
-		   bubbles[nr].color=bubbles[nr-1].color;
-			   
-		   bubbles[nr-1].enabled=false;
-		   bubbles[nr-1].selected=false;
-		  }
-        }
-	 }
-   }        
-}
-
-void bubbleShiftDown(void)
-{
-   int x, y1, y2;
-   for (x=0;x<MAX_BOARDSIZE;x++)
-   {   
-      for (y2=(MAX_BOARDSIZE-1);y2>0;y2--)
-      {  
-	     if (!bubbles[(y2*MAX_BOARDSIZE)+x].enabled )
-		 {
-           for (y1=(y2-1);y1>=0;y1--)
-           {  
-	         if ( bubbles[(y1*MAX_BOARDSIZE)+x].enabled )
-		     {			  
-		       bubbles[(y2*MAX_BOARDSIZE)+x].enabled=true;
-			   bubbles[(y2*MAX_BOARDSIZE)+x].selected=false;
-			   bubbles[(y2*MAX_BOARDSIZE)+x].color=bubbles[(y1*MAX_BOARDSIZE)+x].color;
-			   
-			   bubbles[(y1*MAX_BOARDSIZE)+x].enabled=false;
-			   bubbles[(y1*MAX_BOARDSIZE)+x].selected=false;
-			   
-			   break;
-		     }
-		   }
-		 }
-	  }
-   }        
-}
-
-void bubbleMultiSelect3(int nr)
-{
-   int x=nr % MAX_BOARDSIZE;
-   int y=nr / MAX_BOARDSIZE;
-   		
-   hintCount++;
-		
-   // Set select flag for bubble	   
-   bubbles[nr].hint=true;
-   
-   // Find all connected bubbles with the same color.
-   if ((x>0) && (bubbles[nr].color==bubbles[nr-1].color) && !bubbles[nr-1].hint && bubbles[nr-1].enabled) bubbleMultiSelect3(nr-1); 
-   if ((x<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+1].color) && !bubbles[nr+1].hint && bubbles[nr+1].enabled) bubbleMultiSelect3(nr+1);
-   if ((y>0) && (bubbles[nr].color==bubbles[nr-MAX_BOARDSIZE].color) && !bubbles[nr-MAX_BOARDSIZE].hint && bubbles[nr-MAX_BOARDSIZE].enabled) bubbleMultiSelect3(nr-MAX_BOARDSIZE); 
-   if ((y<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+MAX_BOARDSIZE].color) && !bubbles[nr+MAX_BOARDSIZE].hint && bubbles[nr+MAX_BOARDSIZE].enabled) bubbleMultiSelect3(nr+MAX_BOARDSIZE); 
-}
-
-void bubbleHint(void)
-{ 
-  if (game.possiblities==0) return;
-  
-  int i;
-  int nr;
-  do
-  {
-    hintCount=0;
-    for (i=0; i<maxBubbles; i++) bubbles[i].hint=false;  
-	nr=rand() % MAX_BUBBLES;
-    if (bubbles[nr].enabled) bubbleMultiSelect3(nr);
-  }
-  while (hintCount<=1);
-}
 
 
-void bubbleMultiSelect2(int nr)
-{
-   int x=nr % MAX_BOARDSIZE;
-   int y=nr / MAX_BOARDSIZE;
-   		
-   // Set select flag for bubble	   
-   bubbles[nr].check=true;
-   game.bubbleCount++;
-   
-   // Find all connected bubbles with the same color.
-   if ((x>0) && (bubbles[nr].color==bubbles[nr-1].color) && !bubbles[nr-1].check && bubbles[nr-1].enabled) bubbleMultiSelect2(nr-1); 
-   if ((x<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+1].color) && !bubbles[nr+1].check && bubbles[nr+1].enabled) bubbleMultiSelect2(nr+1);
-   if ((y>0) && (bubbles[nr].color==bubbles[nr-MAX_BOARDSIZE].color) && !bubbles[nr-MAX_BOARDSIZE].check && bubbles[nr-MAX_BOARDSIZE].enabled) bubbleMultiSelect2(nr-MAX_BOARDSIZE); 
-   if ((y<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+MAX_BOARDSIZE].color) && !bubbles[nr+MAX_BOARDSIZE].check && bubbles[nr+MAX_BOARDSIZE].enabled) bubbleMultiSelect2(nr+MAX_BOARDSIZE); 
-}
-
-void bubblePossibleOption(void)
-{
-  int i;
-  for (i=0; i<maxBubbles; i++) bubbles[i].check=false;  
-  
-  game.possiblities=0;  
-  for (i=0; i<maxBubbles; i++)
-  {     
-     if (!bubbles[i].check && bubbles[i].enabled)
-	 {
-	    game.bubbleCount=0;		
-		bubbleMultiSelect2(i);
-		if (game.bubbleCount>1) game.possiblities++;
-	 }
-  }
-}
-
-void bubbleExplodeMove(void)
-{
-  int i;
-  for (i=0; i<MAX_BUBBLES; i++)
-  {     
-     if (explodes[i].enabled) 
-	 {
-	    if (!explodes[i].moveX)
-		{
-		   if (explodes[i].x>10) explodes[i].x-=EXPLODE_STEP; else explodes[i].enabled=false;
-		}
-		else
-		{
-		   if (explodes[i].x<(MAX_HORZ_PIXELS-10)) explodes[i].x+=EXPLODE_STEP; else explodes[i].enabled=false;
-		}
-		
-		if (!explodes[i].moveY)
-		{
-		   if (explodes[i].y>10) explodes[i].y-=EXPLODE_STEP; else explodes[i].enabled=false;
-	    }
-		else
-		{
-		   if (bubbles[i].y<(MAX_VERT_PIXELS-10)) explodes[i].y+=EXPLODE_STEP; else explodes[i].enabled=false;
-		}
-		if (explodes[i].alfa>3) explodes[i].alfa-=3;
-		if (explodes[i].size>0) explodes[i].size+=0.02;
-	 }
-  }
-}
-
-void bubbleRemove(void)
-{
-   int i;
-   
-   // If two or more bubbles are selected then remove them.
-   if (game.selectScore>1)
-   {
-      game.score+=game.selectScore;
-	  
-      for (i=0; i<maxBubbles; i++)
-      {
-        if (bubbles[i].selected) 
-	    {
-		  bubbles[i].selected=false;
-		  bubbles[i].enabled=false;
-		  
-          // Add remove bubble to explodes list		  
-		  explodes[maxExplodes].x=bubbles[i].x;
-		  explodes[maxExplodes].y=bubbles[i].y;
-		  explodes[maxExplodes].width=bubbles[i].width;
-		  explodes[maxExplodes].height=bubbles[i].height;
-		  explodes[maxExplodes].color=bubbles[i].color;
-		  explodes[maxExplodes].alfa=MAX_ALFA;
-		  explodes[maxExplodes].enabled=true;
-		  explodes[maxExplodes].size=1.0;
-		  if ((rand() % 2)==0) explodes[maxExplodes].moveX=true; else explodes[maxExplodes].moveX=false;
-		  if ((rand() % 2)==0) explodes[maxExplodes].moveY=true; else explodes[maxExplodes].moveY=false;
-		  maxExplodes++;
-		  
-	    }	  
-      }
-      bubbleShiftDown();
-	  
-	  if (game.level<5)
-	  {
-	     bubbleShiftRight();
-      }
-	  else
-	  {
-	     bubbleSuperShiftRight();
-	  }
-   }
-}
-
-void bubbleMultiSelect(int nr)
-{
-   int x=nr % MAX_BOARDSIZE;
-   int y=nr / MAX_BOARDSIZE;
-   		
-   // Set select flag for bubble	   
-   bubbles[nr].selected=true;
-   
-   // Find all connected bubbles with the same color.
-   if ((x>0) && (bubbles[nr].color==bubbles[nr-1].color) && !bubbles[nr-1].selected && bubbles[nr-1].enabled) bubbleMultiSelect(nr-1); 
-   if ((x<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+1].color) && !bubbles[nr+1].selected && bubbles[nr+1].enabled) bubbleMultiSelect(nr+1);
-   if ((y>0) && (bubbles[nr].color==bubbles[nr-MAX_BOARDSIZE].color) && !bubbles[nr-MAX_BOARDSIZE].selected && bubbles[nr-MAX_BOARDSIZE].enabled) bubbleMultiSelect(nr-MAX_BOARDSIZE); 
-   if ((y<(MAX_BOARDSIZE-1)) && (bubbles[nr].color==bubbles[nr+MAX_BOARDSIZE].color) && !bubbles[nr+MAX_BOARDSIZE].selected && bubbles[nr+MAX_BOARDSIZE].enabled) bubbleMultiSelect(nr+MAX_BOARDSIZE); 
-}
-
-int bubbleEnabledCount(void)
-{
-   int i;
-   int count=0;
-   for (i=0; i<maxBubbles; i++)
-   {
-      if (bubbles[i].enabled) count++;
-   }
-   return count;
-}
-
-int bubbleSelectedCount(void)
-{
-   int i;
-   int count=0;
-   for (i=0; i<maxBubbles; i++)
-   {
-      if (bubbles[i].selected) count++;
-   }
-   return count;
-}
-
-int bubbleSelected(int x, int y)
-{
-   int i,j;
-   int count;
-    
-   for (i=0; i<maxBubbles; i++)
-   {
-       if ( (x>=bubbles[i].x) && (x<=bubbles[i].x+bubbles[i].width) && 
-	        (y>=bubbles[i].y-10) && ((y-10)<=bubbles[i].y+bubbles[i].height) )
-	   {	      
-			if (bubbles[i].enabled)
-			{
-				// Reset idle hint timer
-            game.idleTime=time(NULL);
-				for (j=0;j<maxBubbles;j++) bubbles[j].size=MIN_BUBBLE_SIZE;
-      
-				if (bubbles[i].selected) 
-				{ 
-					// Double select is remove action
-   		      bubbleRemove(); 				
-					bubblePossibleOption();
-					bubbleHint();
-					game.selectScore=0;
-				}
-            else
-				{	
-					// new selection clear old selections
-					for (j=0;j<maxBubbles;j++) bubbles[j].selected=false;
-   
-					// Single select is select action
-					bubbleMultiSelect(i);
-					count=bubbleSelectedCount();				
-					game.selectScore=count*(count-1);
-				}          			  
-            SND_SetVoice(SND_GetFirstUnusedVoice(), VOICE_MONO_16BIT, 
-					22050, 0, (char *) effect3_pcm, effect3_pcm_size, 
-					settings.effectVolume*EFFECT_MULTIPLER, 
-					settings.effectVolume*EFFECT_MULTIPLER, NULL);
- 	         return i;			 
-			}
-	   }	   
-   }
-   return -1;
-}
-
-// Store score in on disk and internet
+/**
+ * Store score in on disk and internet
+ */
 void storeScore(void)
 {
 	// Save score
@@ -2146,6 +2234,30 @@ void buttonScroll(int x,int y )
   }
 }
 
+void buttonExit(int index)
+{    
+   // Stop network thread
+   tcp_stop_thread();
+	
+   // Stop rumble
+   WPAD_Rumble(0,0);
+		
+   // Stop music
+   MODPlay_Stop(&snd1);
+	
+   // Exit game
+   if (index==0)
+   {   
+       // Exit to loader
+	   exit(0);
+   }
+   else
+   {
+       // Reset Wii
+	   SYS_ResetSystem(SYS_RESTART,0,0);	
+   }
+}
+ 
 void buttonA(int x, int y)
 {
   if (selectedA) return;
@@ -2180,19 +2292,11 @@ void buttonA(int x, int y)
         switch (buttonSelected(x,y,true))
 	    {
           case 0: // play button	      
-           
-		          // Reset score 
-				  game.score=0;
-				  
-				  // Reset level
-				  game.level=0;	
-				  
-				  // Init game
-				  initLevel();
-				  initGame(); 
-				  
-				  stateMachine=stateGame;
-			      break;
+           				 
+				initGame(); 
+				initLevel();
+				stateMachine=stateGame;
+				break;
 	  
 	      case 1: // High Score button 
 		          scrollIndex=0;
@@ -2512,33 +2616,95 @@ void buttonA(int x, int y)
   }  
 }
 	
-void buttonExit(int index)
-{    
-   // Stop network thread
-   tcp_stop_thread();
-	
-   // Stop rumble
-   WPAD_Rumble(0,0);
-		
-   // Stop music
-   MODPlay_Stop(&snd1);
-	
-   // Exit game
-   if (index==0)
-   {   
-       // Exit to loader
-	   exit(0);
-   }
-   else
-   {
-       // Reset Wii
-	   SYS_ResetSystem(SYS_RESTART,0,0);	
-   }
-}
- 
 // -----------------------------------------------------------
 // SCREEN LOGIC
 // -----------------------------------------------------------
+
+void drawText(int x, int y, int type, const char *text, ...)
+{
+   char buf[MAX_LEN];
+	memset(buf,0x00,sizeof(buf));
+   
+	if (text!=NULL)
+	{    		
+		// Expend event string
+		va_list list;
+		va_start(list, text );
+		vsprintf(buf, text, list);
+
+	 
+     switch (type)
+     {	   	   	 
+       case fontTitle: 
+	   {
+	      if (x==0) x=320-((strlen(buf)*34)/2);  
+		  GRRLIB_Printf2(x, y, buf, 72, COLOR_WHITESMOKE); 
+	   }
+	   break;
+  
+       case fontWelcome: 
+	   {
+		  GRRLIB_Printf2(x, y, buf, 40, COLOR_WHITESMOKE); 
+	   }
+	   break;
+	   
+	   case fontSubTitle:
+	   {
+	      if (x==0) x=320-((strlen(buf)*20)/2);
+		  GRRLIB_Printf2(x, y, buf, 30, COLOR_WHITESMOKE);          
+	   }
+	   break;
+	   
+	   case fontSubTitle2:
+	   {
+	      if (x==0) x=320-((strlen(buf)*20)/2);
+		  GRRLIB_Printf2(x, y, buf, 30, COLOR_LIGHTRED);          
+	   }
+	   break;
+	   	   
+	   case fontParagraph:
+	   {
+	       if (x==0) x=320-((strlen(buf)*10)/2);	   
+		   GRRLIB_Printf2(x, y, buf, 24, COLOR_WHITESMOKE);            
+	   }
+	   break;
+	   	   
+	   case fontNormal:
+	   {
+	       if (x==0) x=320-((strlen(buf)*7)/2);
+		   GRRLIB_Printf2(x, y, buf, 18, COLOR_WHITESMOKE);            
+	   }
+	   break;
+	         
+	   case fontNew:
+	   {
+	       if (x==0) x=320-((strlen(buf)*8)/2);	   
+		   GRRLIB_Printf2(x, y, buf, 22, COLOR_WHITESMOKE);            
+	   }
+	   break;
+	   
+	   case fontSpecial:
+	   {
+	       if (x==0) x=320-((strlen(buf)*10)/2);
+		   GRRLIB_Printf2(x, y, buf, 10, COLOR_WHITESMOKE);            
+	   }
+	   break;
+	   
+	   case fontButton:
+	   {
+	       if (strlen(buf)==1)
+		   {
+		      GRRLIB_Printf2(x+35, y, buf, 24, COLOR_WHITESMOKE);            
+		   }
+		   else
+		   {
+		      GRRLIB_Printf2(x+20, y, buf, 24, COLOR_WHITESMOKE);    
+		   }		   
+	   }
+	   break;
+	 }
+   }
+}
 
 void drawButtons()
 {
@@ -2724,91 +2890,7 @@ void drawExplodes(void)
    }
 }
 
-void drawText(int x, int y, int type, const char *text, ...)
-{
-   char buf[MAX_LEN];
-	memset(buf,0x00,sizeof(buf));
-   
-	if (text!=NULL)
-	{    		
-		// Expend event string
-		va_list list;
-		va_start(list, text );
-		vsprintf(buf, text, list);
 
-	 
-     switch (type)
-     {	   	   	 
-       case fontTitle: 
-	   {
-	      if (x==0) x=320-((strlen(buf)*34)/2);  
-		  GRRLIB_Printf2(x, y, buf, 72, COLOR_WHITESMOKE); 
-	   }
-	   break;
-  
-       case fontWelcome: 
-	   {
-		  GRRLIB_Printf2(x, y, buf, 40, COLOR_WHITESMOKE); 
-	   }
-	   break;
-	   
-	   case fontSubTitle:
-	   {
-	      if (x==0) x=320-((strlen(buf)*20)/2);
-		  GRRLIB_Printf2(x, y, buf, 30, COLOR_WHITESMOKE);          
-	   }
-	   break;
-	   
-	   case fontSubTitle2:
-	   {
-	      if (x==0) x=320-((strlen(buf)*20)/2);
-		  GRRLIB_Printf2(x, y, buf, 30, COLOR_LIGHTRED);          
-	   }
-	   break;
-	   	   
-	   case fontParagraph:
-	   {
-	       if (x==0) x=320-((strlen(buf)*10)/2);	   
-		   GRRLIB_Printf2(x, y, buf, 24, COLOR_WHITESMOKE);            
-	   }
-	   break;
-	   	   
-	   case fontNormal:
-	   {
-	       if (x==0) x=320-((strlen(buf)*7)/2);
-		   GRRLIB_Printf2(x, y, buf, 18, COLOR_WHITESMOKE);            
-	   }
-	   break;
-	         
-	   case fontNew:
-	   {
-	       if (x==0) x=320-((strlen(buf)*8)/2);	   
-		   GRRLIB_Printf2(x, y, buf, 22, COLOR_WHITESMOKE);            
-	   }
-	   break;
-	   
-	   case fontSpecial:
-	   {
-	       if (x==0) x=320-((strlen(buf)*10)/2);
-		   GRRLIB_Printf2(x, y, buf, 10, COLOR_WHITESMOKE);            
-	   }
-	   break;
-	   
-	   case fontButton:
-	   {
-	       if (strlen(buf)==1)
-		   {
-		      GRRLIB_Printf2(x+35, y, buf, 24, COLOR_WHITESMOKE);            
-		   }
-		   else
-		   {
-		      GRRLIB_Printf2(x+20, y, buf, 24, COLOR_WHITESMOKE);    
-		   }		   
-	   }
-	   break;
-	 }
-   }
-}
 
 void drawInfoBar(void)
 {
