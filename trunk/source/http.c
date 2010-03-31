@@ -842,8 +842,8 @@ extern bool http_request(char *url, const u32 max_size)
     char *s_fn="http_request";
     traceEvent(s_fn,1,"enter"); 
  		
-        int linecount;
-		boolean chunked=false;
+      int linecount;
+		bool chunked=false;
 		int emptycount=0;
 		
         if (!http_split_url(&http_host, &http_path, url)) return false;
