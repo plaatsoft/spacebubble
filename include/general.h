@@ -362,10 +362,11 @@ pointer pointers[MAX_POINTER];
  *
  * @section ReleaseNotes
  *
-  *  <b>31-03-2010 Version 0.95 </b>
+  *  <b>31-03-2010 Version 0.95</b>
  *  - GUI:
  *    - Update menu screen information.
  *  - Core:
+ *   - WiiMote timeout increase from 60 to 300 seconds.
  *   - Added local highscore position calculation.
  *   - Improve stability.
  *   - Use libfat 1.0.7 as disk access engine.

@@ -1060,7 +1060,7 @@ void initThreads(void)
 			ID4, URL4, 
 			URL_TOKEN, userData1, userData2);
    
-   	traceEvent(s_fn,0,"leave [void]");
+   traceEvent(s_fn,0,"leave [void]");
 }
 
 /**
@@ -1512,47 +1512,6 @@ void initButtons(void)
   }
 }
 
-/**
- * Init Level
- */
-void initLevel()
-{
-   char *s_fn="initLevel";
-   traceEvent(s_fn,0,"enter");
-   
-   // Increes Level
-   game.level++;	
-
-   switch (game.level)
-   {
-      case 1:  game.maxTime=30;	           
-					break;
-
-      case 2:  game.maxTime=55;	           
-					break;		
-
-      case 3:  game.maxTime=70;	           
-					break;	   
-			   
-	  case 4:   game.maxTime=85;	           
-					break;
-			   
-	  case 5:   game.maxTime=95;	           
-					break;
-			   
-	  case 6:   game.maxTime=105;	           
-					break;
-			   
-	  case 7:  game.maxTime=120;	           
-					break;
-   }   
-   // Reset time
-   game.localTime=time(NULL);   
-   game.idleTime=time(NULL);
-   game.selectScore=0;
-   
-   traceEvent(s_fn,0,"leave [void]");
-}
   	
 /**
  * Init Images
@@ -1758,6 +1717,48 @@ void initExplodes(void)
    traceEvent(s_fn,0,"leave [void]");
 }
 
+/**
+ * Init Level
+ */
+void initLevel()
+{
+   char *s_fn="initLevel";
+   traceEvent(s_fn,0,"enter");
+   
+   // Increes Level
+   game.level++;	
+
+   switch (game.level)
+   {
+      case 1:  game.maxTime=30;	           
+					break;
+
+      case 2:  game.maxTime=55;	           
+					break;		
+
+      case 3:  game.maxTime=70;	           
+					break;	   
+			   
+	  case 4:   game.maxTime=85;	           
+					break;
+			   
+	  case 5:   game.maxTime=95;	           
+					break;
+			   
+	  case 6:   game.maxTime=105;	           
+					break;
+			   
+	  case 7:  game.maxTime=120;	           
+					break;
+   }   
+   // Reset time
+   game.localTime=time(NULL);   
+   game.idleTime=time(NULL);
+   game.selectScore=0;
+   
+   traceEvent(s_fn,0,"leave [void]");
+}
+
 /** 
  * Init game parameters
  */
@@ -1774,10 +1775,6 @@ void initGame()
    angle=0; 
    size=0;
 			       
-	game.score=0;
-	game.level=0;
-	game.rating=1000;
-
    initBubbles();
    initExplodes();
    
@@ -2291,25 +2288,33 @@ void buttonA(int x, int y)
      {
         switch (buttonSelected(x,y,true))
 	    {
-          case 0: // play button	      
-           				 
-				initGame(); 
+          case 0: 
+				// play button	      
+				
+				game.score=0;
+				game.level=0;
+				game.rating=1000;
 				initLevel();
+				initGame(); 
+				
 				stateMachine=stateGame;
 				break;
 	  
-	      case 1: // High Score button 
-		          scrollIndex=0;
-				  stateMachine=stateLocalHighScore;
-			      break;
+	      case 1: 
+				// High Score button 
+		      scrollIndex=0;
+				stateMachine=stateLocalHighScore;
+			   break;
 				  
-		  case 2: // Help button 
-				  stateMachine=stateHelp1;
-			      break;
+		  case 2: 
+				// Help button 
+				stateMachine=stateHelp1;
+			   break;
 	  
-	      case 3: // Credits button 		 
-				  stateMachine=stateCredits;
-			      break;
+	      case 3: 
+				// Credits button 		 
+				stateMachine=stateCredits;
+			   break;
 		  
 		  case 4: // Sound button 		 
 				  stateMachine=stateSound;
@@ -2368,7 +2373,7 @@ void buttonA(int x, int y)
 	    switch (buttonSelected(x,y,true))
 	    {
           case 0: // Next button	      
-                  if (game.level<MAX_LEVEL)
+              if (game.level<MAX_LEVEL)
 				  {
 					 initLevel(); 	
 					 initGame();        
@@ -3933,8 +3938,8 @@ int main()
 	// Init wiimote layer
    WPAD_Init();
 	 
-	// Wiimote is shutdown after 60 seconds of innactivity.
-   WPAD_SetIdleTimeout(60); 
+	// Wiimote is shutdown after 300 seconds of innactivity.
+   WPAD_SetIdleTimeout(300); 
 	 
 	// enable accelerometers and IR
    WPAD_SetDataFormat(WPAD_CHAN_ALL,WPAD_FMT_BTNS_ACC_IR);
@@ -3977,8 +3982,7 @@ int main()
     // Init Http thread
 	initThreads();
 	
-  	// Init game variables    
-	//initMP3Files();
+  	// Init game variables 
    initImages();
 	initGame();	
 	initSound();
@@ -3993,7 +3997,7 @@ int main()
    GRRLIB_Init();
         
 	// Make screen black
-	GRRLIB_FillScreen(0x00000000);
+	GRRLIB_FillScreen(0x000000FF);
    GRRLIB_Render();
 		
 	// Repeat forever
