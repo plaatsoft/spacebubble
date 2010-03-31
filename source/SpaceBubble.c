@@ -2711,7 +2711,7 @@ void drawButtons()
    int i;
    int j;
    
-   boolean selected=false;
+   bool selected=false;
    
    for (i=0; i<maxButtons; i++)
    {	  
@@ -2753,7 +2753,7 @@ void drawButtons()
 	}
 }
 
-GRRLIB_texImg * imageBubble(boolean selected, int color)
+GRRLIB_texImg * imageBubble(bool selected, int color)
 {
     if (selected)
     {  
