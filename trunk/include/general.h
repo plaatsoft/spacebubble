@@ -383,6 +383,7 @@ pointer pointers[MAX_POINTER];
  *  <b>11-09-2010 Version 0.96</b>
  *  - GUI:
  *   - Update menu screen information.
+ *   - Overall FPS has improved 50 percent. Thanks Crayon
  *  - Core:
  *   - Use GRRLIB 4.3.0 as graphical engine.
  *   - libpng was updated to version 1.4.2

@@ -2646,7 +2646,7 @@ void drawText(int x, int y, int type, const char *text, ...)
        case fontTitle: 
 	   {
 	      if (x==0) x=320-((strlen(buf)*34)/2);  
-		  GRRLIB_PrintfTTF(x, y, myFont, buf, 72, GRRLIB_BLACK); 
+		  GRRLIB_PrintfTTF(x, y, myFont, buf, 72, GRRLIB_WHITESMOKE); 
 	   }
 	   break;
   
