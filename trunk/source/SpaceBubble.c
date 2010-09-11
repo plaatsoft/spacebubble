@@ -54,6 +54,7 @@
 #include "track7_mod.h"
 #include "track8_mod.h"
 #include "track9_mod.h"
+#include "font_ttf.h" 
 
 // -----------------------------------------------------------
 // VARIABLES
@@ -92,6 +93,8 @@ int     selectedMusic     		= 1;
 int     hintCount		  			= 0;
 bool    bPowerOff         		= false;	
 bool    gameResult		  		= false;
+
+GRRLIB_ttfFont *myFont; 
 
 // Background1 Image
 extern const unsigned char     pic4data[];
@@ -2643,55 +2646,55 @@ void drawText(int x, int y, int type, const char *text, ...)
        case fontTitle: 
 	   {
 	      if (x==0) x=320-((strlen(buf)*34)/2);  
-		  GRRLIB_Printf2(x, y, buf, 72, COLOR_WHITESMOKE); 
+		  GRRLIB_PrintfTTF(x, y, myFont, buf, 72, GRRLIB_BLACK); 
 	   }
 	   break;
   
        case fontWelcome: 
 	   {
-		  GRRLIB_Printf2(x, y, buf, 40, COLOR_WHITESMOKE); 
+		  GRRLIB_PrintfTTF(x, y, myFont, buf, 40, GRRLIB_WHITESMOKE); 
 	   }
 	   break;
 	   
 	   case fontSubTitle:
 	   {
-	      if (x==0) x=320-((strlen(buf)*20)/2);
-		  GRRLIB_Printf2(x, y, buf, 30, COLOR_WHITESMOKE);          
+	      if (x==0) x=320-((strlen(buf)*20)/2);  
+		GRRLIB_PrintfTTF(x, y, myFont, buf, 30, GRRLIB_WHITESMOKE);      
 	   }
 	   break;
 	   
 	   case fontSubTitle2:
 	   {
-	      if (x==0) x=320-((strlen(buf)*20)/2);
-		  GRRLIB_Printf2(x, y, buf, 30, COLOR_LIGHTRED);          
+	      if (x==0) x=320-((strlen(buf)*20)/2);   
+		  GRRLIB_PrintfTTF(x, y, myFont, buf, 30, GRRLIB_LIGHTRED);       
 	   }
 	   break;
 	   	   
 	   case fontParagraph:
 	   {
 	       if (x==0) x=320-((strlen(buf)*10)/2);	   
-		   GRRLIB_Printf2(x, y, buf, 24, COLOR_WHITESMOKE);            
+		   GRRLIB_PrintfTTF(x, y, myFont, buf, 24, GRRLIB_WHITESMOKE);           
 	   }
 	   break;
 	   	   
 	   case fontNormal:
 	   {
 	       if (x==0) x=320-((strlen(buf)*7)/2);
-		   GRRLIB_Printf2(x, y, buf, 18, COLOR_WHITESMOKE);            
+		   GRRLIB_PrintfTTF(x, y, myFont, buf, 18, GRRLIB_WHITESMOKE);            
 	   }
 	   break;
 	         
 	   case fontNew:
 	   {
-	       if (x==0) x=320-((strlen(buf)*8)/2);	   
-		   GRRLIB_Printf2(x, y, buf, 22, COLOR_WHITESMOKE);            
+	       if (x==0) x=320-((strlen(buf)*8)/2);	          
+		   GRRLIB_PrintfTTF(x, y, myFont, buf, 22, GRRLIB_WHITESMOKE);   
 	   }
 	   break;
 	   
 	   case fontSpecial:
 	   {
 	       if (x==0) x=320-((strlen(buf)*10)/2);
-		   GRRLIB_Printf2(x, y, buf, 10, COLOR_WHITESMOKE);            
+		   GRRLIB_PrintfTTF(x, y, myFont, buf, 10, GRRLIB_WHITESMOKE);            
 	   }
 	   break;
 	   
@@ -2699,11 +2702,11 @@ void drawText(int x, int y, int type, const char *text, ...)
 	   {
 	       if (strlen(buf)==1)
 		   {
-		      GRRLIB_Printf2(x+35, y, buf, 24, COLOR_WHITESMOKE);            
+		      GRRLIB_PrintfTTF(x+35, y, myFont, buf, 24, GRRLIB_WHITESMOKE);              
 		   }
 		   else
 		   {
-		      GRRLIB_Printf2(x+20, y, buf, 24, COLOR_WHITESMOKE);    
+			  GRRLIB_PrintfTTF(x+20, y, myFont, buf, 24, GRRLIB_WHITESMOKE);    
 		   }		   
 	   }
 	   break;
@@ -2908,10 +2911,7 @@ void drawInfoBar(void)
    GRRLIB_DrawImg(10,120+yOffset, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
    GRRLIB_DrawImg(10,240+yOffset, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );
    GRRLIB_DrawImg(10,360+yOffset, images.panel1, 0, 1.0, 1.0, IMAGE_COLOR );  
-  
-   // Init text layer	  
-   GRRLIB_initTexture();
-		  
+   
    drawText(55, 20+yOffset, fontSubTitle, "Score");
    sprintf(tmp,"%05d", game.score);
    drawText(50, 50+yOffset, fontSubTitle, tmp);
@@ -2958,8 +2958,6 @@ void drawScreen(void)
 								 (rmode->xfbHeight/2), 
 								 images.logo1, 0, size, size, IMAGE_COLOR );
 		  
-			// Init text layer	  
-         GRRLIB_initTexture();	
 		  
 			ypos+=50;
 			drawText(0, ypos, fontParagraph,  "Created by wplaat"  );
@@ -2972,9 +2970,6 @@ void drawScreen(void)
 		  
 			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
-		  
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }	   
 	   break;
 	   
@@ -2994,8 +2989,6 @@ void drawScreen(void)
 			wave2+=0.02;
          wave1=wave2;
 		  
-			// Init text layer	  
-         GRRLIB_initTexture();	
 		  
 		   ypos+=345;
 			drawText(0, ypos, fontParagraph,  "Please visit my website for more information."  );
@@ -3005,8 +2998,6 @@ void drawScreen(void)
 			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			  
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }	   
 	   break;
 	   	   
@@ -3019,19 +3010,13 @@ void drawScreen(void)
 			GRRLIB_DrawImg(320, 240+yOffset,images.logo6, 0, 0.95, 0.98, IMAGE_COLOR );
 			
 			// Draw Plaatsoft logo
-         GRRLIB_DrawImg(410, 300+yOffset, 
-				images.logo2, 0, 0.5, 0.5, IMAGE_COLOR );
-
-			// Init text layer	  
-         GRRLIB_initTexture();	
-		  
+			GRRLIB_DrawImg(410, 300+yOffset, images.logo2, 0, 0.5, 0.5, IMAGE_COLOR );
+	
 			ypos+=415;
 			drawText(350, ypos, fontNormal,  "Some more Wii games developed"  );
 			ypos+=20;
 			drawText(400, ypos, fontNormal,  "by www.plaatsoft.nl"  );
 			 
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }	   
 	   break;
 
@@ -3042,9 +3027,6 @@ void drawScreen(void)
 	      /// Draw background
 		   GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
 		  
-   	   // Init text layer	  
-         GRRLIB_initTexture();
-	
 			ypos+=25;
 		   sprintf(tmp,"%s v%s",PROGRAM_NAME, PROGRAM_VERSION );
 		   drawText(20, ypos, fontWelcome, tmp);
@@ -3070,9 +3052,7 @@ void drawScreen(void)
 			
 			// Draw buttons
 	      drawButtons(); 
-		  
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
+		 
 	   }
 	   break;
 	   
@@ -3111,9 +3091,7 @@ void drawScreen(void)
 
 			sprintf(tmp,"%d fps", CalculateFrameRate());
 			drawText(80, 480, fontSpecial, tmp);
-			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
+		
 	   }
 	   break;
 	   	   
@@ -3185,9 +3163,6 @@ void drawScreen(void)
 
 			sprintf(tmp,"%d fps", CalculateFrameRate());
 			drawText(80, 480, fontSpecial, tmp);
-		   		  
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 	   
@@ -3230,9 +3205,7 @@ void drawScreen(void)
 
 			sprintf(tmp,"%d fps", CalculateFrameRate());
 			drawText(80, 480, fontSpecial, tmp);
-		  				   		  
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
+		  				   		  	
 	   }
 	   break;
 
@@ -3269,8 +3242,6 @@ void drawScreen(void)
 			sprintf(tmp,"%d fps", CalculateFrameRate());
 			drawText(80, 480, fontSpecial, tmp);
 		  				   		
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 	   	   
@@ -3295,9 +3266,7 @@ void drawScreen(void)
 				endEntry=startEntry+13;
 				scrollEnabled=true;
 			}
-		  
-			// Init text layer	  
-         GRRLIB_initTexture();
+		 
 		  				        	     	
 			// Draw scrollbar
 			if (scrollEnabled)
@@ -3353,9 +3322,7 @@ void drawScreen(void)
 		  
 			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
-			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
+ 	   
 	   }
 	   break;
 	   
@@ -3381,9 +3348,6 @@ void drawScreen(void)
 				scrollEnabled=true;
 			}
 		  
-         // Init text layer	  
-         GRRLIB_initTexture();
-		       	
 			// Draw scrollbar
 			if (scrollEnabled)
 			{
@@ -3445,9 +3409,7 @@ void drawScreen(void)
 		  
 		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
-			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
+	 	   
 	   }
 	   break;
 	   
@@ -3472,10 +3434,7 @@ void drawScreen(void)
 				endEntry=startEntry+13;
 				scrollEnabled=true;
 			}
-		 
-         // Init text layer	  
-         GRRLIB_initTexture();
-		        	
+		 		        	
 			// Draw scrollbar
 			if (scrollEnabled)
 			{
@@ -3537,9 +3496,7 @@ void drawScreen(void)
 		  
 		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
-			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	 	   
+			 	   
 	   }
 	   break;
 	   	   
@@ -3548,9 +3505,6 @@ void drawScreen(void)
 	      // Draw background
 			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
 		  
-		  	// Init text layer	  
-         GRRLIB_initTexture();
-			
 		   // Show title
 			ypos+=20;
 			drawText(0, ypos, fontTitle, "Help");
@@ -3580,8 +3534,6 @@ void drawScreen(void)
 		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
 		
@@ -3592,10 +3544,7 @@ void drawScreen(void)
 			 
 			// Draw buttons
 	      drawButtons(); 
-		  
-			// Init text layer	  
-         GRRLIB_initTexture();
- 
+		   
 			// Show title
 			ypos+=20;
 			drawText(0, ypos, fontTitle, "WiiMote Control");
@@ -3632,8 +3581,6 @@ void drawScreen(void)
 		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 		}
 		break;
 	   
@@ -3641,10 +3588,7 @@ void drawScreen(void)
 	   {
 			// Draw background
 			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
-		
-         // Init text layer	  
-         GRRLIB_initTexture();
- 
+		 
 			// Show title
 			ypos+=20;
 			drawText(0, ypos, fontTitle, "      Credits");
@@ -3686,8 +3630,6 @@ void drawScreen(void)
 		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
 	   
@@ -3695,10 +3637,7 @@ void drawScreen(void)
 	   {
 	      // Draw background
 			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1, 1, IMAGE_COLOR );
-	
-	      // Init text layer	  
-         GRRLIB_initTexture();
- 		  
+	 		  
 	      // Draw Sound icon
 	      GRRLIB_DrawImg((640/2), ((rmode->xfbHeight/2)), images.sound, angle, 1.4, 1.4, IMAGE_COLOR );
 	
@@ -3735,8 +3674,6 @@ void drawScreen(void)
 		  
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 	   }
 	   break;
 	   
@@ -3777,9 +3714,7 @@ void drawScreen(void)
 				endEntry=startEntry+18;
 				scrollEnabled=true;
 			}
-		  
-	      // Init text layer	  
-         GRRLIB_initTexture();
+
  
          // Draw scrollbar
 			if (scrollEnabled)
@@ -3834,9 +3769,7 @@ void drawScreen(void)
 		  
 		  	drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
-			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
+
 	   }
 	   break;
 	   
@@ -3845,8 +3778,6 @@ void drawScreen(void)
 	      // Draw background
 			GRRLIB_DrawImg(0, yOffset,images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
       		
-			// Init text layer	  
-         GRRLIB_initTexture();
 			 
 	      // Draw Title	
 			ypos+=20;
@@ -3876,8 +3807,6 @@ void drawScreen(void)
 			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 			
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);	
 	   }
 	   break;
 		
@@ -3885,10 +3814,7 @@ void drawScreen(void)
 		{
 			// Draw background
 			GRRLIB_DrawImg(0, yOffset, images.background1, 0, 1.0, 1.0, IMAGE_COLOR );
-      		
-			// Init text layer	  
-         GRRLIB_initTexture();
-			
+      					
 			// Draw Title	
 			drawText(0, ypos, fontTitle, "Donate");
 			ypos+=100;
@@ -3915,8 +3841,6 @@ void drawScreen(void)
 			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
 		  		   		  		   		  
-			// Draw text layer on top of background.
-			GRRLIB_DrawImg(0, 0, GRRLIB_GetTexture(), 0, 1.0, 1.0, IMAGE_COLOR);
 		}
 		break;
 
@@ -3989,15 +3913,19 @@ int main()
 	initGameBoard();
 	initTodayHighScore();
 	initGlobalHighScore();
-	
-	// Init FreeType font engine
-	GRRLIB_InitFreetype();
-	  			
+		  			
    // Init GRRLib graphics library
    GRRLIB_Init();
-        
-	// Make screen black
-	GRRLIB_FillScreen(0x000000FF);
+   
+    // Init FreeType font 
+	myFont = GRRLIB_LoadTTF(font_ttf, font_ttf_size); 
+
+    // To have a cool effect anti-aliasing is turned on
+    GRRLIB_Settings.antialias = true;
+	
+	// Black background
+    GRRLIB_SetBackgroundColour(0x00, 0x00, 0x00, 0xFF);
+	
    GRRLIB_Render();
 		
 	// Repeat forever
@@ -4088,6 +4016,8 @@ int main()
 		}
 		GRRLIB_Render();
 	}
+	
+	GRRLIB_FreeTTF(myFont);
 	
 	GRRLIB_Exit();
 		

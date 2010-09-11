@@ -27,9 +27,9 @@
 
 #include "GRRLIB.h"
 
-#define PROGRAM_NAME	    		"SpaceBubble"
-#define PROGRAM_VERSION     	"0.95"
-#define RELEASE_DATE        	"31-03-2010" 
+#define PROGRAM_NAME	    	"SpaceBubble"
+#define PROGRAM_VERSION     	"0.96"
+#define RELEASE_DATE        	"11-09-2010" 
 
 // Check latest available version 
 #define URL1                	"http://www.plaatsoft.nl/service/releasenotes4.html"
@@ -57,9 +57,27 @@
 #define WSP_POINTER_X       	200
 #define WSP_POINTER_Y       	250
 
-#define COLOR_WHITESMOKE    	0xFFFFFF
-#define COLOR_LIGHTRED      	0x3333FF
-#define COLOR_DARKBLACK     	0x000000
+#define GRRLIB_WHITESMOKE   	0xFFFFFFFF
+#define GRRLIB_WHITE_TRANS   	0xFFFFFF44
+#define GRRLIB_LIGHTRED     	0x3333FFFF
+#define GRRLIB_BLACK 			0x000000FF
+#define GRRLIB_BLACK_TRANS		0x00000044
+#define GRRLIB_BLACK_TRANS_2	0x000000AA
+#define GRRLIB_MAROON  			0x800000FF
+#define GRRLIB_GREEN   			0x008000FF
+#define GRRLIB_OLIVE   			0x808000FF
+#define GRRLIB_NAVY    			0x000080FF
+#define GRRLIB_PURPLE  			0x800080FF
+#define GRRLIB_TEAL    			0x008080FF
+#define GRRLIB_GRAY    			0x808080FF
+#define GRRLIB_SILVER  			0xC0C0C0FF
+#define GRRLIB_RED     			0xFF0000FF
+#define GRRLIB_LIME    			0x00FF00FF
+#define GRRLIB_YELLOW  			0xFFFF00FF
+#define GRRLIB_BLUE    			0x0000FFFF
+#define GRRLIB_FUCHSIA 			0xFF00FFFF
+#define GRRLIB_AQUA    			0x00FFFFFF
+#define GRRLIB_WHITE   			0xFFFFFFFF
 
 #define IMAGE_COLOR				0xFFFFFFFF
 #define IMAGE_COLOR1        	0xEEEEEEEE
@@ -362,7 +380,20 @@ pointer pointers[MAX_POINTER];
  *
  * @section ReleaseNotes
  *
-  *  <b>31-03-2010 Version 0.95</b>
+ *  <b>11-09-2010 Version 0.96</b>
+ *  - GUI:
+ *   - Update menu screen information.
+ *  - Core:
+ *   - Use GRRLIB 4.3.0 as graphical engine.
+ *   - libpng was updated to version 1.4.2
+ *   - libjpeg was updated to version 8b
+ *   - zlib was updated to version 1.2.5
+ *   - FreeType was updated to 2.3.12
+ *  - General:
+ *   - Maintenance release.
+ *   - Build game with devkitPPC r21 compiler.
+ *
+ *  <b>31-03-2010 Version 0.95</b>
  *  - GUI:
  *    - Update menu screen information.
  *  - Core:
