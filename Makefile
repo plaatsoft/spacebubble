@@ -15,6 +15,9 @@ export	LIBXML_LIB	:=	../lib/mxml/lib
 export	FREETYPE_INC :=	../lib/freetype/include
 export	FREETYPE_LIB :=	../lib/freetype/lib/wii
 
+export 	ZLIB_INC	  := ../lib/zlib/include
+export 	ZLIB_LIB	  := ../lib/zlib/lib/wii
+
 export	GRRLIB_INC :=	../include
 
 
@@ -119,6 +122,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -iquote $(CURDIR)/$(dir)) \
 					-I$(LIBJPEG_INC) \
 					-I$(LIBPNG_INC) \
 					-I$(LIBXML_INC) \
+					-I$(ZLIB_INC) \
 					-I$(FREETYPE_INC) \
 					-I$(GRRLIB_INC)
 
@@ -131,6 +135,7 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS), -L$(dir)/lib) \
 					-L$(LIBJPEG_LIB) \
 					-L$(LIBPNG_LIB) \
 					-L$(LIBXML_LIB) \
+					-L$(ZLIB_LIB) \
 					-L$(FREETYPE_LIB)
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
