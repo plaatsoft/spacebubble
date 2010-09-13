@@ -28,8 +28,8 @@
 #include "GRRLIB.h"
 
 #define PROGRAM_NAME	    	"SpaceBubble"
-#define PROGRAM_VERSION     	"0.96"
-#define RELEASE_DATE        	"11-09-2010" 
+#define PROGRAM_VERSION     	"0.97"
+#define RELEASE_DATE        	"13-09-2010" 
 
 // Check latest available version 
 #define URL1                	"http://www.plaatsoft.nl/service/releasenotes4.html"
@@ -379,6 +379,13 @@ pointer pointers[MAX_POINTER];
  * Documentation: wplaat\n
  *
  * @section ReleaseNotes
+ * <b>13-09-2010 Version 0.97</b>
+ * - GUI:
+ *  - Update menu screen information.
+ * - Core:
+ *  - Solve random freeze problem during startup of game.
+ * - General:
+ *  - Build game with devkitPPC r21 compiler. 
  *
  *  <b>11-09-2010 Version 0.96</b>
  *  - GUI:

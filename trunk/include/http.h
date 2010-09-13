@@ -1,6 +1,6 @@
 /** 
- *  @file
- *  @brief Wii network include file
+ *  @file 
+ *  @brief The file contain the http (network) class
  *  @author wplaat
  *
  *  Copyright (C) 2008-2010 PlaatSoft
@@ -19,8 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _HTTP_H_
-#define _HTTP_H_
+#ifndef HTTP_H
+#define HTTP_H
+
+//==============================================================================
+// C++ header
+//==============================================================================
+#ifdef __cplusplus
+   extern "C" {
+#endif /* __cplusplus */
 
 enum
 {
@@ -39,36 +46,44 @@ enum
 	TCP_END=12
 };
 
+// Init tcp layer
+void tcp_init_layer(void);
+
 // Start HTTP thread
-extern int tcp_start_thread(char *name, char *version, 
-						char *id1, char *url1, 
-						char *id2, char *url2, 
-						char *id3, char *url3, 
-						char *id4, char *url4,
-						char *token, char *userData2, char *userData3);
+int tcp_start_thread(	const char *name,  const char *version, 
+						const char *id1,   const char *url1, 
+						const char *id2,   const char *url2, 
+						const char *id3,   const char *url3, 
+						const char *id4,   const char *url4,
+						const char *token, const char *userData2, 
+						const char *userData3);
 						
 // Stop HTTP thread
-extern int tcp_stop_thread(void);
+int tcp_stop_thread(void);
 
 // Fetch current thread state (String)
-extern char *tcp_get_state(void);
+char *tcp_get_state(void);
 
 // Feth current thread state (int)
-extern int tcp_get_state_nr(void);
+int tcp_get_state_nr(void);
 
 // Set current thread state (int)
 int tcp_set_state(int state, char *userData3);
 
 // Get version (String format)
-extern char *tcp_get_version(void);
+char *tcp_get_version(void);
 
 // Get releasenotes (HTML format)
-extern char *tcp_get_releasenote(void);
+char *tcp_get_releasenote(void);
 
 // Get today highscore (XML format)
-extern char *tcp_get_today_highscore(void);
+char *tcp_get_today_highscore(void);
 
 // Get global highscore (XML format)
-extern char *tcp_get_global_highscore(void);
+char *tcp_get_global_highscore(void);
+
+#ifdef __cplusplus
+   }
+#endif /* __cplusplus */
 
 #endif
