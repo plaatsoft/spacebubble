@@ -1,0 +1,1476 @@
+16-11-2009 23:52:22 [thread0-main] SpaceBubble 0.92 Started
+16-11-2009 23:52:22 [thread0-loadLocalHighScoreFile] enter
+16-11-2009 23:52:22 [thread0-loadLocalHighScoreFile] leave [void]
+16-11-2009 23:52:22 [thread0-loadSettingFile] enter
+16-11-2009 23:52:22 [thread0-loadSettingFile] leave [void]
+16-11-2009 23:52:22 [thread0-initThreads] enter
+16-11-2009 23:52:22 [thread1-tcp_start_thread] enter
+16-11-2009 23:52:22 [thread1-tcp_clear_memory] enter
+16-11-2009 23:52:22 [thread1-tcp_clear_memory] leave
+16-11-2009 23:52:22 [thread1-tcp_start_thread] leave [0]
+16-11-2009 23:52:22 [thread0-initThreads] leave [void]
+16-11-2009 23:52:22 [thread0-initImages] enter
+16-11-2009 23:52:22 [thread0-initImages] leave [void]
+16-11-2009 23:52:22 [thread0-initGame] enter
+16-11-2009 23:52:22 [thread0-initBubbles] enter
+16-11-2009 23:52:22 [thread0-initBubbles] leave [void]
+16-11-2009 23:52:22 [thread0-initExplodes] enter
+16-11-2009 23:52:22 [thread0-initExplodes] leave [void]
+16-11-2009 23:52:22 [thread0-initGame] leave [void]
+16-11-2009 23:52:22 [thread0-initSound] enter
+16-11-2009 23:52:22 [thread0-initMusicTrack] enter
+16-11-2009 23:52:22 [thread0-initMusicTrack] leave [0]
+16-11-2009 23:52:22 [thread0-initSound] leave [void]
+16-11-2009 23:52:22 [thread0-initGameBoard] enter
+16-11-2009 23:52:22 [thread0-initGameBoard] leave [void]
+16-11-2009 23:52:22 [thread0-initBest] enter
+16-11-2009 23:52:22 [thread0-initBest] leave [void]
+16-11-2009 23:52:22 [thread1-tcp_thread] enter
+16-11-2009 23:52:22 [thread1-tcp_thread] stateMachine=TCP_INIT
+16-11-2009 23:52:22 [thread1-tcp_init] enter
+16-11-2009 23:52:22 [thread1-tcp_init] Waiting for network to initialise...
+16-11-2009 23:52:26 [thread1-tcp_init] Network initialised [10.240.136.110].
+16-11-2009 23:52:26 [thread1-tcp_init] leave [0]
+16-11-2009 23:52:26 [thread1-tcp_thread] stateMachine=TCP_REQUEST1a
+16-11-2009 23:52:26 [thread1-http_request] enter
+16-11-2009 23:52:26 [thread1-http_split_url] enter
+16-11-2009 23:52:26 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:26 [thread1-tcp_connect] enter [host=www.plaatsoft.nl|port=80]
+16-11-2009 23:52:26 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:52:26 [thread1-tcp_socket] enter
+16-11-2009 23:52:26 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:52:26 [thread1-tcp_socket] leave [0]
+16-11-2009 23:52:26 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:52:26 [thread1-tcp_connect] DNS resolve=85.158.203.157
+16-11-2009 23:52:26 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:52:26 [thread1-tcp_connect] leave [0]
+16-11-2009 23:52:26 [thread1-http_request] tcp_connect(www.plaatsoft.nl, 80) = 0
+16-11-2009 23:52:26 [thread1-http_request] request=GET /service/releasenotes4.html HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:26 [thread1-tcp_write] enter [bufsize=205]
+16-11-2009 23:52:26 [thread1-tcp_write] buffer=GET /service/releasenotes4.html HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:26 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:52:26 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:52:27 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:52:27 [thread1-http_request] Date: Mon, 16 Nov 2009 21:50:39 GMT
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:52:27 [thread1-http_request] Server: Apache/2
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=45]
+16-11-2009 23:52:27 [thread1-http_request] Last-Modified: Fri, 18 Sep 2009 06:25:37 GMT
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=30]
+16-11-2009 23:52:27 [thread1-http_request] ETag: "1e80754-1548-3340fa40"
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=21]
+16-11-2009 23:52:27 [thread1-http_request] Accept-Ranges: bytes
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=21]
+16-11-2009 23:52:27 [thread1-http_request] Content-Length: 5448
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:52:27 [thread1-http_request] Content-Type: text/html; charset=UTF-8
+16-11-2009 23:52:27 [thread1-tcp_readln] enter
+16-11-2009 23:52:27 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:52:27 [thread1-http_request] 
+16-11-2009 23:52:27 [thread1-http_request] content_length=5448, status=200, linecount=8
+16-11-2009 23:52:27 [thread1-tcp_read] enter
+16-11-2009 23:52:30 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:52:30 [thread1-http_request] leave [true]
+16-11-2009 23:52:30 [thread1-http_get_result] enter
+16-11-2009 23:52:30 [thread1-http_get_result] leave [true]
+16-11-2009 23:52:30 [thread1-http_findToken] enter [ Version ]
+16-11-2009 23:52:30 [thread1-http_findToken] len=9
+16-11-2009 23:52:30 [thread1-http_findToken] startpos=201
+16-11-2009 23:52:30 [thread1-http_findToken] endpos=214
+16-11-2009 23:52:30 [thread1-http_findToken] leave [0.91]
+16-11-2009 23:52:30 [thread1-tcp_thread] version=0.91
+16-11-2009 23:52:30 [thread1-tcp_thread] stateMachine=TCP_REQUEST1b
+16-11-2009 23:52:30 [thread1-http_split_url] enter
+16-11-2009 23:52:30 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:30 [thread1-http_googleAnalysicUrl] enter
+16-11-2009 23:52:30 [thread1-http_googleAnalysicUrl] domain=[www.plaatsoft.nl]
+16-11-2009 23:52:30 [thread1-http_googleAnalysicUrl] url=[/start/SpaceBubble/0.92]
+16-11-2009 23:52:30 [thread1-http_googleAnalysicUrl] id=[UA-6887062-1]
+16-11-2009 23:52:30 [thread1-http_encode_url] enter
+16-11-2009 23:52:30 [thread1-http_encode_url] buf=[www.plaatsoft.nl]
+16-11-2009 23:52:30 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:30 [thread1-http_encode_url] enter
+16-11-2009 23:52:30 [thread1-http_encode_url] buf=[http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii]
+16-11-2009 23:52:30 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:30 [thread1-http_encode_url] enter
+16-11-2009 23:52:30 [thread1-http_encode_url] buf=[%2Fstart%2FSpaceBubble%2F0.92]
+16-11-2009 23:52:30 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:30 [thread1-http_encode_url] enter
+16-11-2009 23:52:30 [thread1-http_encode_url] buf=[WiiBrew%20SpaceBubble%200.92]
+16-11-2009 23:52:30 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:30 [thread1-http_googleAnalysicUrl] utmac=[UA-6887062-1]
+16-11-2009 23:52:30 [thread1-http_encode_url] enter
+16-11-2009 23:52:30 [thread1-http_encode_url] buf=[SpaceBubble%3D0.92]
+16-11-2009 23:52:30 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:30 [thread1-http_googleAnalysicUrl] buffer=http://www.google-analytics.com/__utm.gif?utmwv=1&utmn=1758415550&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fstart%2FSpaceBubble%2F0.92&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415550.1258329150.1258501950.1258415550.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415550.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B
+16-11-2009 23:52:30 [thread1-http_googleAnalysicUrl] leave [void]
+16-11-2009 23:52:30 [thread1-http_request] enter
+16-11-2009 23:52:30 [thread1-http_split_url] enter
+16-11-2009 23:52:30 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:30 [thread1-tcp_connect] enter [host=www.google-analytics.com|port=80]
+16-11-2009 23:52:30 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:52:30 [thread1-tcp_socket] enter
+16-11-2009 23:52:30 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:52:30 [thread1-tcp_socket] leave [0]
+16-11-2009 23:52:30 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:52:30 [thread1-tcp_connect] DNS resolve=66.102.13.113
+16-11-2009 23:52:30 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:52:30 [thread1-tcp_connect] leave [0]
+16-11-2009 23:52:30 [thread1-http_request] tcp_connect(www.google-analytics.com, 80) = 0
+16-11-2009 23:52:30 [thread1-http_request] request=GET /__utm.gif?utmwv=1&utmn=1758415550&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fstart%2FSpaceBubble%2F0.92&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415550.1258329150.1258501950.1258415550.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415550.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:30 [thread1-tcp_write] enter [bufsize=726]
+16-11-2009 23:52:30 [thread1-tcp_write] buffer=GET /__utm.gif?utmwv=1&utmn=1758415550&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fstart%2FSpaceBubble%2F0.92&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415550.1258329150.1258501950.1258415550.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415550.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:30 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:52:30 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:52:30 [thread1-http_request] Date: Mon, 16 Nov 2009 21:50:42 GMT
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=19]
+16-11-2009 23:52:30 [thread1-http_request] Content-Length: 35
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:52:30 [thread1-http_request] Pragma: no-cache
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=72]
+16-11-2009 23:52:30 [thread1-http_request] Cache-Control: private, no-cache, no-cache=Set-Cookie, proxy-revalidate
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:52:30 [thread1-http_request] Expires: Wed, 19 Apr 2000 11:43:00 GMT
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=45]
+16-11-2009 23:52:30 [thread1-http_request] Last-Modified: Wed, 21 Jan 2004 19:50:30 GMT
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=24]
+16-11-2009 23:52:30 [thread1-http_request] Content-Type: image/gif
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=14]
+16-11-2009 23:52:30 [thread1-http_request] Server: Golfe
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=20]
+16-11-2009 23:52:30 [thread1-http_request] X-XSS-Protection: 0
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:30 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:52:30 [thread1-http_request] 
+16-11-2009 23:52:30 [thread1-http_request] content_length=35, status=200, linecount=10
+16-11-2009 23:52:30 [thread1-tcp_read] enter
+16-11-2009 23:52:30 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:52:30 [thread1-http_request] leave [true]
+16-11-2009 23:52:30 [thread1-http_get_result] enter
+16-11-2009 23:52:30 [thread1-http_get_result] leave [true]
+GIF89a  €ÿ ÿÿÿ   ,       D ;16-11-2009 23:52:30 [thread1-tcp_thread] stateMachine=TCP_REQUEST2a
+16-11-2009 23:52:30 [thread1-http_request] enter
+16-11-2009 23:52:30 [thread1-http_split_url] enter
+16-11-2009 23:52:30 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:30 [thread1-tcp_connect] enter [host=www.plaatsoft.nl|port=80]
+16-11-2009 23:52:30 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:52:30 [thread1-tcp_socket] enter
+16-11-2009 23:52:30 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:52:30 [thread1-tcp_socket] leave [0]
+16-11-2009 23:52:30 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:52:30 [thread1-tcp_connect] DNS resolve=85.158.203.157
+16-11-2009 23:52:30 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:52:30 [thread1-tcp_connect] leave [0]
+16-11-2009 23:52:30 [thread1-http_request] tcp_connect(www.plaatsoft.nl, 80) = 0
+16-11-2009 23:52:30 [thread1-http_request] request=GET /service/releasenotes4.html HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:30 [thread1-tcp_write] enter [bufsize=205]
+16-11-2009 23:52:30 [thread1-tcp_write] buffer=GET /service/releasenotes4.html HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:30 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:52:30 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:52:32 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:52:32 [thread1-http_request] Date: Mon, 16 Nov 2009 21:50:44 GMT
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:52:32 [thread1-http_request] Server: Apache/2
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=45]
+16-11-2009 23:52:32 [thread1-http_request] Last-Modified: Fri, 18 Sep 2009 06:25:37 GMT
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=30]
+16-11-2009 23:52:32 [thread1-http_request] ETag: "1e80754-1548-3340fa40"
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=21]
+16-11-2009 23:52:32 [thread1-http_request] Accept-Ranges: bytes
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=21]
+16-11-2009 23:52:32 [thread1-http_request] Content-Length: 5448
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:52:32 [thread1-http_request] Content-Type: text/html; charset=UTF-8
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:52:32 [thread1-http_request] 
+16-11-2009 23:52:32 [thread1-http_request] content_length=5448, status=200, linecount=8
+16-11-2009 23:52:32 [thread1-tcp_read] enter
+16-11-2009 23:52:32 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:52:32 [thread1-http_request] leave [true]
+16-11-2009 23:52:32 [thread1-http_get_result] enter
+16-11-2009 23:52:32 [thread1-http_get_result] leave [true]
+16-11-2009 23:52:32 [thread1-http_convertHTMlToAscii] enter [inSize=5448]
+16-11-2009 23:52:32 [thread1-http_convertHTMlToAscii] in=<html>
+
+<head>
+   <title>SpaceBubble Release Notes</title>
+</head>
+
+<body>
+
+<h2>Known Issues:</h2>
+
+<h3>None</h3>
+<p>
+- none</br>
+</p>
+
+</br>
+<h2>Development Log:</h2>
+
+<h3>18/09/2009 Version 0.91 </h3>
+<p>
+- This version is compiled with the newest available Wii libraries.</br>
+- Use the asndlib (part of libogc) now as standard sound engine.</br>
+- Use libfat 1.0.4 as disk access engine.</br>
+- Build game with libogc 1.7.1a and devkitPPC 1.5.0 (r17) compiler.</br>
+</p>
+
+<h3>09/03/2009 Version 0.90 </h3>
+<p>
+- Added new GRRLIB v4.0 library as graphical render engine.<br/>
+- Improve intro screens.<br/>
+- Added fps information on all screens.<br/>
+- Added screenshot functionality with plus button.<br/>
+- Pictures are store on the SD Card in the sd:/apps/SpaceBubble directory.<br/>
+</p>
+
+<h3>14/02/2000 Version 0.81 </h3>
+<p>
+- Hot fix: Solve major bug in global highscore screen. If the local<br/>
+  score does not contain more the 13 entries the global highscore<br/>
+  screen crash.<br/>
+- Work around for previous versions. Play at least 13 games before<br/>
+  entering the highscore screens.<br/>
+- Build game with libogc 1.7.1 and devkitPPC r16 compiler.<br/>
+</p>
+
+<h3>11/02/2009 Version 0.80 </h3>
+<p>
+- Improve frame per second performance during game play.<br/>
+- Show Frame Per Second (FPS) information on game screen.<br/>
+- Added information popup windows.<br/>
+- Add 10 seconds extra playtime to each level.<br/>
+- Disable MP3 background music support. Too slow!<br/>
+- Bug fix: Global highscore screen is not crashing anymore!<br/>
+</p>
+
+<h3>08/02/2009 Version 0.70 </h3>
+<p>
+- Increase gameboard size from 12x12 to 14x14 bubbles.<br/>
+- Added total clear (no bubbles left) bonus per level.<br/>
+- Remove gameboard control buttons. Use the WiiMote A button instead.<br/>
+- Press the Home button on WiiMote to return to the menu screen.<br/>
+- High score is send to web service if score is better then 12.000 point.<br/>
+- Only this first WiiMote can control the music and stop a running game.<br/>
+- Bug fix: Do not show bubble select hint when game is over.<br/>
+- Bug fix: Hint is now always working correct.<br/>
+<p>
+
+<h3>05/02/2009 Version 0.60 </h3>
+<p>
+- Add two, three and four multi player mode.<br/>
+- Add level seven with more bonus points to earn.<br/>
+- If player is 10 seconds idle give a random bubble select hint.<br/>
+- From level five SuperShift bubble option is activated.<br/>
+- Added in sound settings button loop music track.<br/>
+- Play random music track during game.<br/>
+- Sound settings are stored in configuration file.<br/>
+- Rename General Setting menu button to User Initials.<br/>
+- Improve score calculation on cleared level screen.<br/>
+- Bugfix: Clock color is now showed always right.<br/>
+<p>
+
+<h3>28/01/2009 Version 0.50 </h3>
+<p>
+- Hotfix: Prevent crash if IR pointer is going out of the screen.<br/>
+- Adjusted effect and music default volume.<br/>
+- Added bubble destroy graphical effect.<br/>
+- Added 10 seconds extra playtime to each level.<br/>
+- Clock color is changing to red for the last 15 seconds.<br/>
+- Added extra information on help screen.<br/>
+- Reposition some buttons.<br/>
+
+</p>
+
+<h3>26/01/2009 Version 0.40 </h3>
+<p>
+- Show score of selected bubbles on screen.<br/>
+- The 40 highest global scores are showed.<br/>
+- Reposition some buttons.<br/>
+- Add level cleared information screen.<br/>
+- Increase http receive buffer size to 8196 bytes.<br/>
+</p>
+
+<h3>25/01/2008 Version 0.31</h3>
+<p>
+- HotFix: Prevent random crashes if wifi connection does not response.<br/>
+- HotFix: Prevent wrong calculation of possible moves.<br/>
+- Added winner text if player clears all six levels.<br/>
+- Added 2.000 bonus points if you clear all levels.<br/>
+- Added clock sound effects.<br/>
+- Adapted button size on most screens.<br/>
+</p>
+
+<h3>24/01/2009 Version 0.30</h3>
+<p>
+- Added scrollbar to highscore and release notes screens.<br/>
+- The fifty highest local scores are showed.<br/>
+- The thirty highest global highscores are showed.<br/>
+- Improve button layout.<br/>
+- Improve third intro screen.<br/>
+</p>
+
+<h3>23/01/2009 Version 0.20 </h3>
+<p>
+- Added 16 background music tracks.<br/>
+- Added several sound effects.<br/>
+- Each level has it on score matrix and time parameter.<br/>
+- First official release for the Wii HomeBrew scene.<br/>
+</p>
+
+<h3>22/01/2009 Version 0.13 </h3>
+<p>
+- Added player initials setting screen.<br/>
+- Added load/save game setting to sdcard.<br/>
+- Use only one unique cookie number during the game.<br/>
+- Improve score calculation.<br/>
+- If level is cleared (remaining time * factor) is added to score.<br/>
+</p>
+
+<h3>21/01/2009 Version 0.12 </h3>
+<p>
+- Added Local / Global highscore functionality.<br/>
+- Added game info panel to game screen.<br/>
+- Added countdown clock.<br/>
+</p>
+  
+<h3>20/01/2009 Version 0.11 </h3>
+<p>
+- Added ShiftRight bubble functionality.<br/>
+- Added six game levels.<br/>
+- Gamescore is send anonymouse to webservices on internet.<br/>
+- Added help screen information.<br/>
+- Cleanup not used source code.<br/>
+</p>
+
+<h3>19/01/2009 Version 0.10 </h3>
+<p>
+- Started programming.<br/>
+- Created gameboard layout<br/>
+- Created three intro screens.<br/>
+- Added WiiRemote IR control.<br/>
+- Basic game engine ready.<br/>
+</p>
+
+</body>
+
+</html>
+
+] en
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_replaceString] enter
+16-11-2009 23:52:32 [thread1-http_convertHTMlToAscii] out=<html><head>   <title>SpaceBubble Release Notes
+</head><body>
+Known Issues:
+
+None
+<p>- none
+</p>
+
+Development Log:
+
+18/09/2009 Version 0.91 
+<p>- This version is compiled with the newest available Wii libraries.
+- Use the asndlib (part of libogc) now as standard sound engine.
+- Use libfat 1.0.4 as disk access engine.
+- Build game with libogc 1.7.1a and devkitPPC 1.5.0 (r17) compiler.
+</p>
+09/03/2009 Version 0.90 
+<p>- Added new GRRLIB v4.0 library as graphical render engine.
+- Improve intro screens.
+- Added fps information on all screens.
+- Added screenshot functionality with plus button.
+- Pictures are store on the SD Card in the sd:/apps/SpaceBubble directory.
+</p>
+14/02/2000 Version 0.81 
+<p>- Hot fix: Solve major bug in global highscore screen. If the local
+  score does not contain more the 13 entries the global highscore
+  screen crash.
+- Work around for previous versions. Play at least 13 games before
+  entering the highscore screens.
+- Build game with libogc 1.7.1 and devkitPPC r16 compiler.
+</p>
+11/02/2009 Version 0.80 
+<p>- Improve frame per second performance during game play.
+- Show Frame Per Second (FPS) information on game screen.
+- Added information popup windows.
+- Add 10 seconds extra playtime to each level.
+- Disable MP3 background music support. Too slow!
+- Bug fix: Global highscore screen is not crashing anymore!
+</p>
+08/02/2009 Version 0.70 
+<p>- Increase gameboard size from 12x12 to 14x14 bubbles.
+- Added total clear (no bubbles left) bonus per level.
+- Remove gameboard control buttons. Use the WiiMote A button instead.
+- Press the Home button on WiiMote to return to the menu screen.
+- High score is send to web service if score is better then 12.000 point.
+- Only this first WiiMote can control the music and stop a running game.
+- Bug fix: Do not show bubble select hint when game is over.
+- Bug fix: Hint is now always working correct.
+<p>
+05/02/2009 Version 0.60 
+<p>- Add two, three and four multi player mode.
+- Add level seven with more bonus points to earn.
+- If player is 10 seconds idle give a random bubble select hint.
+- From level five SuperShift bubble option is activated.
+- Added in sound settings button loop music track.
+- Play random music track during game.
+- Sound settings are stored in configuration file.
+- Rename General Setting menu button to User Initials.
+- Improve score calculation on cleared level screen.
+- Bugfix: Clock color is now showed always right.
+<p>
+28/01/2009 Version 0.50 
+<p>- Hotfix: Prevent crash if IR pointer is going out of the screen.
+- Adjusted effect and music default volume.
+- Added bubble destroy graphical effect.
+- Added 10 seconds extra playtime to each level.
+- Clock color is changing to red for the last 15 seconds.
+- Added extra information on help screen.
+- Reposition some buttons.
+</p>
+26/01/2009 Version 0.40 
+<p>- Show score of selected bubbles on screen.
+- The 40 highest global scores are showed.
+- Reposition some buttons.
+- Add level cleared information screen.
+- Increase http receive buffer size to 8196 bytes.
+</p>
+25/01/2008 Version 0.31
+<p>- HotFix: Prevent random crashes if wifi connection does not response.
+- HotFix: Prevent wrong calculation of possible moves.
+- Added winner text if player clears all six levels.
+- Added 2.000 bonus points if you clear all levels.
+- Added clock sound effects.
+- Adapted button size on most screens.
+</p>
+24/01/2009 Version 0.30
+<p>- Added scrollbar to highscore and release notes screens.
+- The fifty highest local scores are showed.
+- The thirty highest global highscores are showed.
+- Improve button layout.
+- Improve third intro screen.
+</p>
+23/01/2009 Version 0.20 
+<p>- Added 16 background music tracks.
+- Added several sound effects.
+- Each level has it on score matrix and time parameter.
+- First official release for the Wii HomeBrew scene.
+</p>
+22/01/2009 Version 0.13 
+<p>- Added player initials setting screen.
+- Added load/save game setting to sdcard.
+- Use only one unique cookie number during the game.
+- Improve score calculation.
+- If level is cleared (remaining time * factor) is added to score.
+</p>
+21/01/2009 Version 0.12 
+<p>- Added Local / Global highscore functionality.
+- Added game info panel to game screen.
+- Added countdown clock.
+</p>  
+20/01/2009 Version 0.11 
+<p>- Added ShiftRight bubble functionality.
+- Added six game levels.
+- Gamescore is send anonymouse to webservices on internet.
+- Added help screen information.
+- Cleanup not used source code.
+</p>
+19/01/2009 Version 0.10 
+<p>- Started programming.
+- Created gameboard layout
+- Created three intro screens.
+- Added WiiRemote IR control.
+- Basic game engine ready.
+</p></body></html
+16-11-2009 23:52:32 [thread1-http_convertHTMlToAscii] leave [true]
+SpaceBubble Release Notes
+
+Known Issues:
+
+None
+- none
+
+
+Development Log:
+
+18/09/2009 Version 0.91 
+- This version is compiled with the newest available Wii libraries.
+- Use the asndlib (part of libogc) now as standard sound engine.
+- Use libfat 1.0.4 as disk access engine.
+- Build game with libogc 1.7.1a and devkitPPC 1.5.0 (r17) compiler.
+
+09/03/2009 Version 0.90 
+- Added new GRRLIB v4.0 library as graphical render engine.
+- Improve intro screens.
+- Added fps information on all screens.
+- Added screenshot functionality with plus button.
+- Pictures are store on the SD Card in the sd:/apps/SpaceBubble directory.
+
+14/02/2000 Version 0.81 
+- Hot fix: Solve major bug in global highscore screen. If the local
+  score does not contain more the 13 entries the global highscore
+  screen crash.
+- Work around for previous versions. Play at least 13 games before
+  entering the highscore screens.
+- Build game with libogc 1.7.1 and devkitPPC r16 compiler.
+
+11/02/2009 Version 0.80 
+- Improve frame per second performance during game play.
+- Show Frame Per Second (FPS) information on game screen.
+- Added information popup windows.
+- Add 10 seconds extra playtime to each level.
+- Disable MP3 background music support. Too slow!
+- Bug fix: Global highscore screen is not crashing anymore!
+
+08/02/2009 Version 0.70 
+- Increase gameboard size from 12x12 to 14x14 bubbles.
+- Added total clear (no bubbles left) bonus per level.
+- Remove gameboard control buttons. Use the WiiMote A button instead.
+- Press the Home button on WiiMote to return to the menu screen.
+- High score is send to web service if score is better then 12.000 point.
+- Only this first WiiMote can control the music and stop a running game.
+- Bug fix: Do not show bubble select hint when game is over.
+- Bug fix: Hint is now always working correct.
+
+05/02/2009 Version 0.60 
+- Add two, three and four multi player mode.
+- Add level seven with more bonus points to earn.
+- If player is 10 seconds idle give a random bubble select hint.
+- From level five SuperShift bubble option is activated.
+- Added in sound settings button loop music track.
+- Play random music track during game.
+- Sound settings are stored in configuration file.
+- Rename General Setting menu button to User Initials.
+- Improve score calculation on cleared level screen.
+- Bugfix: Clock color is now showed always right.
+
+28/01/2009 Version 0.50 
+- Hotfix: Prevent crash if IR pointer is going out of the screen.
+- Adjusted effect and music default volume.
+- Added bubble destroy graphical effect.
+- Added 10 seconds extra playtime to each level.
+- Clock color is changing to red for the last 15 seconds.
+- Added extra information on help screen.
+- Reposition some buttons.
+
+26/01/2009 Version 0.40 
+- Show score of selected bubbles on screen.
+- The 40 highest global scores are showed.
+- Reposition some buttons.
+- Add level cleared information screen.
+- Increase http receive buffer size to 8196 bytes.
+
+25/01/2008 Version 0.31
+- HotFix: Prevent random crashes if wifi connection does not response.
+- HotFix: Prevent wrong calculation of possible moves.
+- Added winner text if player clears all six levels.
+- Added 2.000 bonus points if you clear all levels.
+- Added clock sound effects.
+- Adapted button size on most screens.
+
+24/01/2009 Version 0.30
+- Added scrollbar to highscore and release notes screens.
+- The fifty highest local scores are showed.
+- The thirty highest global highscores are showed.
+- Improve button layout.
+- Improve third intro screen.
+
+23/01/2009 Version 0.20 
+- Added 16 background music tracks.
+- Added several sound effects.
+- Each level has it on score matrix and time parameter.
+- First official release for the Wii HomeBrew scene.
+
+22/01/2009 Version 0.13 
+- Added player initials setting screen.
+- Added load/save game setting to sdcard.
+- Use only one unique cookie number during the game.
+- Improve score calculation.
+- If level is cleared (remaining time * factor) is added to score.
+
+21/01/2009 Version 0.12 
+- Added Local / Global highscore functionality.
+- Added game info panel to game screen.
+- Added countdown clock.
+  
+20/01/2009 Version 0.11 
+- Added ShiftRight bubble functionality.
+- Added six game levels.
+- Gamescore is send anonymouse to webservices on internet.
+- Added help screen information.
+- Cleanup not used source code.
+
+19/01/2009 Version 0.10 
+- Started programming.
+- Created gameboard layout
+- Created three intro screens.
+- Added WiiRemote IR control.
+- Basic game engine ready.
+16-11-2009 23:52:32 [thread1-tcp_thread] stateMachine=TCP_REQUEST2b
+16-11-2009 23:52:32 [thread1-http_split_url] enter
+16-11-2009 23:52:32 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:32 [thread1-http_googleAnalysicUrl] enter
+16-11-2009 23:52:32 [thread1-http_googleAnalysicUrl] domain=[www.plaatsoft.nl]
+16-11-2009 23:52:32 [thread1-http_googleAnalysicUrl] url=[/service/releasenotes4.html]
+16-11-2009 23:52:32 [thread1-http_googleAnalysicUrl] id=[UA-6887062-1]
+16-11-2009 23:52:32 [thread1-http_encode_url] enter
+16-11-2009 23:52:32 [thread1-http_encode_url] buf=[www.plaatsoft.nl]
+16-11-2009 23:52:32 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:32 [thread1-http_encode_url] enter
+16-11-2009 23:52:32 [thread1-http_encode_url] buf=[http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii]
+16-11-2009 23:52:32 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:32 [thread1-http_encode_url] enter
+16-11-2009 23:52:32 [thread1-http_encode_url] buf=[%2Fservice%2Freleasenotes4.html]
+16-11-2009 23:52:32 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:32 [thread1-http_encode_url] enter
+16-11-2009 23:52:32 [thread1-http_encode_url] buf=[WiiBrew%20SpaceBubble%200.92]
+16-11-2009 23:52:32 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:32 [thread1-http_googleAnalysicUrl] utmac=[UA-6887062-1]
+16-11-2009 23:52:32 [thread1-http_encode_url] enter
+16-11-2009 23:52:32 [thread1-http_encode_url] buf=[SpaceBubble%3D0.92]
+16-11-2009 23:52:32 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:32 [thread1-http_googleAnalysicUrl] buffer=http://www.google-analytics.com/__utm.gif?utmwv=1&utmn=1758415552&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Freleasenotes4.html&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415552.1258329152.1258501952.1258415552.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415552.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B
+16-11-2009 23:52:32 [thread1-http_googleAnalysicUrl] leave [void]
+16-11-2009 23:52:32 [thread1-http_request] enter
+16-11-2009 23:52:32 [thread1-http_split_url] enter
+16-11-2009 23:52:32 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:32 [thread1-tcp_connect] enter [host=www.google-analytics.com|port=80]
+16-11-2009 23:52:32 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:52:32 [thread1-tcp_socket] enter
+16-11-2009 23:52:32 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:52:32 [thread1-tcp_socket] leave [0]
+16-11-2009 23:52:32 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:52:32 [thread1-tcp_connect] DNS resolve=66.102.13.113
+16-11-2009 23:52:32 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:52:32 [thread1-tcp_connect] leave [0]
+16-11-2009 23:52:32 [thread1-http_request] tcp_connect(www.google-analytics.com, 80) = 0
+16-11-2009 23:52:32 [thread1-http_request] request=GET /__utm.gif?utmwv=1&utmn=1758415552&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Freleasenotes4.html&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415552.1258329152.1258501952.1258415552.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415552.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:32 [thread1-tcp_write] enter [bufsize=728]
+16-11-2009 23:52:32 [thread1-tcp_write] buffer=GET /__utm.gif?utmwv=1&utmn=1758415552&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Freleasenotes4.html&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415552.1258329152.1258501952.1258415552.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415552.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:32 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:52:32 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:52:32 [thread1-http_request] Date: Mon, 16 Nov 2009 21:50:45 GMT
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=19]
+16-11-2009 23:52:32 [thread1-http_request] Content-Length: 35
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:52:32 [thread1-http_request] Pragma: no-cache
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=72]
+16-11-2009 23:52:32 [thread1-http_request] Cache-Control: private, no-cache, no-cache=Set-Cookie, proxy-revalidate
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:52:32 [thread1-http_request] Expires: Wed, 19 Apr 2000 11:43:00 GMT
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=45]
+16-11-2009 23:52:32 [thread1-http_request] Last-Modified: Wed, 21 Jan 2004 19:50:30 GMT
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=24]
+16-11-2009 23:52:32 [thread1-http_request] Content-Type: image/gif
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=14]
+16-11-2009 23:52:32 [thread1-http_request] Server: Golfe
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=20]
+16-11-2009 23:52:32 [thread1-http_request] X-XSS-Protection: 0
+16-11-2009 23:52:32 [thread1-tcp_readln] enter
+16-11-2009 23:52:32 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:52:32 [thread1-http_request] 
+16-11-2009 23:52:32 [thread1-http_request] content_length=35, status=200, linecount=10
+16-11-2009 23:52:32 [thread1-tcp_read] enter
+16-11-2009 23:52:32 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:52:32 [thread1-http_request] leave [true]
+16-11-2009 23:52:32 [thread1-http_get_result] enter
+16-11-2009 23:52:32 [thread1-http_get_result] leave [true]
+GIF89a  €ÿ ÿÿÿ   ,       D ;16-11-2009 23:52:32 [thread1-tcp_thread] stateMachine=TCP_REQUEST3a
+16-11-2009 23:52:32 [thread1-http_request] enter
+16-11-2009 23:52:32 [thread1-http_split_url] enter
+16-11-2009 23:52:32 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:32 [thread1-tcp_connect] enter [host=www.plaatsoft.nl|port=80]
+16-11-2009 23:52:32 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:52:32 [thread1-tcp_socket] enter
+16-11-2009 23:52:33 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:52:33 [thread1-tcp_socket] leave [0]
+16-11-2009 23:52:33 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:52:33 [thread1-tcp_connect] DNS resolve=85.158.203.157
+16-11-2009 23:52:33 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:52:33 [thread1-tcp_connect] leave [0]
+16-11-2009 23:52:33 [thread1-http_request] tcp_connect(www.plaatsoft.nl, 80) = 0
+16-11-2009 23:52:33 [thread1-http_request] request=GET /service/score_set.php?appl=SpaceBubble HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:33 [thread1-tcp_write] enter [bufsize=217]
+16-11-2009 23:52:33 [thread1-tcp_write] buffer=GET /service/score_set.php?appl=SpaceBubble HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:33 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:52:33 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:52:33 [thread1-http_request] Date: Mon, 16 Nov 2009 21:50:45 GMT
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:52:33 [thread1-http_request] Server: Apache/2
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=35]
+16-11-2009 23:52:33 [thread1-http_request] X-Powered-By: PHP/5.2.9-0.dotdeb.1
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=27]
+16-11-2009 23:52:33 [thread1-http_request] Transfer-Encoding: chunked
+16-11-2009 23:52:33 [thread1-http_request] Chunked frame found
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:52:33 [thread1-http_request] Content-Type: text/html; charset=UTF-8
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:52:33 [thread1-http_request] 
+16-11-2009 23:52:33 [thread1-tcp_readln] enter
+16-11-2009 23:52:33 [thread1-tcp_readln] leave [bufsize=4]
+16-11-2009 23:52:33 [thread1-http_request] df5
+16-11-2009 23:52:33 [thread1-http_request] content_length=3573, status=200, linecount=7
+16-11-2009 23:52:33 [thread1-tcp_read] enter
+16-11-2009 23:52:33 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:52:33 [thread1-http_request] leave [true]
+16-11-2009 23:52:33 [thread1-http_get_result] enter
+16-11-2009 23:52:33 [thread1-http_get_result] leave [true]
+<?xml version='1.0'?>
+<highscore>
+<item1 name='MIK' level='7' score='44106' dt='1235774657' location='PL (Warsaw)' />
+<item2 name='SFD' level='7' score='41516' dt='1249671678' location='GB (Fleet)' />
+<item3 name='JAN' level='7' score='40553' dt='1235077204' location='DE (Friedrichshafen)' />
+<item4 name='TSW' level='7' score='40521' dt='1237401856' location='AU (Melbourne)' />
+<item5 name='SFD' level='7' score='40396' dt='1253647585' location='GB (London)' />
+<item6 name='AAA' level='7' score='40315' dt='1234642101' location='US (Rochester)' />
+<item7 name='CHD' level='7' score='39046' dt='1254764442' location='DE (Hamburg)' />
+<item8 name='NAT' level='7' score='38653' dt='1236253334' location='FR (Reims)' />
+<item9 name='MIK' level='7' score='38529' dt='1247786903' location='PL (Warsaw)' />
+<item10 name='LSJ' level='7' score='38301' dt='1253556237' location='KR (Seoul)' />
+<item11 name='OMK' level='7' score='37951' dt='1235327844' location='GB (Leeds)' />
+<item12 name='LIA' level='7' score='37790' dt='1240306442' location='NL (Amsterdam)' />
+<item13 name='NAT' level='7' score='36693' dt='1234731905' location='FR (Ch&acirc;lons-en-champagne)' />
+<item14 name='RIT' level='7' score='36449' dt='1257011157' location='IT (Lodi)' />
+<item15 name='AAA' level='7' score='36361' dt='1239839487' location='IT (Gavirate)' />
+<item16 name='AAA' level='7' score='36250' dt='1239752981' location='IT (Milan)' />
+<item17 name='MAR' level='7' score='36207' dt='1238630870' location='DE (Hamburg)' />
+<item18 name='NAT' level='7' score='36091' dt='1235747694' location='FR (Charleville-m&eacute;zi&egrave;res)' />
+<item19 name='AAA' level='7' score='36053' dt='1251836567' location='GB (London)' />
+<item20 name='THO' level='7' score='36044' dt='1235852406' location='DE (W&uuml;rselen)' />
+<item21 name='DAV' level='7' score='36004' dt='1235339891' location='FR (Verneuil-en-halatte)' />
+<item22 name='NAT' level='7' score='35899' dt='1254156281' location='FR (Sarry)' />
+<item23 name='YBW' level='7' score='35689' dt='1248907107' location='DE (Hanover)' />
+<item24 name='STU' level='7' score='35680' dt='1236186387' location='GB (London)' />
+<item25 name='AAA' level='7' score='35666' dt='1240945644' location='IT (Bergamo)' />
+<item26 name='PIX' level='7' score='35568' dt='1254578325' location='FR (Luc&eacute;)' />
+<item27 name='CHD' level='7' score='35564' dt='1254844984' location='DE (Pinneberg)' />
+<item28 name='AAA' level='7' score='35508' dt='1245599350' location='DE (Eschborn)' />
+<item29 name='TTT' level='7' score='35488' dt='1245372712' location='DE (Waltrop)' />
+<item30 name='STU' level='7' score='35371' dt='1234737460' location='GB (Bishop Auckland)' />
+<item31 name='NIC' level='7' score='35291' dt='1236014446' location='FR (Paris)' />
+<item32 name='HUK' level='7' score='35206' dt='1254446902' location='DE (L&uuml;denscheid)' />
+<item33 name='RIT' level='7' score='35190' dt='1243788716' location='IT (Milan)' />
+<item34 name='STE' level='7' score='35186' dt='1247885022' location='FR (Agde)' />
+<item35 name='JOH' level='7' score='35144' dt='1238446998' location='AT (Seefeld In Tirol)' />
+<item36 name='WIL' level='7' score='35059' dt='1235074240' location='FR (Reims)' />
+<item37 name='JJW' level='7' score='35057' dt='1234465489' location='CA (Marystown)' />
+<item38 name='AAA' level='7' score='35048' dt='1236614490' location='SG (Singapore)' />
+<item39 name='CHD' level='7' score='35015' dt='1255520527' location=' ()' />
+<item40 name='GMC' level='7' score='34979' dt='1235672334' location='FR (Ch&acirc;tenay-malabry)' />
+</highscore>
+16-11-2009 23:52:34 [thread1-tcp_thread] stateMachine=TCP_REQUEST3b
+16-11-2009 23:52:34 [thread1-http_split_url] enter
+16-11-2009 23:52:34 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:34 [thread1-http_googleAnalysicUrl] enter
+16-11-2009 23:52:34 [thread1-http_googleAnalysicUrl] domain=[www.plaatsoft.nl]
+16-11-2009 23:52:34 [thread1-http_googleAnalysicUrl] url=[/service/score_set.php]
+16-11-2009 23:52:34 [thread1-http_googleAnalysicUrl] id=[UA-6887062-1]
+16-11-2009 23:52:34 [thread1-http_encode_url] enter
+16-11-2009 23:52:34 [thread1-http_encode_url] buf=[www.plaatsoft.nl]
+16-11-2009 23:52:34 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:34 [thread1-http_encode_url] enter
+16-11-2009 23:52:34 [thread1-http_encode_url] buf=[http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii]
+16-11-2009 23:52:34 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:34 [thread1-http_encode_url] enter
+16-11-2009 23:52:34 [thread1-http_encode_url] buf=[%2Fservice%2Fscore%5Fset.php]
+16-11-2009 23:52:34 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:34 [thread1-http_encode_url] enter
+16-11-2009 23:52:34 [thread1-http_encode_url] buf=[WiiBrew%20SpaceBubble%200.92]
+16-11-2009 23:52:34 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:34 [thread1-http_googleAnalysicUrl] utmac=[UA-6887062-1]
+16-11-2009 23:52:34 [thread1-http_encode_url] enter
+16-11-2009 23:52:34 [thread1-http_encode_url] buf=[SpaceBubble%3D0.92]
+16-11-2009 23:52:34 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:52:34 [thread1-http_googleAnalysicUrl] buffer=http://www.google-analytics.com/__utm.gif?utmwv=1&utmn=1758415554&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Fscore%5Fset.php&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415554.1258329154.1258501954.1258415554.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415554.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B
+16-11-2009 23:52:34 [thread1-http_googleAnalysicUrl] leave [void]
+16-11-2009 23:52:34 [thread1-http_request] enter
+16-11-2009 23:52:34 [thread1-http_split_url] enter
+16-11-2009 23:52:34 [thread1-http_split_url] leave [true]
+16-11-2009 23:52:34 [thread1-tcp_connect] enter [host=www.google-analytics.com|port=80]
+16-11-2009 23:52:34 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:52:34 [thread1-tcp_socket] enter
+16-11-2009 23:52:34 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:52:34 [thread1-tcp_socket] leave [0]
+16-11-2009 23:52:34 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:52:34 [thread1-tcp_connect] DNS resolve=66.102.13.113
+16-11-2009 23:52:34 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:52:34 [thread1-tcp_connect] leave [0]
+16-11-2009 23:52:34 [thread1-http_request] tcp_connect(www.google-analytics.com, 80) = 0
+16-11-2009 23:52:34 [thread1-http_request] request=GET /__utm.gif?utmwv=1&utmn=1758415554&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Fscore%5Fset.php&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415554.1258329154.1258501954.1258415554.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415554.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:34 [thread1-tcp_write] enter [bufsize=725]
+16-11-2009 23:52:34 [thread1-tcp_write] buffer=GET /__utm.gif?utmwv=1&utmn=1758415554&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Fscore%5Fset.php&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415554.1258329154.1258501954.1258415554.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415554.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:52:34 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:52:34 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:52:34 [thread1-http_request] Date: Mon, 16 Nov 2009 21:50:46 GMT
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=19]
+16-11-2009 23:52:34 [thread1-http_request] Content-Length: 35
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:52:34 [thread1-http_request] Pragma: no-cache
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=72]
+16-11-2009 23:52:34 [thread1-http_request] Cache-Control: private, no-cache, no-cache=Set-Cookie, proxy-revalidate
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:52:34 [thread1-http_request] Expires: Wed, 19 Apr 2000 11:43:00 GMT
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=45]
+16-11-2009 23:52:34 [thread1-http_request] Last-Modified: Wed, 21 Jan 2004 19:50:30 GMT
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=24]
+16-11-2009 23:52:34 [thread1-http_request] Content-Type: image/gif
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=14]
+16-11-2009 23:52:34 [thread1-http_request] Server: Golfe
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=20]
+16-11-2009 23:52:34 [thread1-http_request] X-XSS-Protection: 0
+16-11-2009 23:52:34 [thread1-tcp_readln] enter
+16-11-2009 23:52:34 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:52:34 [thread1-http_request] 
+16-11-2009 23:52:34 [thread1-http_request] content_length=35, status=200, linecount=10
+16-11-2009 23:52:34 [thread1-tcp_read] enter
+16-11-2009 23:52:34 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:52:34 [thread1-http_request] leave [true]
+16-11-2009 23:52:34 [thread1-http_get_result] enter
+16-11-2009 23:52:34 [thread1-http_get_result] leave [true]
+GIF89a  €ÿ ÿÿÿ   ,       D ;16-11-2009 23:52:34 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:34 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:36 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:36 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:36 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:38 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:38 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:38 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:40 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:40 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:40 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:42 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:42 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:42 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:44 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:44 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:44 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:45 [thread0-loadGlobalHighScore] enter
+16-11-2009 23:52:45 [thread0-loadGlobalHighScore] leave [void]
+16-11-2009 23:52:46 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:46 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:46 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:48 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:48 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:48 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:50 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:50 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:50 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:52 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:52 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:52 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:54 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:54 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:54 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:56 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:56 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:56 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:52:58 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:52:58 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:52:58 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:00 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:00 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:00 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:02 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:02 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:02 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:04 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:04 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:04 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:06 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:06 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:06 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:08 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:08 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:08 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:10 [thread0-saveSettingFile] enter
+16-11-2009 23:53:10 [thread0-saveSettingFile] leave [void]
+16-11-2009 23:53:10 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:10 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:10 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:12 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:12 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:12 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:14 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:14 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:14 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:14 [thread0-loadGlobalHighScore] enter
+16-11-2009 23:53:14 [thread0-loadGlobalHighScore] leave [void]
+16-11-2009 23:53:16 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:16 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:16 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:17 [thread0-initLevel] enter
+16-11-2009 23:53:17 [thread0-initLevel] leave [void]
+16-11-2009 23:53:17 [thread0-initGame] enter
+16-11-2009 23:53:17 [thread0-initBubbles] enter
+16-11-2009 23:53:17 [thread0-initBubbles] leave [void]
+16-11-2009 23:53:17 [thread0-initExplodes] enter
+16-11-2009 23:53:17 [thread0-initExplodes] leave [void]
+16-11-2009 23:53:17 [thread0-initGame] leave [void]
+16-11-2009 23:53:18 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:18 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:18 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:20 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:20 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:20 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:21 [thread0-initLevel] enter
+16-11-2009 23:53:21 [thread0-initLevel] leave [void]
+16-11-2009 23:53:21 [thread0-initGame] enter
+16-11-2009 23:53:21 [thread0-initBubbles] enter
+16-11-2009 23:53:21 [thread0-initBubbles] leave [void]
+16-11-2009 23:53:21 [thread0-initExplodes] enter
+16-11-2009 23:53:21 [thread0-initExplodes] leave [void]
+16-11-2009 23:53:21 [thread0-initGame] leave [void]
+16-11-2009 23:53:22 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:22 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:22 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:24 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:24 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:24 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:25 [thread0-initLevel] enter
+16-11-2009 23:53:25 [thread0-initLevel] leave [void]
+16-11-2009 23:53:25 [thread0-initGame] enter
+16-11-2009 23:53:25 [thread0-initBubbles] enter
+16-11-2009 23:53:25 [thread0-initBubbles] leave [void]
+16-11-2009 23:53:25 [thread0-initExplodes] enter
+16-11-2009 23:53:25 [thread0-initExplodes] leave [void]
+16-11-2009 23:53:25 [thread0-initGame] leave [void]
+16-11-2009 23:53:26 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:26 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:26 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:28 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:28 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:28 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:30 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:30 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:30 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:31 [thread0-initLevel] enter
+16-11-2009 23:53:31 [thread0-initLevel] leave [void]
+16-11-2009 23:53:31 [thread0-initGame] enter
+16-11-2009 23:53:31 [thread0-initBubbles] enter
+16-11-2009 23:53:31 [thread0-initBubbles] leave [void]
+16-11-2009 23:53:31 [thread0-initExplodes] enter
+16-11-2009 23:53:31 [thread0-initExplodes] leave [void]
+16-11-2009 23:53:31 [thread0-initGame] leave [void]
+16-11-2009 23:53:32 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:32 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:32 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:34 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:34 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:34 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:36 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:36 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:36 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:37 [thread0-initLevel] enter
+16-11-2009 23:53:37 [thread0-initLevel] leave [void]
+16-11-2009 23:53:37 [thread0-initGame] enter
+16-11-2009 23:53:37 [thread0-initBubbles] enter
+16-11-2009 23:53:37 [thread0-initBubbles] leave [void]
+16-11-2009 23:53:37 [thread0-initExplodes] enter
+16-11-2009 23:53:37 [thread0-initExplodes] leave [void]
+16-11-2009 23:53:37 [thread0-initGame] leave [void]
+16-11-2009 23:53:38 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:38 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:38 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:39 [thread0-initLevel] enter
+16-11-2009 23:53:39 [thread0-initLevel] leave [void]
+16-11-2009 23:53:39 [thread0-initGame] enter
+16-11-2009 23:53:39 [thread0-initBubbles] enter
+16-11-2009 23:53:39 [thread0-initBubbles] leave [void]
+16-11-2009 23:53:39 [thread0-initExplodes] enter
+16-11-2009 23:53:39 [thread0-initExplodes] leave [void]
+16-11-2009 23:53:39 [thread0-initGame] leave [void]
+16-11-2009 23:53:40 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:40 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:40 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:42 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:42 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:42 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:44 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:44 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:44 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:46 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:46 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:46 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:48 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:48 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:48 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:50 [thread0-initLevel] enter
+16-11-2009 23:53:50 [thread0-initLevel] leave [void]
+16-11-2009 23:53:50 [thread0-initGame] enter
+16-11-2009 23:53:50 [thread0-initBubbles] enter
+16-11-2009 23:53:50 [thread0-initBubbles] leave [void]
+16-11-2009 23:53:50 [thread0-initExplodes] enter
+16-11-2009 23:53:50 [thread0-initExplodes] leave [void]
+16-11-2009 23:53:50 [thread0-initGame] leave [void]
+16-11-2009 23:53:50 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:50 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:50 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:52 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:52 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:52 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:54 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:54 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:54 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:56 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:56 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:56 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:57 [thread0-initMusicTrack] enter
+16-11-2009 23:53:57 [thread0-initMusicTrack] leave [0]
+16-11-2009 23:53:58 [thread0-initMusicTrack] enter
+16-11-2009 23:53:58 [thread0-initMusicTrack] leave [0]
+16-11-2009 23:53:58 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:53:58 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:53:58 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:53:59 [thread0-initMusicTrack] enter
+16-11-2009 23:53:59 [thread0-initMusicTrack] leave [0]
+16-11-2009 23:54:00 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:00 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:00 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:02 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:02 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:02 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:04 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:04 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:04 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:06 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:06 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:06 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:08 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:08 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:08 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:10 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:10 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:10 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:12 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:12 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:12 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:14 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:14 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:14 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:16 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:16 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:16 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:18 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:18 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:18 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:20 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:20 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:20 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:22 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:22 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:22 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:24 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:24 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:24 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:26 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:26 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:26 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:28 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:28 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:28 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:30 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:30 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:30 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:32 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:32 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:32 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:34 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:34 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:34 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:36 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:36 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:36 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:38 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:38 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:38 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:40 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:40 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:40 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:42 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:42 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:42 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:44 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:44 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:44 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:46 [thread0-saveLocalHighScoreFile] enter
+16-11-2009 23:54:46 [thread0-saveLocalHighScoreFile] leave [void]
+16-11-2009 23:54:46 [thread0-loadLocalHighScoreFile] enter
+16-11-2009 23:54:46 [thread0-loadLocalHighScoreFile] leave [void]
+16-11-2009 23:54:46 [thread1-tcp_set_state] enter [state=5]
+16-11-2009 23:54:46 [thread1-tcp_set_state] Update state!
+16-11-2009 23:54:46 [thread1-tcp_set_state] leave [state=5]
+16-11-2009 23:54:46 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:46 [thread1-tcp_thread] stateMachine=TCP_REQUEST3a
+16-11-2009 23:54:46 [thread1-http_request] enter
+16-11-2009 23:54:46 [thread1-http_split_url] enter
+16-11-2009 23:54:46 [thread1-http_split_url] leave [true]
+16-11-2009 23:54:46 [thread1-tcp_connect] enter [host=www.plaatsoft.nl|port=80]
+16-11-2009 23:54:46 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:54:46 [thread1-tcp_socket] enter
+16-11-2009 23:54:46 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:54:46 [thread1-tcp_socket] leave [0]
+16-11-2009 23:54:46 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:54:46 [thread1-tcp_connect] DNS resolve=85.158.203.157
+16-11-2009 23:54:46 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:54:46 [thread1-tcp_connect] leave [0]
+16-11-2009 23:54:46 [thread1-http_request] tcp_connect(www.plaatsoft.nl, 80) = 0
+16-11-2009 23:54:46 [thread1-http_request] request=GET /service/score_set.php?appl=SpaceBubble&level=2&score=14402&name=JIS&dt=1258415630 HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:54:46 [thread1-tcp_write] enter [bufsize=260]
+16-11-2009 23:54:46 [thread1-tcp_write] buffer=GET /service/score_set.php?appl=SpaceBubble&level=2&score=14402&name=JIS&dt=1258415630 HTTP/1.1
+Host: www.plaatsoft.nl
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:54:46 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:54:46 [thread1-tcp_readln] enter
+16-11-2009 23:54:47 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:54:47 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:54:47 [thread1-tcp_readln] enter
+16-11-2009 23:54:47 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:54:47 [thread1-http_request] Date: Mon, 16 Nov 2009 21:52:59 GMT
+16-11-2009 23:54:47 [thread1-tcp_readln] enter
+16-11-2009 23:54:47 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:54:47 [thread1-http_request] Server: Apache/2
+16-11-2009 23:54:47 [thread1-tcp_readln] enter
+16-11-2009 23:54:47 [thread1-tcp_readln] leave [bufsize=35]
+16-11-2009 23:54:47 [thread1-http_request] X-Powered-By: PHP/5.2.9-0.dotdeb.1
+16-11-2009 23:54:47 [thread1-tcp_readln] enter
+16-11-2009 23:54:47 [thread1-tcp_readln] leave [bufsize=21]
+16-11-2009 23:54:47 [thread1-http_request] Content-Length: 3573
+16-11-2009 23:54:47 [thread1-tcp_readln] enter
+16-11-2009 23:54:47 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:54:47 [thread1-http_request] Content-Type: text/html; charset=UTF-8
+16-11-2009 23:54:47 [thread1-tcp_readln] enter
+16-11-2009 23:54:47 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:54:47 [thread1-http_request] 
+16-11-2009 23:54:47 [thread1-http_request] content_length=3573, status=200, linecount=6
+16-11-2009 23:54:47 [thread1-tcp_read] enter
+16-11-2009 23:54:47 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:54:47 [thread1-http_request] leave [true]
+16-11-2009 23:54:47 [thread1-http_get_result] enter
+16-11-2009 23:54:47 [thread1-http_get_result] leave [true]
+<?xml version='1.0'?>
+<highscore>
+<item1 name='MIK' level='7' score='44106' dt='1235774657' location='PL (Warsaw)' />
+<item2 name='SFD' level='7' score='41516' dt='1249671678' location='GB (Fleet)' />
+<item3 name='JAN' level='7' score='40553' dt='1235077204' location='DE (Friedrichshafen)' />
+<item4 name='TSW' level='7' score='40521' dt='1237401856' location='AU (Melbourne)' />
+<item5 name='SFD' level='7' score='40396' dt='1253647585' location='GB (London)' />
+<item6 name='AAA' level='7' score='40315' dt='1234642101' location='US (Rochester)' />
+<item7 name='CHD' level='7' score='39046' dt='1254764442' location='DE (Hamburg)' />
+<item8 name='NAT' level='7' score='38653' dt='1236253334' location='FR (Reims)' />
+<item9 name='MIK' level='7' score='38529' dt='1247786903' location='PL (Warsaw)' />
+<item10 name='LSJ' level='7' score='38301' dt='1253556237' location='KR (Seoul)' />
+<item11 name='OMK' level='7' score='37951' dt='1235327844' location='GB (Leeds)' />
+<item12 name='LIA' level='7' score='37790' dt='1240306442' location='NL (Amsterdam)' />
+<item13 name='NAT' level='7' score='36693' dt='1234731905' location='FR (Ch&acirc;lons-en-champagne)' />
+<item14 name='RIT' level='7' score='36449' dt='1257011157' location='IT (Lodi)' />
+<item15 name='AAA' level='7' score='36361' dt='1239839487' location='IT (Gavirate)' />
+<item16 name='AAA' level='7' score='36250' dt='1239752981' location='IT (Milan)' />
+<item17 name='MAR' level='7' score='36207' dt='1238630870' location='DE (Hamburg)' />
+<item18 name='NAT' level='7' score='36091' dt='1235747694' location='FR (Charleville-m&eacute;zi&egrave;res)' />
+<item19 name='AAA' level='7' score='36053' dt='1251836567' location='GB (London)' />
+<item20 name='THO' level='7' score='36044' dt='1235852406' location='DE (W&uuml;rselen)' />
+<item21 name='DAV' level='7' score='36004' dt='1235339891' location='FR (Verneuil-en-halatte)' />
+<item22 name='NAT' level='7' score='35899' dt='1254156281' location='FR (Sarry)' />
+<item23 name='YBW' level='7' score='35689' dt='1248907107' location='DE (Hanover)' />
+<item24 name='STU' level='7' score='35680' dt='1236186387' location='GB (London)' />
+<item25 name='AAA' level='7' score='35666' dt='1240945644' location='IT (Bergamo)' />
+<item26 name='PIX' level='7' score='35568' dt='1254578325' location='FR (Luc&eacute;)' />
+<item27 name='CHD' level='7' score='35564' dt='1254844984' location='DE (Pinneberg)' />
+<item28 name='AAA' level='7' score='35508' dt='1245599350' location='DE (Eschborn)' />
+<item29 name='TTT' level='7' score='35488' dt='1245372712' location='DE (Waltrop)' />
+<item30 name='STU' level='7' score='35371' dt='1234737460' location='GB (Bishop Auckland)' />
+<item31 name='NIC' level='7' score='35291' dt='1236014446' location='FR (Paris)' />
+<item32 name='HUK' level='7' score='35206' dt='1254446902' location='DE (L&uuml;denscheid)' />
+<item33 name='RIT' level='7' score='35190' dt='1243788716' location='IT (Milan)' />
+<item34 name='STE' level='7' score='35186' dt='1247885022' location='FR (Agde)' />
+<item35 name='JOH' level='7' score='35144' dt='1238446998' location='AT (Seefeld In Tirol)' />
+<item36 name='WIL' level='7' score='35059' dt='1235074240' location='FR (Reims)' />
+<item37 name='JJW' level='7' score='35057' dt='1234465489' location='CA (Marystown)' />
+<item38 name='AAA' level='7' score='35048' dt='1236614490' location='SG (Singapore)' />
+<item39 name='CHD' level='7' score='35015' dt='1255520527' location=' ()' />
+<item40 name='GMC' level='7' score='34979' dt='1235672334' location='FR (Ch&acirc;tenay-malabry)' />
+</highscore>
+16-11-2009 23:54:48 [thread1-tcp_thread] stateMachine=TCP_REQUEST3b
+16-11-2009 23:54:48 [thread1-http_split_url] enter
+16-11-2009 23:54:48 [thread1-http_split_url] leave [true]
+16-11-2009 23:54:48 [thread1-http_googleAnalysicUrl] enter
+16-11-2009 23:54:48 [thread1-http_googleAnalysicUrl] domain=[www.plaatsoft.nl]
+16-11-2009 23:54:48 [thread1-http_googleAnalysicUrl] url=[/service/score_set.php]
+16-11-2009 23:54:48 [thread1-http_googleAnalysicUrl] id=[UA-6887062-1]
+16-11-2009 23:54:48 [thread1-http_encode_url] enter
+16-11-2009 23:54:48 [thread1-http_encode_url] buf=[www.plaatsoft.nl]
+16-11-2009 23:54:48 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:54:48 [thread1-http_encode_url] enter
+16-11-2009 23:54:48 [thread1-http_encode_url] buf=[http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii]
+16-11-2009 23:54:48 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:54:48 [thread1-http_encode_url] enter
+16-11-2009 23:54:48 [thread1-http_encode_url] buf=[%2Fservice%2Fscore%5Fset.php]
+16-11-2009 23:54:48 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:54:48 [thread1-http_encode_url] enter
+16-11-2009 23:54:48 [thread1-http_encode_url] buf=[WiiBrew%20SpaceBubble%200.92]
+16-11-2009 23:54:48 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:54:48 [thread1-http_googleAnalysicUrl] utmac=[UA-6887062-1]
+16-11-2009 23:54:48 [thread1-http_encode_url] enter
+16-11-2009 23:54:48 [thread1-http_encode_url] buf=[SpaceBubble%3D0.92]
+16-11-2009 23:54:48 [thread1-http_encode_url] leave [char *]
+16-11-2009 23:54:48 [thread1-http_googleAnalysicUrl] buffer=http://www.google-analytics.com/__utm.gif?utmwv=1&utmn=1758415688&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Fscore%5Fset.php&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415688.1258329288.1258502088.1258415688.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415688.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B
+16-11-2009 23:54:48 [thread1-http_googleAnalysicUrl] leave [void]
+16-11-2009 23:54:48 [thread1-http_request] enter
+16-11-2009 23:54:48 [thread1-http_split_url] enter
+16-11-2009 23:54:48 [thread1-http_split_url] leave [true]
+16-11-2009 23:54:48 [thread1-tcp_connect] enter [host=www.google-analytics.com|port=80]
+16-11-2009 23:54:48 [thread1-tcp_connect] net_gethostbyname successfull resolved
+16-11-2009 23:54:48 [thread1-tcp_socket] enter
+16-11-2009 23:54:48 [thread1-tcp_socket] net_socket succesfull
+16-11-2009 23:54:48 [thread1-tcp_socket] leave [0]
+16-11-2009 23:54:48 [thread1-tcp_connect] tcp_socket succesfull
+16-11-2009 23:54:48 [thread1-tcp_connect] DNS resolve=66.102.13.113
+16-11-2009 23:54:48 [thread1-tcp_connect] net_connect succesfull
+16-11-2009 23:54:48 [thread1-tcp_connect] leave [0]
+16-11-2009 23:54:48 [thread1-http_request] tcp_connect(www.google-analytics.com, 80) = 0
+16-11-2009 23:54:48 [thread1-http_request] request=GET /__utm.gif?utmwv=1&utmn=1758415688&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Fscore%5Fset.php&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415688.1258329288.1258502088.1258415688.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415688.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:54:48 [thread1-tcp_write] enter [bufsize=725]
+16-11-2009 23:54:48 [thread1-tcp_write] buffer=GET /__utm.gif?utmwv=1&utmn=1758415688&utmcs=UTF-8&utmsr=640x528&utmsc=32-bit&utmul=en&utmje=1&utmfl=&utmcr=1&utmdt=WiiBrew%20SpaceBubble%200.92&utmhn=www.plaatsoft.nl&utmr=http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3DSpaceBubble%2BWii&utmp=%2Fservice%2Fscore%5Fset.php&utmac=UA-6887062-1&utmcc=__utma=58406443.1358415688.1258329288.1258502088.1258415688.3%3B%2B__utmb=58406443%3B%2B__utmc=58406443%3B%2B__utmz=58406443.1258415688.3.2.utmccn=(direct)%3Dutmcsr=(direct)%3Dutmctr=(none)%3Dutmcmd=(none)%3B%2B__utmv%3D58406443.SpaceBubble%3D0.92%3B HTTP/1.1
+Host: www.google-analytics.com
+User-Agent: SpaceBubble/0.92 (compatible; v3.X; Nintendo Wii)
+Accept: text/xml,text/html,text/plain,image/gif
+Cache-Control: no-cache
+
+
+16-11-2009 23:54:48 [thread1-tcp_write] leave [left=0]
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=16]
+16-11-2009 23:54:48 [thread1-http_request] HTTP/1.1 200 OK
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=36]
+16-11-2009 23:54:48 [thread1-http_request] Date: Mon, 16 Nov 2009 21:53:00 GMT
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=19]
+16-11-2009 23:54:48 [thread1-http_request] Content-Length: 35
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=17]
+16-11-2009 23:54:48 [thread1-http_request] Pragma: no-cache
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=72]
+16-11-2009 23:54:48 [thread1-http_request] Cache-Control: private, no-cache, no-cache=Set-Cookie, proxy-revalidate
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=39]
+16-11-2009 23:54:48 [thread1-http_request] Expires: Wed, 19 Apr 2000 11:43:00 GMT
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=45]
+16-11-2009 23:54:48 [thread1-http_request] Last-Modified: Wed, 21 Jan 2004 19:50:30 GMT
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=24]
+16-11-2009 23:54:48 [thread1-http_request] Content-Type: image/gif
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=14]
+16-11-2009 23:54:48 [thread1-http_request] Server: Golfe
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=20]
+16-11-2009 23:54:48 [thread1-http_request] X-XSS-Protection: 0
+16-11-2009 23:54:48 [thread1-tcp_readln] enter
+16-11-2009 23:54:48 [thread1-tcp_readln] leave [bufsize=1]
+16-11-2009 23:54:48 [thread1-http_request] 
+16-11-2009 23:54:48 [thread1-http_request] content_length=35, status=200, linecount=10
+16-11-2009 23:54:48 [thread1-tcp_read] enter
+16-11-2009 23:54:48 [thread1-tcp_read] leave [left=0]
+16-11-2009 23:54:48 [thread1-http_request] leave [true]
+16-11-2009 23:54:48 [thread1-http_get_result] enter
+16-11-2009 23:54:48 [thread1-http_get_result] leave [true]
+GIF89a  €ÿ ÿÿÿ   ,       D ;16-11-2009 23:54:48 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:48 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:50 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:50 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:50 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:52 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:52 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:52 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:53 [thread0-loadGlobalHighScore] enter
+16-11-2009 23:54:53 [thread0-loadGlobalHighScore] leave [void]
+16-11-2009 23:54:54 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:54 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:54 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:56 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:56 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:56 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:54:58 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:54:58 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:54:58 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:55:00 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:55:00 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:55:00 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:55:02 [thread0-initMusicTrack] enter
+16-11-2009 23:55:02 [thread0-initMusicTrack] leave [0]
+16-11-2009 23:55:02 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:55:02 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:55:02 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:55:04 [thread0-saveSettingFile] enter
+16-11-2009 23:55:04 [thread0-saveSettingFile] leave [void]
+16-11-2009 23:55:04 [thread1-tcp_sleep] leave [void]
+16-11-2009 23:55:04 [thread1-tcp_thread] stateMachine=TCP_IDLE
+16-11-2009 23:55:04 [thread1-tcp_sleep] enter [wait=2 sec]
+16-11-2009 23:55:06 [thread1-tcp_stop_thread] enter
+16-11-2009 23:55:06 [thread1-tcp_stop_thread] leave [0]
