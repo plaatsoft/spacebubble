@@ -2,7 +2,7 @@
 <app version="1">
   <name>SpaceBubble</name>
   <coder>wplaat</coder>
-  <version>0.96</version>
+  <version>0.97</version>
   <short_description>SpaceBubble for Wii</short_description> 
   <long_description>SpaceBubble is an open-source game based on the original bubble breaker. Select multiple bubbles with the same color and destroy them, the more you hit in one the higher score you will get.
 
