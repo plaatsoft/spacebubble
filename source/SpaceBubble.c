@@ -1056,6 +1056,8 @@ void initThreads(void)
    memset(userData2,0x00,sizeof(userData2));
    sprintf(userData2,"appl=%s",PROGRAM_NAME);
 	   
+	 tcp_init_layer();
+			
    tcp_start_thread(PROGRAM_NAME, PROGRAM_VERSION, 
 			ID1, URL1, 
 			ID2, URL2, 
@@ -3867,11 +3869,7 @@ int main()
 	 
 	// enable accelerometers and IR
    WPAD_SetDataFormat(WPAD_CHAN_ALL,WPAD_FMT_BTNS_ACC_IR);
-  
-  	// Set Shutdown Callbacks.
-	SYS_SetPowerCallback( doPowerOff );
-	WPAD_SetPowerButtonCallback( doPadPowerOff );
-	
+  	
    // Obtain the preferred video mode from the system
 	// This will correspond to the settings in the Wii menu
 	rmode = VIDEO_GetPreferredMode(NULL);
@@ -3890,6 +3888,10 @@ int main()
 	   yOffset = 0;
 	}
 
+  	// Set Shutdown Callbacks.
+	SYS_SetPowerCallback( doPowerOff );
+	WPAD_SetPowerButtonCallback( doPadPowerOff );
+	
    // Init Fat
    fatInitDefault();
 
@@ -3898,52 +3900,52 @@ int main()
 	traceEvent(s_fn, 0,"%s %s Started", PROGRAM_NAME, PROGRAM_VERSION);
 	
 	// Load highscore from SD card
-   loadLocalHighScoreFile(HIGHSCORE_FILENAME);	
+  loadLocalHighScoreFile(HIGHSCORE_FILENAME);	
 	
 	// Load setting from SD card
 	loadSettingFile(SETTING_FILENAME);	
-	
-    // Init Http thread
-	initThreads();
-	
-  	// Init game variables 
-   initImages();
+		
+  // Init game variables 
+  initImages();
 	initGame();	
 	initSound();
 	initGameBoard();
 	initTodayHighScore();
 	initGlobalHighScore();
-		  			
-   // Init GRRLib graphics library
-   GRRLIB_Init();
+	
+  // Init Http thread
+	initThreads();
+	  			
+  // Init GRRLib graphics library
+  GRRLIB_Init();
    
-    // Init FreeType font 
+  // Init FreeType font 
 	myFont = GRRLIB_LoadTTF(font_ttf, font_ttf_size); 
 
-    // To have a cool effect anti-aliasing is turned on
-    GRRLIB_Settings.antialias = true;
+  // To have a cool effect anti-aliasing is turned on
+  GRRLIB_Settings.antialias = true;
 	
 	// Black background
-    GRRLIB_SetBackgroundColour(0x00, 0x00, 0x00, 0xFF);
+  GRRLIB_SetBackgroundColour(0x00, 0x00, 0x00, 0xFF);
 	
-   GRRLIB_Render();
+  GRRLIB_Render();
 		
 	// Repeat forever
-   while(!bPowerOff )
+  while(!bPowerOff )
 	{		
-      // icon angle 
-	   if (++angle>=MAX_ANGLE) angle=0;
+		// icon angle 
+		if (++angle>=MAX_ANGLE) angle=0;
 		if (size<=MAX_SIZE) size+=0.05;
 		
-      // Init StateMachine			
-	   initStateMachine();
+    // Init StateMachine			
+		initStateMachine();
 			
-      // Draw game board and other items (buttons, bubbles, etc...)
-      drawScreen();		
+    // Draw game board and other items (buttons, bubbles, etc...)
+    drawScreen();		
 
-	   // Scan for button events
+	  // Scan for button events
 		WPAD_SetVRes(0, 640, rmode->xfbHeight);
-      WPAD_ScanPads();
+    WPAD_ScanPads();
 			
 		for (i=0; i<MAX_POINTER; i++)
 		{
@@ -3965,7 +3967,7 @@ int main()
 				buttonScroll(pointers[i].xOffset,pointers[i].yOffset);	 		
 			}
 			
-         if (wpaddown & BUTTON_A) 
+      if (wpaddown & BUTTON_A) 
 			{
 				buttonA(pointers[i].xOffset,pointers[i].yOffset); 		
 			}
@@ -4011,8 +4013,8 @@ int main()
 				}
 			}
 	
-       	// Draw wiimote ir pointer
-         GRRLIB_DrawImg( pointers[i].x, pointers[i].y, pointers[i].image, pointers[i].angle, 1, 1, IMAGE_COLOR );			 
+     	// Draw wiimote ir pointer
+      GRRLIB_DrawImg( pointers[i].x, pointers[i].y, pointers[i].image, pointers[i].angle, 1, 1, IMAGE_COLOR );
 		}
 		GRRLIB_Render();
 	}
@@ -4029,9 +4031,9 @@ int main()
 		traceClose();
 		
 		SYS_ResetSystem( SYS_POWEROFF, 0, 0 );
-    }
+  }
 
-    return 0;
+  return 0;
 }
 
 // -----------------------------------------------------------
