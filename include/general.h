@@ -27,9 +27,9 @@
 
 #include "GRRLIB.h"
 
-#define PROGRAM_NAME	    	"SpaceBubble"
-#define PROGRAM_VERSION     	"0.97"
-#define RELEASE_DATE        	"13-09-2010" 
+#define PROGRAM_NAME	    		"SpaceBubble"
+#define PROGRAM_VERSION     	"0.98"
+#define RELEASE_DATE        	"18-03-2011" 
 
 // Check latest available version 
 #define URL1                	"http://www.plaatsoft.nl/service/releasenotes4.html"
@@ -143,22 +143,23 @@ enum
    stateIntro1=0,   
    stateIntro2=1, 
    stateIntro3=2, 
-   stateMenu=3,
-   stateGame=4,
-   stateLevelCleared=5,
-   stateGameOver=6,
-   stateQuit=7,
-   stateLocalHighScore=8,
-   stateTodayHighScore=9,
-   stateGlobalHighScore=10,
-   stateHelp1=11,
-	stateHelp2=12,
-   stateCredits=13,
-   stateSound=14,
-   stateReleaseNotes=15,
-   stateSettings=16,  
-	stateDonate=17,
-   stateNone=18
+	stateIntro4=3, 
+   stateMenu=4,
+   stateGame=5,
+   stateLevelCleared=6,
+   stateGameOver=7,
+   stateQuit=8,
+   stateLocalHighScore=9,
+   stateTodayHighScore=10,
+   stateGlobalHighScore=11,
+   stateHelp1=12,
+	stateHelp2=13,
+   stateCredits=14,
+   stateSound=15,
+   stateReleaseNotes=16,
+   stateSettings=17,  
+	stateDonate=18,
+   stateNone=19
 };
 
 enum
@@ -229,6 +230,8 @@ typedef struct
   GRRLIB_texImg *logo4;
   GRRLIB_texImg *logo5;
   GRRLIB_texImg *logo6;
+  
+  GRRLIB_texImg *intro4;
 } 
 image;
 
@@ -379,6 +382,16 @@ pointer pointers[MAX_POINTER];
  * Documentation: wplaat\n
  *
  * @section ReleaseNotes
+ *
+ * <b>18-03-2011 Version 0.98</b>
+ * - GUI:
+ *  - Update menu screen information.
+ * - Core:
+ *  - Optimise core performance.
+ *  - Added intro screen 4 (WarQuest game info)
+ * - General:
+ *  - Build game with devkitPPC r21 compiler.
+ *
  * <b>13-09-2010 Version 0.97</b>
  * - GUI:
  *  - Update menu screen information.
