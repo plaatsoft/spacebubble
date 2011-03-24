@@ -4,7 +4,7 @@
  * @brief This file contain all defines.
  * @author wplaat
  *
- *  Copyright (C) 2008-2010 PlaatSoft
+ *  Copyright (C) 2008-2011 PlaatSoft
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 #define PROGRAM_NAME	    		"SpaceBubble"
 #define PROGRAM_VERSION     	"0.98"
-#define RELEASE_DATE        	"18-03-2011" 
+#define RELEASE_DATE        	"24-03-2011" 
 
 // Check latest available version 
 #define URL1                	"http://www.plaatsoft.nl/service/releasenotes4.html"
@@ -383,7 +383,7 @@ pointer pointers[MAX_POINTER];
  *
  * @section ReleaseNotes
  *
- * <b>18-03-2011 Version 0.98</b>
+ * <b>24-03-2011 Version 0.98</b>
  * - GUI:
  *  - Update menu screen information.
  * - Core:

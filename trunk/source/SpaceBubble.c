@@ -3036,18 +3036,18 @@ void drawScreen(void)
 		
 		case stateIntro4:
 	   { 
-	      int ypos=165;
+	      int ypos=185;
 			
 			// Draw background
-			GRRLIB_DrawImg(0,0, images.intro4, 0, 1, 1, IMAGE_COLOR );
+			GRRLIB_DrawImg(0, yOffset, images.intro4, 0, 1, 1, IMAGE_COLOR );
 
 			drawText(150, ypos, fontWelcome,  "WarQuest is available" );
 			ypos+=45;
 			drawText(0, ypos, fontParagraph,  "visit" );
 			ypos+=35;
-			drawText(0, ypos, fontParagraph,  "http://www.plaatsoft.nl/warquest" );
+			drawText(200, ypos, fontParagraph,  "http://www.warquest.nl" );
 			ypos+=35;
-			drawText(0, ypos, fontParagraph,  "and enter the battle zone!" );
+			drawText(190, ypos, fontParagraph,  "and enter the battle zone!" );
 			
 			drawText(20, 450+yOffset, fontSpecial, "Network: %s",tcp_get_state());
 			drawText(20, 460+yOffset, fontSpecial, "%d fps", CalculateFrameRate());
