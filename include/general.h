@@ -368,7 +368,6 @@ pointer pointers[MAX_POINTER];
 
 /**
  * @mainpage Wii SpaceBubble Documentation
- * @image html SpaceBubble.png
  * Welcome to the SpaceBubble documentation.
  *
  * @section Introduction
